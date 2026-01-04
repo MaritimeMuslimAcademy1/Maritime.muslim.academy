@@ -27,10 +27,6 @@ body {
   font-size: 14px;
 }
 
-.top-bar .left {
-  font-weight: bold;
-}
-
 .top-bar .center {
   font-weight: bold;
   font-size: 18px;
@@ -91,8 +87,8 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: rgba(10,15,30,0.9);
-  color: #fff;
+  background-color: rgba(10,15,30,0.9); /* same as top bar */
+  color: #fff; /* keep text white */
   display: flex;
   align-items: center;
   gap: 10px;
@@ -101,7 +97,7 @@ body {
 }
 
 .pill {
-  background-color: grey;
+  background-color: grey; /* grey pill */
   border-radius: 20px;
   padding: 2px 10px;
   font-weight: bold;
@@ -111,10 +107,11 @@ body {
 
 <body>
 
-<!-- Top bar -->
 <div class="top-bar">
   <div class="left">🏠 Home</div>
-  <div class="center">Maritime Muslim Academy</div>
+  <div class="center">
+    Maritime Muslim Academy
+  </div>
   <div class="right">
     rrayankhalid
     <div class="avatar">
@@ -123,22 +120,20 @@ body {
   </div>
 </div>
 
-<!-- Dashboard categories -->
 <div class="dashboard-grid">
   <div class="btn">Leaderboard</div>
-  <div class="btn">Announcement</div>
+  <div class="btn">Events</div>
   <div class="btn">Student Role</div>
 
-  <div class="btn">Events & Calendar</div>
-  <div class="btn">Student Voice</div>
-  <div class="btn">Achievement</div>
-
   <div class="btn">Media</div>
+  <div class="btn">Notes</div>
+  <div class="btn">Black Box</div>
+
+  <div class="btn">Statistics</div>
   <div class="btn">Student Chat</div>
   <div class="btn">Support Chat</div>
 </div>
 
-<!-- Bottom bar -->
 <div class="bottom-bar">
   <div class="pill">MMA</div>
   <div>Working on it :)</div>
