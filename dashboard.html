@@ -62,7 +62,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   max-width: 1000px;
-  margin: 80px auto 80px; /* pushed down below top bar */
+  margin: 80px auto 80px; /* pushed below top bar */
   position: relative;
   z-index: 1;
 }
@@ -89,7 +89,7 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: rgba(10,15,30,0.9); /* same as top bar */
+  background-color: rgba(10,15,30,0.9);
   color: #fff;
   display: flex;
   align-items: center;
@@ -104,101 +104,6 @@ body {
   border-radius: 20px;
   padding: 2px 10px;
   font-weight: bold;
-}
-
-/* Smart Box */
-#smartBox {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 400px;
-  height: 500px;
-  background: linear-gradient(to bottom right, #001F3F, #0A2A5A);
-  border-radius: 24px;
-  box-shadow: 0 0 15px #00BFFF66;
-  display: none;
-  flex-direction: column;
-  z-index: 10;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-}
-
-#smartBoxHeader {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background: rgba(0,191,255,0.2);
-  border-bottom: 1px solid rgba(0,191,255,0.3);
-  color: #fff;
-  font-weight: bold;
-  gap: 10px;
-}
-
-#smartBoxHeader img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-#chatContent {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.message.user {
-  align-self: flex-end;
-  background: #333;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 70%;
-}
-
-.message.ai {
-  align-self: flex-start;
-  background: #007bff44;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 70%;
-  color: #fff;
-}
-
-#inputContainer {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid rgba(0,191,255,0.3);
-}
-
-#inputContainer input {
-  flex: 1;
-  padding: 8px;
-  border-radius: 12px;
-  border: none;
-  margin-right: 8px;
-}
-
-#inputContainer button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 12px;
-  background: #00BFFF;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#backSmartBox {
-  margin-top: 5px;
-  background: #222;
-  color: #fff;
-  border-radius: 12px;
-  padding: 5px 10px;
-  cursor: pointer;
-  text-align: center;
 }
 </style>
 </head>
@@ -222,7 +127,7 @@ body {
   <div class="btn">Student Role</div>
   <div class="btn">Media</div>
   <div class="btn">Notes</div>
-  <div class="btn" id="openSmartBox">Smart Box</div>
+  <div class="btn">Smart Box</div>
   <div class="btn">Statistics</div>
   <div class="btn">Student Chat</div>
   <div class="btn">Support Chat</div>
@@ -232,64 +137,6 @@ body {
   <div class="pill">MMA</div>
   <div>Working on it :)</div>
 </div>
-
-<!-- Smart Box -->
-<div id="smartBox">
-  <div id="smartBoxHeader">
-    <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Logo">
-    Smart Box
-  </div>
-  <div id="chatContent">
-    <div class="message ai">Salam Alaykum, how can I help you today?</div>
-  </div>
-  <div id="inputContainer">
-    <input type="text" id="smartInput" placeholder="Type your message here…">
-    <button id="sendBtn">Send</button>
-  </div>
-  <div id="backSmartBox">Back</div>
-</div>
-
-<script>
-const openSmartBox = document.getElementById('openSmartBox');
-const smartBox = document.getElementById('smartBox');
-const chatContent = document.getElementById('chatContent');
-const smartInput = document.getElementById('smartInput');
-const sendBtn = document.getElementById('sendBtn');
-const backSmartBox = document.getElementById('backSmartBox');
-
-// Open Smart Box
-openSmartBox.addEventListener('click', () => {
-  smartBox.style.display = 'flex';
-  chatContent.innerHTML = '<div class="message ai">Salam Alaykum, how can I help you today?</div>';
-  smartInput.value = '';
-});
-
-// Send message
-sendBtn.addEventListener('click', () => {
-  const text = smartInput.value.trim();
-  if(!text) return;
-
-  // User message
-  const userMsg = document.createElement('div');
-  userMsg.className = 'message user';
-  userMsg.textContent = text;
-  chatContent.appendChild(userMsg);
-
-  // AI reply
-  const aiMsg = document.createElement('div');
-  aiMsg.className = 'message ai';
-  aiMsg.textContent = 'Sorry, I don’t have that information. Please ask something else.';
-  chatContent.appendChild(aiMsg);
-
-  smartInput.value = '';
-  chatContent.scrollTop = chatContent.scrollHeight;
-});
-
-// Back button
-backSmartBox.addEventListener('click', () => {
-  smartBox.style.display = 'none';
-});
-</script>
 
 </body>
 </html>
