@@ -12,6 +12,8 @@ body {
   background-color: #000;
   color: #fff;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -23,8 +25,10 @@ body {
   background-color: rgba(10,15,30,0.9);
   padding: 10px 20px;
   font-size: 14px;
-  z-index: 5;
-  position: relative;
+}
+
+.top-bar .left {
+  font-weight: bold;
 }
 
 .top-bar .center {
@@ -38,16 +42,20 @@ body {
   gap: 10px;
 }
 
-.avatar {
+/* Top-right logo */
+.top-bar .avatar {
   width: 32px;
   height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.avatar img {
+.top-bar .avatar img {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
+  border-radius: 50%;
 }
 
 /* Dashboard Grid */
@@ -57,6 +65,8 @@ body {
   gap: 20px;
   max-width: 1000px;
   margin: 150px auto 80px;
+  position: relative;
+  z-index: 1;
 }
 
 .btn {
@@ -66,12 +76,14 @@ body {
   padding: 40px;
   text-align: center;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .btn:hover {
   background: #007bff22;
+  box-shadow: 0 0 15px #007bff66;
 }
 
 /* Bottom Bar */
@@ -85,6 +97,7 @@ body {
   align-items: center;
   gap: 10px;
   padding: 10px 20px;
+  font-size: 14px;
 }
 
 .pill {
@@ -93,97 +106,43 @@ body {
   padding: 2px 10px;
   font-weight: bold;
 }
-
-/* Smart Box Overlay */
-.smartbox-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0,0,0,0.95);
-  display: none;
-  flex-direction: column;
-  z-index: 10;
-}
-
-.smartbox-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(10,15,30,0.9);
-  padding: 12px 20px;
-}
-
-.smartbox-body {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #aaa;
-  font-size: 18px;
-}
-
-.back-btn {
-  background: #0d1b2a;
-  border: 1px solid #007bff44;
-  color: #fff;
-  padding: 6px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-}
 </style>
 </head>
 
 <body>
 
+<!-- Top bar -->
 <div class="top-bar">
   <div class="left">🏠 Home</div>
   <div class="center">Maritime Muslim Academy</div>
   <div class="right">
     rrayankhalid
     <div class="avatar">
-      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Logo">
+      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=xEWCOdZbdpcQ7kNvwFniFMW&_nc_oc=AdliDWLaLX6UoPiqe0Kr-Nk3_QoYhjBjMEJayKO9O7J9lr_b-ViDeeyYD3XJO_LGh88&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=jzICPtKod-iJN8zirJw5Ww&oh=00_AfpmNaMYK9hVYU0QvgNYdk27_AL_K62VkaHGzxd0G2zEuQ&oe=695F7AC1" alt="Logo">
     </div>
   </div>
 </div>
 
+<!-- Dashboard categories -->
 <div class="dashboard-grid">
   <div class="btn">Leaderboard</div>
-  <div class="btn">Announcements</div>
+  <div class="btn">Announcement</div>
   <div class="btn">Student Role</div>
 
   <div class="btn">Events & Calendar</div>
   <div class="btn">Student Voice</div>
-  <div class="btn">Achievements</div>
+  <div class="btn">Achievement</div>
 
   <div class="btn">Media</div>
   <div class="btn">Student Chat</div>
-  <div class="btn" onclick="openSmartBox()">Smart Box</div>
+  <div class="btn">Support Chat</div>
 </div>
 
+<!-- Bottom bar -->
 <div class="bottom-bar">
   <div class="pill">MMA</div>
   <div>Working on it :)</div>
 </div>
-
-<!-- Smart Box -->
-<div class="smartbox-overlay" id="smartBox">
-  <div class="smartbox-top">
-    <div>Smart Box Support</div>
-    <button class="back-btn" onclick="closeSmartBox()">Back</button>
-  </div>
-  <div class="smartbox-body">
-    Smart Box chat goes here
-  </div>
-</div>
-
-<script>
-function openSmartBox() {
-  document.getElementById("smartBox").style.display = "flex";
-}
-
-function closeSmartBox() {
-  document.getElementById("smartBox").style.display = "none";
-}
-</script>
 
 </body>
 </html>
