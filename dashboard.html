@@ -15,13 +15,16 @@ body {
   overflow: hidden;
 }
 
-/* Top Bar */
+/* Top Header */
 .top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: rgba(10,15,30,0.9);
   padding: 10px 20px;
+  font-size: 14px;
+  z-index: 5;
+  position: relative;
 }
 
 .top-bar .center {
@@ -47,13 +50,13 @@ body {
   object-fit: cover;
 }
 
-/* Grid */
+/* Dashboard Grid */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   max-width: 1000px;
-  margin: 140px auto;
+  margin: 150px auto 80px;
 }
 
 .btn {
@@ -79,6 +82,7 @@ body {
   background-color: rgba(10,15,30,0.9);
   color: #fff;
   display: flex;
+  align-items: center;
   gap: 10px;
   padding: 10px 20px;
 }
@@ -87,6 +91,7 @@ body {
   background-color: grey;
   border-radius: 20px;
   padding: 2px 10px;
+  font-weight: bold;
 }
 
 /* Smart Box Overlay */
@@ -99,12 +104,12 @@ body {
   z-index: 10;
 }
 
-.smartbox-header {
-  background-color: rgba(10,15,30,0.9);
-  padding: 15px;
+.smartbox-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: rgba(10,15,30,0.9);
+  padding: 12px 20px;
 }
 
 .smartbox-body {
@@ -112,15 +117,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
   color: #aaa;
+  font-size: 18px;
 }
 
 .back-btn {
   background: #0d1b2a;
   border: 1px solid #007bff44;
   color: #fff;
-  padding: 8px 16px;
+  padding: 6px 16px;
   border-radius: 20px;
   cursor: pointer;
 }
@@ -130,7 +135,7 @@ body {
 <body>
 
 <div class="top-bar">
-  <div>🏠 Home</div>
+  <div class="left">🏠 Home</div>
   <div class="center">Maritime Muslim Academy</div>
   <div class="right">
     rrayankhalid
@@ -161,12 +166,12 @@ body {
 
 <!-- Smart Box -->
 <div class="smartbox-overlay" id="smartBox">
-  <div class="smartbox-header">
+  <div class="smartbox-top">
     <div>Smart Box Support</div>
     <button class="back-btn" onclick="closeSmartBox()">Back</button>
   </div>
   <div class="smartbox-body">
-    Smart Box interface goes here
+    Smart Box chat goes here
   </div>
 </div>
 
