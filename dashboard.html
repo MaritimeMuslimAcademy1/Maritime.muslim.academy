@@ -27,20 +27,9 @@ body {
   font-size: 14px;
 }
 
-.top-bar .left {
-  font-size: 16px;
-}
-
-.top-bar .center {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.top-bar .right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.top-bar .left { font-size: 16px; }
+.top-bar .center { font-weight: bold; font-size: 18px; }
+.top-bar .right { display: flex; align-items: center; gap: 10px; }
 
 .top-bar .avatar {
   width: 32px;
@@ -78,6 +67,8 @@ body {
   font-size: 20px;
   cursor: pointer;
   transition: 0.3s;
+  text-decoration: none;
+  color: #fff;
 }
 
 .btn:hover {
@@ -99,12 +90,7 @@ body {
   font-size: 14px;
 }
 
-.pill {
-  background-color: grey;
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-weight: bold;
-}
+.pill { background-color: grey; border-radius: 20px; padding: 2px 10px; font-weight: bold; }
 </style>
 </head>
 
@@ -123,19 +109,19 @@ body {
 
 <div class="dashboard-grid">
   <!-- Row 1 -->
-  <div class="btn">Leaderboard</div>
-  <div class="btn">Announcement</div>
-  <div class="btn">Event & Calendar</div>
+  <a href="leaderboard.html" class="btn">Leaderboard</a>
+  <a href="announcement.html" class="btn">Announcement</a>
+  <a href="event-calendar.html" class="btn">Event & Calendar</a>
   
   <!-- Row 2 -->
-  <div class="btn">Student Role</div>
-  <div class="btn">Student Voice</div>
-  <div class="btn">Achievements</div>
+  <a href="student-role.html" class="btn">Student Role</a>
+  <a href="student-voice.html" class="btn">Student Voice</a>
+  <a href="achievements.html" class="btn">Achievements</a>
   
   <!-- Row 3 -->
-  <div class="btn">Media</div>
-  <div class="btn">Student Chat</div>
-  <div class="btn">Smart Box</div>
+  <a href="media.html" class="btn">Media</a>
+  <a href="student-chat.html" class="btn">Student Chat</a>
+  <a href="smart-box.html" class="btn">Smart Box</a>
 </div>
 
 <div class="bottom-bar">
@@ -144,4 +130,4 @@ body {
 </div>
 
 </body>
-</html
+</html>
