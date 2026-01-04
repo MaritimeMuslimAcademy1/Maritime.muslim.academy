@@ -17,7 +17,6 @@ body {
   overflow: hidden;
 }
 
-/* Top Header */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -38,31 +37,24 @@ body {
   gap: 10px;
 }
 
-/* Top-right logo */
-.top-bar .avatar {
+.avatar {
   width: 32px;
   height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-.top-bar .avatar img {
+.avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   border-radius: 50%;
+  object-fit: cover;
 }
 
-/* Dashboard Grid */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   max-width: 1000px;
   margin: 150px auto 80px;
-  position: relative;
-  z-index: 1;
 }
 
 .btn {
@@ -74,7 +66,6 @@ body {
   font-weight: bold;
   font-size: 20px;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 .btn:hover {
@@ -82,13 +73,12 @@ body {
   box-shadow: 0 0 15px #007bff66;
 }
 
-/* Bottom Bar */
 .bottom-bar {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: rgba(10,15,30,0.9); /* same as top bar */
-  color: #fff; /* keep text white */
+  background-color: rgba(10,15,30,0.9);
+  color: #fff;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -97,10 +87,49 @@ body {
 }
 
 .pill {
-  background-color: grey; /* grey pill */
+  background-color: grey;
   border-radius: 20px;
   padding: 2px 10px;
   font-weight: bold;
+}
+
+/* Smart Box Popup */
+.smartbox {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 360px;
+  height: 480px;
+  background: #0d1b2a;
+  border: 1px solid #007bff55;
+  border-radius: 16px;
+  display: none;
+  flex-direction: column;
+}
+
+.smartbox-header {
+  padding: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #007bff33;
+}
+
+.smartbox-body {
+  flex: 1;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.smartbox-input {
+  padding: 10px;
+  border-top: 1px solid #007bff33;
+}
+
+.smartbox-input input {
+  width: 100%;
+  padding: 8px;
+  background: #000;
+  color: #fff;
+  border: none;
 }
 </style>
 </head>
@@ -108,36 +137,51 @@ body {
 <body>
 
 <div class="top-bar">
-  <div class="left">🏠 Home</div>
-  <div class="center">
-    Maritime Muslim Academy
-  </div>
+  <div>🏠 Home</div>
+  <div class="center">Maritime Muslim Academy</div>
   <div class="right">
     rrayankhalid
     <div class="avatar">
-      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=xEWCOdZbdpcQ7kNvwFniFMW&_nc_oc=AdliDWLaLX6UoPiqe0Kr-Nk3_QoYhjBjMEJayKO9O7J9lr_b-ViDeeyYD3XJO_LGh88&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=jzICPtKod-iJN8zirJw5Ww&oh=00_AfpmNaMYK9hVYU0QvgNYdk27_AL_K62VkaHGzxd0G2zEuQ&oe=695F7AC1" alt="Logo">
+      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Logo">
     </div>
   </div>
 </div>
 
 <div class="dashboard-grid">
   <div class="btn">Leaderboard</div>
-  <div class="btn">Events</div>
+  <div class="btn">Announcements</div>
   <div class="btn">Student Role</div>
 
-  <div class="btn">Media</div>
-  <div class="btn">Notes</div>
-  <div class="btn">Black Box</div>
+  <div class="btn">Events and Calendar</div>
+  <div class="btn">Student Voice</div>
+  <div class="btn">Achievements</div>
 
-  <div class="btn">Statistics</div>
+  <div class="btn">Media</div>
   <div class="btn">Student Chat</div>
-  <div class="btn">Support Chat</div>
+  <div class="btn" onclick="toggleSmartBox()">Smart Box Support Chat</div>
 </div>
 
 <div class="bottom-bar">
   <div class="pill">MMA</div>
   <div>Working on it :)</div>
 </div>
+
+<div class="smartbox" id="smartBox">
+  <div class="smartbox-header">Smart Box</div>
+  <div class="smartbox-body">
+    Ask a question. System responses are limited.
+  </div>
+  <div class="smartbox-input">
+    <input type="text" placeholder="Type your message">
+  </div>
+</div>
+
+<script>
+function toggleSmartBox() {
+  const box = document.getElementById("smartBox");
+  box.style.display = box.style.display === "flex" ? "none" : "flex";
+}
+</script>
 
 </body>
 </html>
