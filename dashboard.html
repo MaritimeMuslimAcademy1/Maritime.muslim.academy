@@ -3,292 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
-
+<title>Smart Box</title>
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #000;
-  color: #fff;
-  height: 100vh;
-  overflow: hidden;
-}
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: transparent; /* keeps dashboard visible behind */
+  }
 
-/* Top Header */
-.top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(10,15,30,0.9);
-  padding: 10px 20px;
-  font-size: 14px;
-  z-index: 5;
-}
+  /* Smart Box Container */
+  #smartBox {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 380px;
+    max-height: 500px;
+    background: linear-gradient(to bottom, #001F3F, #0A2A5A);
+    border-radius: 24px;
+    box-shadow: 0 0 20px #00BFFF88;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+  }
 
-.top-bar .center {
-  font-weight: bold;
-  font-size: 18px;
-}
+  /* Header */
+  #smartBoxHeader {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(0,191,255,0.3);
+  }
+  #smartBoxHeader img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+  }
+  #smartBoxHeader span {
+    color: #fff;
+    font-weight: bold;
+  }
 
-.top-bar .right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+  /* Messages Area */
+  #chatContent {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-.top-bar .avatar {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .message {
+    padding: 6px 10px;
+    border-radius: 12px;
+    max-width: 75%;
+    color: #fff;
+    word-wrap: break-word;
+  }
+  .user {
+    align-self: flex-end;
+    background: #007bff33;
+  }
+  .ai {
+    align-self: flex-start;
+    background: #00BFFF33;
+  }
 
-.top-bar .avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-/* Dashboard Grid */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 1000px;
-  margin: 80px auto 80px; /* pushed down below top bar */
-  position: relative;
-  z-index: 1;
-}
-
-.btn {
-  background: #0d1b2a;
-  border: 1px solid #007bff44;
-  border-radius: 12px;
-  padding: 40px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background: #007bff22;
-  box-shadow: 0 0 15px #007bff66;
-}
-
-/* Bottom Bar */
-.bottom-bar {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: rgba(10,15,30,0.9); /* same as top bar */
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  font-size: 14px;
-  z-index: 4;
-}
-
-.pill {
-  background-color: grey;
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-weight: bold;
-}
-
-/* Smart Box */
-#smartBox {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 400px;
-  height: 500px;
-  background: linear-gradient(to bottom right, #001F3F, #0A2A5A);
-  border-radius: 24px;
-  box-shadow: 0 0 15px #00BFFF66;
-  display: none;
-  flex-direction: column;
-  z-index: 10;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-}
-
-#smartBoxHeader {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background: rgba(0,191,255,0.2);
-  border-bottom: 1px solid rgba(0,191,255,0.3);
-  color: #fff;
-  font-weight: bold;
-  gap: 10px;
-}
-
-#smartBoxHeader img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-#chatContent {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.message.user {
-  align-self: flex-end;
-  background: #333;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 70%;
-}
-
-.message.ai {
-  align-self: flex-start;
-  background: #007bff44;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 70%;
-  color: #fff;
-}
-
-#inputContainer {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid rgba(0,191,255,0.3);
-}
-
-#inputContainer input {
-  flex: 1;
-  padding: 8px;
-  border-radius: 12px;
-  border: none;
-  margin-right: 8px;
-}
-
-#inputContainer button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 12px;
-  background: #00BFFF;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#backSmartBox {
-  margin-top: 5px;
-  background: #222;
-  color: #fff;
-  border-radius: 12px;
-  padding: 5px 10px;
-  cursor: pointer;
-  text-align: center;
-}
+  /* Input Area */
+  #inputArea {
+    padding: 5px 10px;
+    border-top: 1px solid rgba(0,191,255,0.3);
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  #userInput {
+    flex: 1;
+    padding: 6px 8px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+  }
+  #sendBtn {
+    background: #00BFFF;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
 </style>
 </head>
-
 <body>
 
-<div class="top-bar">
-  <div class="left">🏠 Home</div>
-  <div class="center">Maritime Muslim Academy</div>
-  <div class="right">
-    rrayankhalid
-    <div class="avatar">
-      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Logo">
-    </div>
-  </div>
-</div>
-
-<div class="dashboard-grid">
-  <div class="btn">Leaderboard</div>
-  <div class="btn">Events</div>
-  <div class="btn">Student Role</div>
-  <div class="btn">Media</div>
-  <div class="btn">Notes</div>
-  <div class="btn" id="openSmartBox">Smart Box</div>
-  <div class="btn">Statistics</div>
-  <div class="btn">Student Chat</div>
-  <div class="btn">Support Chat</div>
-</div>
-
-<div class="bottom-bar">
-  <div class="pill">MMA</div>
-  <div>Working on it :)</div>
-</div>
-
-<!-- Smart Box -->
 <div id="smartBox">
+  <!-- Header -->
   <div id="smartBoxHeader">
-    <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Logo">
-    Smart Box
+    <img src="YOUR_SCHOOL_LOGO_URL" alt="Logo">
+    <span>Smart Box</span>
   </div>
-  <div id="chatContent">
-    <div class="message ai">Salam Alaykum, how can I help you today?</div>
-  </div>
-  <div id="inputContainer">
-    <input type="text" id="smartInput" placeholder="Type your message here…">
+
+  <!-- Messages -->
+  <div id="chatContent"></div>
+
+  <!-- Input -->
+  <div id="inputArea">
+    <input type="text" id="userInput" placeholder="Type your message...">
     <button id="sendBtn">Send</button>
   </div>
-  <div id="backSmartBox">Back</div>
 </div>
 
 <script>
-const openSmartBox = document.getElementById('openSmartBox');
-const smartBox = document.getElementById('smartBox');
-const chatContent = document.getElementById('chatContent');
-const smartInput = document.getElementById('smartInput');
-const sendBtn = document.getElementById('sendBtn');
-const backSmartBox = document.getElementById('backSmartBox');
+const chatContent = document.getElementById("chatContent");
+const userInput = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
 
-// Open Smart Box
-openSmartBox.addEventListener('click', () => {
-  smartBox.style.display = 'flex';
-  chatContent.innerHTML = '<div class="message ai">Salam Alaykum, how can I help you today?</div>';
-  smartInput.value = '';
-});
+// Initialize chat
+function initChat() {
+  chatContent.innerHTML = ""; // clear previous messages
+  addMessage("Salam Alaykum, how can I help you today?", "ai");
+}
 
-// Send message
-sendBtn.addEventListener('click', () => {
-  const text = smartInput.value.trim();
-  if(!text) return;
+// Add a message
+function addMessage(text, side) {
+  const msg = document.createElement("div");
+  msg.textContent = text;
+  msg.classList.add("message");
+  msg.classList.add(side);
+  chatContent.appendChild(msg);
+  chatContent.scrollTop = chatContent.scrollHeight;
+}
 
-  // User message
-  const userMsg = document.createElement('div');
-  userMsg.className = 'message user';
-  userMsg.textContent = text;
-  chatContent.appendChild(userMsg);
+// Handle sending
+function handleSend() {
+  const text = userInput.value.trim();
+  if (!text) return;
+  addMessage(text, "user");
+  userInput.value = "";
 
   // AI reply
-  const aiMsg = document.createElement('div');
-  aiMsg.className = 'message ai';
-  aiMsg.textContent = 'Sorry, I don’t have that information. Please ask something else.';
-  chatContent.appendChild(aiMsg);
+  setTimeout(() => {
+    addMessage("Sorry, I don’t have that information. Please ask something else.", "ai");
+  }, 500);
+}
 
-  smartInput.value = '';
-  chatContent.scrollTop = chatContent.scrollHeight;
-});
+// Event listeners
+sendBtn.addEventListener("click", handleSend);
+userInput.addEventListener("keydown", (e) => { if(e.key === "Enter") handleSend(); });
 
-// Back button
-backSmartBox.addEventListener('click', () => {
-  smartBox.style.display = 'none';
-});
+// Start chat
+initChat();
 </script>
 
 </body>
