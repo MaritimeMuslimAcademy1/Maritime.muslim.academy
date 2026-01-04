@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smart Box</title>
-
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #000;
+  background-color: #222; /* Gray background for Smart Box */
   color: #fff;
   height: 100vh;
   display: flex;
@@ -57,32 +56,49 @@ body {
   border-radius: 50%;
 }
 
+/* Back Button */
 .backBtn {
+  background-color: #555; /* darker gray */
   color: #fff;
-  text-decoration: none;
-  background-color: #222;
-  padding: 5px 12px;
   border-radius: 12px;
-  font-size: 14px;
-  font-weight: bold;
+  padding: 8px 16px;
   cursor: pointer;
+  font-weight: bold;
+  margin: 20px;
+  width: fit-content;
 }
+
+/* Smart Box Content */
+.smart-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+
 </style>
 </head>
-
 <body>
 
 <div class="top-bar">
   <div class="center">Smart Box</div>
   <div class="right">
-    <a href="dashboard.html" class="backBtn">← Back</a>
+    <button onclick="goBack()" class="backBtn">Back</button>
   </div>
 </div>
 
-<div style="margin: 100px 20px 20px 20px; text-align: center;">
-  <h2>Smart Box</h2>
-  <p>Content for the Smart Box goes here.</p>
+<div class="smart-container">
+  <p>Welcome to the Smart Box! Add your messages, images, or interactive content here.</p>
 </div>
+
+<script>
+function goBack() {
+  window.location.href = 'dashboard.html'; // Returns to main dashboard
+}
+</script>
 
 </body>
 </html>
