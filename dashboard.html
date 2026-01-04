@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard</title>
+
 <style>
 body {
   margin: 0;
@@ -11,21 +12,22 @@ body {
   background-color: #000;
   color: #fff;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* Top Header */
 .top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: rgba(10,15,30,0.9);
   padding: 10px 20px;
   font-size: 14px;
-  z-index: 2;
-  position: relative;
+  z-index: 5;
 }
 
 .top-bar .center {
@@ -60,7 +62,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   max-width: 1000px;
-  margin: 150px auto 80px;
+  margin: 80px auto 80px; /* pushed down below top bar */
   position: relative;
   z-index: 1;
 }
@@ -87,13 +89,14 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: rgba(10,15,30,0.9);
+  background-color: rgba(10,15,30,0.9); /* same as top bar */
   color: #fff;
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 20px;
   font-size: 14px;
+  z-index: 4;
 }
 
 .pill {
@@ -105,92 +108,101 @@ body {
 
 /* Smart Box */
 #smartBox {
-  display: none;
   position: fixed;
   bottom: 20px;
   right: 20px;
   width: 400px;
   height: 500px;
-  background: linear-gradient(180deg, #001F3F, #0A2A5A);
-  border-radius: 20px;
-  box-shadow: 0 0 20px #00BFFF44;
-  z-index: 3;
-  display: flex;
+  background: linear-gradient(to bottom right, #001F3F, #0A2A5A);
+  border-radius: 24px;
+  box-shadow: 0 0 15px #00BFFF66;
+  display: none;
   flex-direction: column;
+  z-index: 10;
   overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
-.smartBox-header {
+#smartBoxHeader {
   display: flex;
   align-items: center;
-  background: #001f3f;
   padding: 10px;
+  background: rgba(0,191,255,0.2);
+  border-bottom: 1px solid rgba(0,191,255,0.3);
   color: #fff;
-}
-
-.smartBox-header img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.smartBox-header span {
   font-weight: bold;
-  flex: 1;
+  gap: 10px;
 }
 
-.smartBox-content {
+#smartBoxHeader img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#chatContent {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
-  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.smartBox-message {
-  margin-bottom: 10px;
+.message.user {
+  align-self: flex-end;
+  background: #333;
   padding: 8px 12px;
   border-radius: 12px;
-  max-width: 80%;
+  max-width: 70%;
 }
 
-.user-msg {
-  background-color: #222;
-  align-self: flex-end;
-}
-
-.ai-msg {
-  background-color: #007bff22;
+.message.ai {
   align-self: flex-start;
-}
-
-.smartBox-input {
-  display: flex;
-  padding: 10px;
-  background: #001f3f;
-}
-
-.smartBox-input input {
-  flex: 1;
-  padding: 10px;
+  background: #007bff44;
+  padding: 8px 12px;
   border-radius: 12px;
-  border: none;
-  background: #222;
+  max-width: 70%;
   color: #fff;
 }
 
-.smartBox-input button {
-  margin-left: 10px;
-  padding: 10px 15px;
+#inputContainer {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid rgba(0,191,255,0.3);
+}
+
+#inputContainer input {
+  flex: 1;
+  padding: 8px;
   border-radius: 12px;
   border: none;
-  background-color: #00BFFF;
+  margin-right: 8px;
+}
+
+#inputContainer button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 12px;
+  background: #00BFFF;
   color: #000;
   font-weight: bold;
   cursor: pointer;
 }
+
+#backSmartBox {
+  margin-top: 5px;
+  background: #222;
+  color: #fff;
+  border-radius: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-align: center;
+}
 </style>
 </head>
+
 <body>
 
 <div class="top-bar">
@@ -210,10 +222,10 @@ body {
   <div class="btn">Student Role</div>
   <div class="btn">Media</div>
   <div class="btn">Notes</div>
-  <div class="btn" id="openSmartBox">Support Chat</div>
+  <div class="btn" id="openSmartBox">Smart Box</div>
   <div class="btn">Statistics</div>
   <div class="btn">Student Chat</div>
-  <div class="btn">Achievement</div>
+  <div class="btn">Support Chat</div>
 </div>
 
 <div class="bottom-bar">
@@ -223,62 +235,59 @@ body {
 
 <!-- Smart Box -->
 <div id="smartBox">
-  <div class="smartBox-header">
+  <div id="smartBoxHeader">
     <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Logo">
-    <span>Smart Box</span>
-    <button id="closeSmartBox">Back</button>
+    Smart Box
   </div>
-  <div class="smartBox-content" id="smartBoxContent">
-    <div class="ai-msg smartBox-message">Salam Alaykum, how can I help you today?</div>
+  <div id="chatContent">
+    <div class="message ai">Salam Alaykum, how can I help you today?</div>
   </div>
-  <div class="smartBox-input">
-    <input type="text" id="smartBoxInput" placeholder="Type your message here...">
+  <div id="inputContainer">
+    <input type="text" id="smartInput" placeholder="Type your message here…">
     <button id="sendBtn">Send</button>
   </div>
+  <div id="backSmartBox">Back</div>
 </div>
 
 <script>
-const openBtn = document.getElementById("openSmartBox");
-const closeBtn = document.getElementById("closeSmartBox");
-const smartBox = document.getElementById("smartBox");
-const smartBoxContent = document.getElementById("smartBoxContent");
-const input = document.getElementById("smartBoxInput");
-const sendBtn = document.getElementById("sendBtn");
+const openSmartBox = document.getElementById('openSmartBox');
+const smartBox = document.getElementById('smartBox');
+const chatContent = document.getElementById('chatContent');
+const smartInput = document.getElementById('smartInput');
+const sendBtn = document.getElementById('sendBtn');
+const backSmartBox = document.getElementById('backSmartBox');
 
 // Open Smart Box
-openBtn.addEventListener("click", () => {
-  smartBox.style.display = "flex";
-  input.value = "";
-  smartBoxContent.innerHTML = '<div class="ai-msg smartBox-message">Salam Alaykum, how can I help you today?</div>';
-});
-
-// Close Smart Box
-closeBtn.addEventListener("click", () => {
-  smartBox.style.display = "none";
+openSmartBox.addEventListener('click', () => {
+  smartBox.style.display = 'flex';
+  chatContent.innerHTML = '<div class="message ai">Salam Alaykum, how can I help you today?</div>';
+  smartInput.value = '';
 });
 
 // Send message
-sendBtn.addEventListener("click", () => {
-  const msg = input.value.trim();
-  if (!msg) return;
-  const userDiv = document.createElement("div");
-  userDiv.className = "user-msg smartBox-message";
-  userDiv.textContent = msg;
-  smartBoxContent.appendChild(userDiv);
+sendBtn.addEventListener('click', () => {
+  const text = smartInput.value.trim();
+  if(!text) return;
 
-  const aiDiv = document.createElement("div");
-  aiDiv.className = "ai-msg smartBox-message";
+  // User message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'message user';
+  userMsg.textContent = text;
+  chatContent.appendChild(userMsg);
 
-  // Simple AI response logic
-  if (msg.toLowerCase().includes("number one")) {
-    aiDiv.textContent = "The top student is John Doe, Grade 12.";
-  } else {
-    aiDiv.textContent = "Sorry, I don’t have that information. Please ask something else.";
-  }
-  smartBoxContent.appendChild(aiDiv);
+  // AI reply
+  const aiMsg = document.createElement('div');
+  aiMsg.className = 'message ai';
+  aiMsg.textContent = 'Sorry, I don’t have that information. Please ask something else.';
+  chatContent.appendChild(aiMsg);
 
-  input.value = "";
-  smartBoxContent.scrollTop = smartBoxContent.scrollHeight;
+  smartInput.value = '';
+  chatContent.scrollTop = chatContent.scrollHeight;
+});
+
+// Back button
+backSmartBox.addEventListener('click', () => {
+  smartBox.style.display = 'none';
 });
 </script>
 
