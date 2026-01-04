@@ -8,7 +8,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #222; /* Gray background for Smart Box */
+  background-color: #000;
   color: #fff;
   height: 100vh;
   display: flex;
@@ -58,47 +58,73 @@ body {
 
 /* Back Button */
 .backBtn {
-  background-color: #555; /* darker gray */
+  background-color: #007bff;
   color: #fff;
   border-radius: 12px;
-  padding: 8px 16px;
+  padding: 5px 12px;
   cursor: pointer;
+  text-decoration: none;
   font-weight: bold;
-  margin: 20px;
-  width: fit-content;
 }
 
-/* Smart Box Content */
-.smart-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  font-size: 18px;
+/* Main Content */
+.content {
+  margin: 100px 20px 80px;
   text-align: center;
 }
 
+.content h2 {
+  margin-bottom: 20px;
+}
+
+.content p {
+  font-size: 16px;
+}
+
+/* Bottom Bar */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(10,15,30,0.9);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.pill {
+  background-color: grey;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
 
 <div class="top-bar">
+  <div class="left"><a href="dashboard.html" class="backBtn">← Back</a></div>
   <div class="center">Smart Box</div>
   <div class="right">
-    <button onclick="goBack()" class="backBtn">Back</button>
+    rrayankhalid
+    <div class="avatar">
+      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=ltyvxYBJiKcQ7kNvwFcizOH&_nc_oc=Admy9CyroxXhQGSS7mz8dbEHbFxaeJxsGiAQ9SNjdNCDs_ZIOfkwrp8OZls7_6i64x8&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=Y8aRpr72HMa7VkNH7DnVXQ&oh=00_AfrxWp2mpwzt_sJqHjKYO4YBCtkeReCwGnHmtyjMPGSoRA&oe=69609401" alt="Logo">
+    </div>
   </div>
 </div>
 
-<div class="smart-container">
-  <p>Welcome to the Smart Box! Add your messages, images, or interactive content here.</p>
+<div class="content">
+  <h2>Smart Box</h2>
+  <p>Here is the content for Smart Box. You can add text, images, or links here.</p>
 </div>
 
-<script>
-function goBack() {
-  window.location.href = 'dashboard.html'; // Returns to main dashboard
-}
-</script>
+<div class="bottom-bar">
+  <div class="pill">MMA</div>
+  <div>Working on it :)</div>
+</div>
 
 </body>
 </html>
