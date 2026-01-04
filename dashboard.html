@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard</title>
-
 <style>
 body {
   margin: 0;
@@ -23,37 +22,15 @@ body {
   background-color: rgba(10,15,30,0.9);
   padding: 10px 20px;
   font-size: 14px;
+  position: fixed;
+  width: 100%;
+  z-index: 5;
 }
-
-.top-bar .left {
-  font-size: 16px;
-}
-
-.top-bar .center {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.top-bar .right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.top-bar .avatar {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.top-bar .avatar img {
-  width: 32px;
-  height: 32px;
-  object-fit: cover;
-  border-radius: 50%;
-}
+.top-bar .left { font-size: 16px; }
+.top-bar .center { font-weight: bold; font-size: 18px; }
+.top-bar .right { display: flex; align-items: center; gap: 10px; }
+.top-bar .avatar { width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; }
+.top-bar .avatar img { width: 32px; height: 32px; object-fit: cover; border-radius: 50%; }
 
 /* Dashboard Grid */
 .dashboard-grid {
@@ -61,8 +38,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   max-width: 1000px;
-  margin: 150px auto 80px;
-  position: relative;
+  margin: 80px auto 80px;
   z-index: 1;
 }
 
@@ -77,11 +53,7 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
-
-.btn:hover {
-  background: #007bff22;
-  box-shadow: 0 0 15px #007bff66;
-}
+.btn:hover { background: #007bff22; box-shadow: 0 0 15px #007bff66; }
 
 /* Bottom Bar */
 .bottom-bar {
@@ -96,113 +68,26 @@ body {
   padding: 10px 20px;
   font-size: 14px;
 }
+.pill { background-color: grey; border-radius: 20px; padding: 2px 10px; font-weight: bold; }
 
-.pill {
-  background-color: grey;
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-weight: bold;
-}
-
-/* Smart Box */
-#smartBox {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 380px;
-  max-height: 500px;
-  background-color: #0d1b2a;
-  border-radius: 16px;
-  box-shadow: 0 0 15px #00BFFF66;
+/* Category Sections */
+.category {
   display: none;
-  flex-direction: column;
-  z-index: 10;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-}
-
-#smartBoxHeader {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background: rgba(0,191,255,0.1);
-  border-bottom: 1px solid rgba(0,191,255,0.3);
-  color: #fff;
-  font-weight: bold;
-  gap: 10px;
-}
-
-#smartBoxHeader img {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-#chatContent {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.message.user {
-  align-self: flex-end;
-  background: #333;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 70%;
+  margin: 80px 20px 80px;
   color: #fff;
 }
-
-.message.ai {
-  align-self: flex-start;
-  background: #007bff44;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 70%;
-  color: #fff;
-}
-
-#inputContainer {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid rgba(0,191,255,0.3);
-}
-
-#inputContainer input {
-  flex: 1;
-  padding: 8px;
-  border-radius: 12px;
-  border: none;
-  margin-right: 8px;
-}
-
-#inputContainer button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 12px;
-  background: #00BFFF;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#backSmartBox {
-  margin: 5px;
+.category h2 { margin-bottom: 20px; }
+.backBtn {
   background: #222;
   color: #fff;
   border-radius: 12px;
-  padding: 5px 10px;
+  padding: 5px 12px;
   cursor: pointer;
-  text-align: center;
-  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 20px;
 }
 </style>
 </head>
-
 <body>
 
 <div class="top-bar">
@@ -211,19 +96,69 @@ body {
   <div class="right">
     rrayankhalid
     <div class="avatar">
-      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Logo">
+      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=ltyvxYBJiKcQ7kNvwFcizOH&_nc_oc=Admy9CyroxXhQGSS7mz8dbEHbFxaeJxsGiAQ9SNjdNCDs_ZIOfkwrp8OZls7_6i64x8&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=Y8aRpr72HMa7VkNH7DnVXQ&oh=00_AfrxWp2mpwzt_sJqHjKYO4YBCtkeReCwGnHmtyjMPGSoRA&oe=69609401" alt="Logo">
     </div>
   </div>
 </div>
 
-<div class="dashboard-grid">
-  <div class="btn">Leaderboard</div>
-  <div class="btn">Events</div>
-  <div class="btn">Student Role</div>
-  <div class="btn">Media</div>
-  <div class="btn">Student Chat</div>
-  <div class="btn">Statistics</div>
-  <div class="btn" id="openSmartBox">Smart Box</div>
+<!-- Main Dashboard Grid -->
+<div id="mainGrid" class="dashboard-grid">
+  <div class="btn" onclick="openCategory('leaderboard')">Leaderboard</div>
+  <div class="btn" onclick="openCategory('events')">Events</div>
+  <div class="btn" onclick="openCategory('studentRole')">Student Role</div>
+  <div class="btn" onclick="openCategory('media')">Media</div>
+  <div class="btn" onclick="openCategory('studentChat')">Student Chat</div>
+  <div class="btn" onclick="openCategory('achievement')">Achievement</div>
+  <div class="btn" onclick="openCategory('statistics')">Statistics</div>
+  <div class="btn" onclick="openCategory('studentVoice')">Student Voice</div>
+  <div class="btn" onclick="openCategory('smartBox')">Smart Box</div>
+</div>
+
+<!-- Category Sections -->
+<div id="leaderboard" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Leaderboard</h2>
+  <p>Content for Leaderboard here.</p>
+</div>
+<div id="events" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Events & Calendar</h2>
+  <p>Content for Events & Calendar here.</p>
+</div>
+<div id="studentRole" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Student Role</h2>
+  <p>Content for Student Role here.</p>
+</div>
+<div id="media" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Media</h2>
+  <p>Content for Media here.</p>
+</div>
+<div id="studentChat" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Student Chat</h2>
+  <p>Content for Student Chat here.</p>
+</div>
+<div id="achievement" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Achievement</h2>
+  <p>Content for Achievement here.</p>
+</div>
+<div id="statistics" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Statistics</h2>
+  <p>Content for Statistics here.</p>
+</div>
+<div id="studentVoice" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Student Voice</h2>
+  <p>Content for Student Voice here.</p>
+</div>
+<div id="smartBox" class="category">
+  <div class="backBtn" onclick="backToDashboard()">← Back</div>
+  <h2>Smart Box</h2>
+  <p>Content for Smart Box here.</p>
 </div>
 
 <div class="bottom-bar">
@@ -231,63 +166,17 @@ body {
   <div>Working on it :)</div>
 </div>
 
-<!-- Smart Box -->
-<div id="smartBox">
-  <div id="smartBoxHeader">
-    <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Logo">
-    Smart Box
-  </div>
-  <div id="chatContent">
-    <div class="message ai">Salam Alaykum, how can I help you today?</div>
-  </div>
-  <div id="inputContainer">
-    <input type="text" id="smartInput" placeholder="Type your message here…">
-    <button id="sendBtn">Send</button>
-  </div>
-  <div id="backSmartBox">Back</div>
-</div>
-
 <script>
-const openSmartBox = document.getElementById('openSmartBox');
-const smartBox = document.getElementById('smartBox');
-const chatContent = document.getElementById('chatContent');
-const smartInput = document.getElementById('smartInput');
-const sendBtn = document.getElementById('sendBtn');
-const backSmartBox = document.getElementById('backSmartBox');
+function openCategory(id) {
+  document.getElementById('mainGrid').style.display = 'none';
+  document.querySelectorAll('.category').forEach(el => el.style.display='none');
+  document.getElementById(id).style.display='block';
+}
 
-// Open Smart Box
-openSmartBox.addEventListener('click', () => {
-  smartBox.style.display = 'flex';
-  chatContent.innerHTML = '<div class="message ai">Salam Alaykum, how can I help you today?</div>';
-  smartInput.value = '';
-});
-
-// Send message
-sendBtn.addEventListener('click', () => {
-  const text = smartInput.value.trim();
-  if(!text) return;
-
-  // User message
-  const userMsg = document.createElement('div');
-  userMsg.className = 'message user';
-  userMsg.textContent = text;
-  chatContent.appendChild(userMsg);
-
-  // AI reply
-  const aiMsg = document.createElement('div');
-  aiMsg.className = 'message ai';
-  aiMsg.textContent = 'Sorry, I don’t have that information. Please ask something else.';
-  chatContent.appendChild(aiMsg);
-
-  smartInput.value = '';
-  chatContent.scrollTop = chatContent.scrollHeight;
-});
-
-// Back button
-backSmartBox.addEventListener('click', () => {
-  smartBox.style.display = 'none';
-  chatContent.innerHTML = '<div class="message ai">Salam Alaykum, how can I help you today?</div>';
-});
+function backToDashboard() {
+  document.getElementById('mainGrid').style.display='grid';
+  document.querySelectorAll('.category').forEach(el => el.style.display='none');
+}
 </script>
 
 </body>
