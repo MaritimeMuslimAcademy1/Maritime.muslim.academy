@@ -3,186 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Box</title>
+<title>Dashboard</title>
+
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #000;
   color: #fff;
-}
-
-/* Floating Smart Box */
-#smartBox {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 360px;
-  height: 480px;
-  background: linear-gradient(to bottom, #001F3F, #0A2A5A);
-  border-radius: 16px;
-  box-shadow: 0 0 15px #00BFFF55;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 9999;
 }
 
-/* Header */
-#smartBoxHeader {
+/* Top Header */
+.top-bar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background: rgba(0, 191, 255, 0.1);
-  border-bottom: 1px solid #00BFFF44;
-}
-
-#smartBoxHeader img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  margin-right: 10px;
-  object-fit: cover;
-}
-
-#smartBoxHeader span {
-  font-weight: bold;
+  background-color: rgba(10,15,30,0.9);
+  padding: 10px 20px;
   font-size: 14px;
 }
 
-/* Chat content */
-#chatContent {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-}
-
-.message {
-  margin-bottom: 10px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 80%;
-}
-
-.ai {
-  background-color: #007bff22;
-  color: #fff;
-  align-self: flex-start;
-}
-
-.user {
-  background-color: #222;
-  color: #fff;
-  align-self: flex-end;
-}
-
-/* Input area */
-#chatInputArea {
-  display: flex;
-  border-top: 1px solid #00BFFF44;
-  padding: 8px;
-  background: rgba(0,0,0,0.5);
-}
-
-#chatInput {
-  flex: 1;
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: none;
-  background-color: #222;
-  color: #fff;
-}
-
-#sendBtn {
-  margin-left: 8px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: none;
-  background-color: #00BFFF;
-  color: #000;
+.top-bar .center {
   font-weight: bold;
-  cursor: pointer;
+  font-size: 18px;
 }
 
-#backBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 4px 8px;
-  font-size: 12px;
-  background-color: #222;
-  border: none;
-  border-radius: 8px;
-  color: #fff;
+.top-bar .right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Top-right logo */
+.top-bar .avatar {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-bar .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1000px;
+  margin: 150px auto 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn {
+  background: #0d1b2a;
+  border: 1px solid #007bff44;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #007bff22;
+  box-shadow: 0 0 15px #007bff66;
+}
+
+/* Bottom Bar */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(10,15,30,0.9);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.pill {
+  background-color: grey;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-weight: bold;
 }
 </style>
 </head>
+
 <body>
 
-<div id="smartBox">
-  <div id="smartBoxHeader">
-    <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="School Logo">
-    <span>Smart Box</span>
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="left">🏠 Home</div>
+  <div class="center">Maritime Muslim Academy</div>
+  <div class="right">
+    rrayankhalid
+    <div class="avatar">
+      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=xEWCOdZbdpcQ7kNvwFniFMW&_nc_oc=AdliDWLaLX6UoPiqe0Kr-Nk3_QoYhjBjMEJayKO9O7J9lr_b-ViDeeyYD3XJO_LGh88&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=jzICPtKod-iJN8zirJw5Ww&oh=00_AfpmNaMYK9hVYU0QvgNYdk27_AL_K62VkaHGzxd0G2zEuQ&oe=695F7AC1" alt="Logo">
+    </div>
   </div>
-  <button id="backBtn">Back</button>
-  <div id="chatContent">
-    <div class="message ai">Salam Alaykum, how can I help you today?</div>
+</div>
+
+<!-- Dashboard Grid -->
+<div class="dashboard-grid">
+  <div class="btn">Leaderboard</div>
+  <div class="btn">Events & Calendar</div>
+  <div class="btn">Student Role</div>
+  <div class="btn">Media</div>
+  <div class="btn">Notes</div>
+  <div class="btn">Achievement</div>
+  <div class="btn">Statistics</div>
+  <div class="btn">Student Chat</div>
+  <div class="btn">Support Chat</div>
+</div>
+
+<!-- Bottom Bar -->
+<div class="bottom-bar">
+  <div class="pill">MMA</div>
+  <div>Working on it :)</div>
+</div>
+
+<!-- Smart Box (Bottom-Right Floating Chat) -->
+<div id="smartBox" style="position: fixed; bottom: 20px; right: 20px; width: 380px; max-height: 500px; background: linear-gradient(to bottom, #001F3F, #0A2A5A); border-radius: 20px; box-shadow: 0 0 20px #00BFFF55; display: none; flex-direction: column; font-family: Arial, sans-serif; overflow: hidden; z-index: 1000;">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: rgba(0,0,0,0.2);">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" style="width:32px; height:32px; border-radius:50%;">
+      <span style="color:#fff; font-weight:bold;">Smart Box</span>
+    </div>
+    <button id="closeSmartBox" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✕</button>
   </div>
-  <div id="chatInputArea">
-    <input type="text" id="chatInput" placeholder="Type your message here...">
-    <button id="sendBtn">Send</button>
+  <div id="chatArea" style="flex:1; padding: 10px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; background-color: rgba(0,0,0,0.1);">
+    <div style="align-self:flex-start; background:#0B3D91; color:#fff; padding:8px 12px; border-radius:10px; max-width:80%;">Salam Alaykum, how can I help you today?</div>
+  </div>
+  <div style="display:flex; padding:10px; gap:10px; background:rgba(0,0,0,0.2);">
+    <input id="smartInput" type="text" placeholder="Type your message here..." style="flex:1; padding:8px 12px; border-radius:12px; border:none; outline:none; background:#222; color:#fff;">
+    <button id="sendSmart" style="padding:8px 12px; background:#00BFFF; border:none; border-radius:12px; color:#fff; cursor:pointer;">➤</button>
   </div>
 </div>
 
 <script>
-const chatContent = document.getElementById('chatContent');
-const chatInput = document.getElementById('chatInput');
-const sendBtn = document.getElementById('sendBtn');
-const backBtn = document.getElementById('backBtn');
-const smartBox = document.getElementById('smartBox');
+// Smart Box Elements
+const smartBox = document.getElementById("smartBox");
+const chatArea = document.getElementById("chatArea");
+const smartInput = document.getElementById("smartInput");
+const sendSmart = document.getElementById("sendSmart");
+const closeSmartBox = document.getElementById("closeSmartBox");
 
-// Predefined AI answers (you can add more commands here)
-const aiResponses = {
-  "who is number one in leaderboard": "The top student is Ahmed, Grade 12.",
-  "school hours": "School hours are 8:00 AM - 3:00 PM.",
-  "principal name": "The principal is Mr. Ali."
-};
-
-sendBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', function(e) {
-  if(e.key === 'Enter') sendMessage();
+// Open Smart Box on Support Chat click
+document.querySelectorAll('.btn').forEach(btn => {
+  if(btn.textContent.trim() === "Support Chat"){
+    btn.addEventListener("click", () => {
+      smartBox.style.display = "flex";
+      chatArea.innerHTML = '<div style="align-self:flex-start; background:#0B3D91; color:#fff; padding:8px 12px; border-radius:10px; max-width:80%;">Salam Alaykum, how can I help you today?</div>';
+      smartInput.value = "";
+    });
+  }
 });
 
-function sendMessage() {
-  const userText = chatInput.value.trim();
-  if(userText === "") return;
-
-  // Add user message
-  const userMsg = document.createElement('div');
-  userMsg.classList.add('message','user');
-  userMsg.textContent = userText;
-  chatContent.appendChild(userMsg);
-  chatInput.value = '';
-  chatContent.scrollTop = chatContent.scrollHeight;
-
-  // AI response
-  let response = aiResponses[userText.toLowerCase()] || "Sorry, I don’t have that information. Please ask something else.";
-  const aiMsg = document.createElement('div');
-  aiMsg.classList.add('message','ai');
-  aiMsg.textContent = response;
-  chatContent.appendChild(aiMsg);
-  chatContent.scrollTop = chatContent.scrollHeight;
-}
-
-// Back button clears chat and closes box
-backBtn.addEventListener('click', () => {
-  chatContent.innerHTML = '<div class="message ai">Salam Alaykum, how can I help you today?</div>';
-  smartBox.style.display = 'none'; // hide box
+// Close Smart Box and reset
+closeSmartBox.addEventListener("click", () => {
+  smartBox.style.display = "none";
+  chatArea.innerHTML = '<div style="align-self:flex-start; background:#0B3D91; color:#fff; padding:8px 12px; border-radius:10px; max-width:80%;">Salam Alaykum, how can I help you today?</div>';
 });
 
-// Example to open Smart Box (in real dashboard, this would be triggered on click)
-smartBox.style.display = 'block'; // show by default for testing
+// Send message
+sendSmart.addEventListener("click", () => {
+  const msg = smartInput.value.trim();
+  if(msg === "") return;
+
+  const userMsg = document.createElement("div");
+  userMsg.style.alignSelf = "flex-end";
+  userMsg.style.background = "#444";
+  userMsg.style.color = "#fff";
+  userMsg.style.padding = "8px 12px";
+  userMsg.style.borderRadius = "10px";
+  userMsg.style.maxWidth = "80%";
+  userMsg.textContent = msg;
+  chatArea.appendChild(userMsg);
+
+  const aiMsg = document.createElement("div");
+  aiMsg.style.alignSelf = "flex-start";
+  aiMsg.style.background = "#0B3D91";
+  aiMsg.style.color = "#fff";
+  aiMsg.style.padding = "8px 12px";
+  aiMsg.style.borderRadius = "10px";
+  aiMsg.style.maxWidth = "80%";
+
+  const lower = msg.toLowerCase();
+  if(lower.includes("number one") && lower.includes("leaderboard")){
+    aiMsg.textContent = "The top student is John Doe, Grade 12.";
+  } else {
+    aiMsg.textContent = "Sorry, I don’t have that information. Please ask something else.";
+  }
+
+  chatArea.appendChild(aiMsg);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  smartInput.value = "";
+});
 </script>
 
 </body>
