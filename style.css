@@ -1,0 +1,143 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #0b0f17;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Centered card */
+.center-card, .verification-card {
+  background-color: #111416;
+  padding: 40px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,255,255,0.15);
+  width: 320px;
+}
+
+/* Inputs */
+input {
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1a1c1f;
+  color: #00d2ff;
+  font-size: 16px;
+}
+
+/* Buttons */
+button {
+  padding: 12px 0;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background-color: #00d2ff;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 12px #00d2ff;
+}
+
+/* Logo */
+.logo { width: 100px; margin-bottom: 20px; }
+
+/* Language switch */
+.language-switch button {
+  margin: 5px;
+  padding: 6px 12px;
+  background: #1a1c1f;
+  border-radius: 6px;
+  border: none;
+  color: #00d2ff;
+  cursor: pointer;
+}
+
+.language-switch button:hover { background: #22262b; }
+
+/* Fingerprint */
+.fingerprint-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 20px auto;
+  cursor: pointer;
+}
+
+.fingerprint-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px #00d2ff);
+}
+
+.scan-line {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #00d2ff;
+  opacity: 0.7;
+  display: none;
+  animation: solo-scan 1.5s linear infinite;
+}
+
+@keyframes solo-scan {
+  0% { top: -100%; }
+  50% { top: 100%; }
+  100% { top: -100%; }
+}
+
+.solo-title, .solo-text {
+  color: #00d2ff;
+  text-shadow: 0 0 6px #00d2ff;
+}
+
+/* Dashboard Grid */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 50px 0;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  background-color: #111416;
+  padding: 30px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #00d2ff;
+  box-shadow: 0 0 10px #00d2ff, 0 6px 15px rgba(0,255,255,0.3);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px #00d2ff, 0 10px 25px rgba(0,255,255,0.4);
+}
+
+/* Page Background */
+.solo-background {
+  background: radial-gradient(circle at center, #0b0f17, #010205);
+}
