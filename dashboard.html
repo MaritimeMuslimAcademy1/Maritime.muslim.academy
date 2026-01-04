@@ -41,7 +41,6 @@ body {
   margin: 80px auto 80px;
   z-index: 1;
 }
-
 .btn {
   background: #0d1b2a;
   border: 1px solid #007bff44;
@@ -53,7 +52,10 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
-.btn:hover { background: #007bff22; box-shadow: 0 0 15px #007bff66; }
+.btn:hover {
+  background: #007bff22;
+  box-shadow: 0 0 15px #007bff66;
+}
 
 /* Bottom Bar */
 .bottom-bar {
@@ -120,45 +122,71 @@ body {
   <h2>Leaderboard</h2>
   <p>Content for Leaderboard here.</p>
 </div>
+
 <div id="events" class="category">
   <div class="backBtn" onclick="backToDashboard()">← Back</div>
   <h2>Events & Calendar</h2>
   <p>Content for Events & Calendar here.</p>
 </div>
+
 <div id="studentRole" class="category">
   <div class="backBtn" onclick="backToDashboard()">← Back</div>
   <h2>Student Role</h2>
   <p>Content for Student Role here.</p>
 </div>
+
 <div id="media" class="category">
   <div class="backBtn" onclick="backToDashboard()">← Back</div>
   <h2>Media</h2>
   <p>Content for Media here.</p>
 </div>
+
 <div id="studentChat" class="category">
   <div class="backBtn" onclick="backToDashboard()">← Back</div>
   <h2>Student Chat</h2>
   <p>Content for Student Chat here.</p>
 </div>
+
 <div id="achievement" class="category">
   <div class="backBtn" onclick="backToDashboard()">← Back</div>
   <h2>Achievement</h2>
   <p>Content for Achievement here.</p>
 </div>
+
 <div id="statistics" class="category">
   <div class="backBtn" onclick="backToDashboard()">← Back</div>
   <h2>Statistics</h2>
   <p>Content for Statistics here.</p>
 </div>
+
 <div id="studentVoice" class="category">
   <div class="backBtn" onclick="backToDashboard()">← Back</div>
   <h2>Student Voice</h2>
   <p>Content for Student Voice here.</p>
 </div>
+
+<!-- Smart Box Full Page Chat -->
 <div id="smartBox" class="category">
   <div class="backBtn" onclick="backToDashboard()">← Back</div>
   <h2>Smart Box</h2>
-  <p>Content for Smart Box here.</p>
+
+  <div id="chatBox" style="margin: 0 auto; max-width: 400px; height: 500px; background: linear-gradient(to bottom right, #0d1b2a, #001F3F); border-radius: 24px; display: flex; flex-direction: column; overflow: hidden;">
+    <!-- Chat Header -->
+    <div id="chatHeader" style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:rgba(0,191,255,0.2);border-bottom:1px solid rgba(0,191,255,0.3);font-weight:bold;color:#fff;">
+      Smart Box
+    </div>
+    <!-- Chat Content -->
+    <div id="chatContent" style="flex:1;padding:10px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;">
+      <div class="message ai" style="align-self:flex-start;background:#007bff44;padding:8px 12px;border-radius:12px;max-width:70%;color:#fff;">
+        Salam Alaykum! How can I help you today?
+      </div>
+    </div>
+    <!-- Chat Input -->
+    <div style="display:flex;border-top:1px solid #007bff44;padding:5px;gap:5px;">
+      <input id="userInput" type="text" placeholder="Type your message..." style="flex:1;padding:8px;border-radius:12px;border:none;outline:none;">
+      <button onclick="sendMessage()" style="padding:8px 12px;border:none;border-radius:12px;background:#007bff;color:#fff;cursor:pointer;">Send</button>
+    </div>
+  </div>
 </div>
 
 <div class="bottom-bar">
@@ -176,6 +204,39 @@ function openCategory(id) {
 function backToDashboard() {
   document.getElementById('mainGrid').style.display='grid';
   document.querySelectorAll('.category').forEach(el => el.style.display='none');
+  // Reset chat when leaving
+  const chatContent = document.getElementById('chatContent');
+  if(chatContent) chatContent.innerHTML = '<div class="message ai" style="align-self:flex-start;background:#007bff44;padding:8px 12px;border-radius:12px;max-width:70%;color:#fff;">Salam Alaykum! How can I help you today?</div>';
+}
+
+function sendMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const chat = document.getElementById('chatContent');
+
+  const userMsg = document.createElement('div');
+  userMsg.style.alignSelf = 'flex-end';
+  userMsg.style.background = '#333';
+  userMsg.style.padding = '8px 12px';
+  userMsg.style.borderRadius = '12px';
+  userMsg.style.maxWidth = '70%';
+  userMsg.style.color = '#fff';
+  userMsg.textContent = text;
+  chat.appendChild(userMsg);
+
+  const aiMsg = document.createElement('div');
+  aiMsg.style.alignSelf = 'flex-start';
+  aiMsg.style.background = '#007bff44';
+  aiMsg.style.padding = '8px 12px';
+  aiMsg.style.borderRadius = '12px';
+  aiMsg.style.maxWidth = '70%';
+  aiMsg.style.color = '#fff';
+  aiMsg.textContent = `Sorry, I don’t have that information. Please ask something else.`;
+  chat.appendChild(aiMsg);
+
+  chat.scrollTop = chat.scrollHeight;
+  input.value = '';
 }
 </script>
 
