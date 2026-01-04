@@ -4,8 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smart Box</title>
+
 <style>
-body { margin:0; font-family:Arial,sans-serif; background:#000; color:#fff; display:flex; flex-direction:column; height:100vh; }
-.top-bar { display:flex; justify-content:space-between; align-items:center; background:rgba(10,15,30,0.9); padding:10px 20px; font-size:14px; }
-.top-bar .center { font-weight:bold; font-size:18px; }
-.top-bar .right button { background:#007bff22; border:1px solid #007bff44; color:#fff; padding:5px 12px; border
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Top Header */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(10,15,30,0.9);
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.top-bar .left {
+  font-size: 16px;
+}
+
+.top-bar .center {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.top-bar .right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-bar .avatar {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-bar .avatar img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.backBtn {
+  color: #fff;
+  text-decoration: none;
+  background-color: #222;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <div class="center">Smart Box</div>
+  <div class="right">
+    <a href="dashboard.html" class="backBtn">← Back</a>
+  </div>
+</div>
+
+<div style="margin: 100px 20px 20px 20px; text-align: center;">
+  <h2>Smart Box</h2>
+  <p>Content for the Smart Box goes here.</p>
+</div>
+
+</body>
+</html>
