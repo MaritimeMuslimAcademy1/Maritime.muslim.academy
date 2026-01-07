@@ -5,23 +5,127 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Voice</title>
 <style>
-body { margin:0; font-family:Arial,sans-serif; background:#000; color:#fff; display:flex; flex-direction:column; height:100vh; }
-.top-bar { display:flex; justify-content:space-between; align-items:center; background:rgba(10,15,30,0.9); padding:10px 20px; font-size:14px; }
-.top-bar .center { font-weight:bold; font-size:18px; }
-.top-bar .right button { background:#007bff22; border:1px solid #007bff44; color:#fff; padding:5px 12px; border-radius:8px; cursor:pointer; }
-.content { margin:150px 20px 80px; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10,15,30,0.9);
+  padding: 10px 20px;
+  font-size: 14px;
+}
+.top-bar .center { font-weight: bold; font-size: 18px; }
+.top-bar .right button {
+  background: #007bff22;
+  border: 1px solid #007bff44;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Content */
+.content {
+  width: 700px;
+  margin: 120px auto 80px;
+}
+
+/* Submission box */
+.submit-box {
+  background: #0d1b2a;
+  border: 1px solid #007bff44;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.submit-box input,
+.submit-box textarea {
+  width: 100%;
+  background: #000;
+  border: 1px solid #007bff44;
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.submit-box button {
+  background: #007bff22;
+  border: 1px solid #007bff44;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Submission cards */
+.submission {
+  background: #0d1b2a;
+  border: 1px solid #007bff44;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.submission h4 { margin: 0 0 5px; }
+.submission p { margin: 0; }
+.submission small { opacity: 0.6; }
+
 </style>
 </head>
 <body>
+
 <div class="top-bar">
   <div class="center">Student Voice</div>
   <div class="right"><button onclick="goBack()">← Back</button></div>
 </div>
+
 <div class="content">
-  <p>Student Voice content goes here.</p>
+  <div class="submit-box">
+    <input type="text" id="studentName" placeholder="Your name">
+    <textarea id="feedback" rows="4" placeholder="Write your suggestion or feedback..."></textarea>
+    <button onclick="submitVoice()">Submit</button>
+  </div>
+  <div id="submissions"></div>
 </div>
+
 <script>
-function goBack(){ window.location.href='dashboard.html'; }
+function goBack() {
+  window.location.href = 'dashboard.html';
+}
+
+function submitVoice() {
+  const name = document.getElementById('studentName').value;
+  const feedback = document.getElementById('feedback').value;
+  if (!name || !feedback) return;
+
+  const container = document.getElementById('submissions');
+  const card = document.createElement('div');
+  card.className = 'submission';
+  card.innerHTML = `
+    <h4>${name}</h4>
+    <p>${feedback}</p>
+    <small>Submitted just now</small>
+  `;
+  container.prepend(card);
+
+  document.getElementById('studentName').value = '';
+  document.getElementById('feedback').value = '';
+}
 </script>
+
 </body>
 </html>
