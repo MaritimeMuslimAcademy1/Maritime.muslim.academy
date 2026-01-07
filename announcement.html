@@ -4,26 +4,124 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Announcement</title>
+
 <style>
-body { margin:0; font-family:Arial,sans-serif; background:#000; color:#fff; display:flex; flex-direction:column; height:100vh; }
-.top-bar { display:flex; justify-content:space-between; align-items:center; background:rgba(10,15,30,0.9); padding:10px 20px; font-size:14px; }
-.top-bar .center { font-weight:bold; font-size:18px; }
-.top-bar .right button { background:#007bff22; border:1px solid #007bff44; color:#fff; padding:5px 12px; border-radius:8px; cursor:pointer; }
-.content { margin:150px 20px 80px; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(10,15,30,0.9);
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.top-bar .center {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.top-bar .right button {
+  background: #007bff22;
+  border: 1px solid #007bff44;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Page layout */
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 120px;
+}
+
+/* Announcement board */
+.board {
+  width: 700px;
+  background: #0d1b2a;
+  border: 1px solid #007bff44;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+/* Announcement card */
+.post {
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.post h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.post .meta {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-bottom: 10px;
+}
+
+.post p {
+  margin: 0;
+  line-height: 1.5;
+}
 </style>
 </head>
+
 <body>
+
 <div class="top-bar">
-  <div class="center">Announcement</div>
+  <div class="center">Announcements</div>
   <div class="right">
     <button onclick="goBack()">← Back</button>
   </div>
 </div>
+
 <div class="content">
-  <p>Announcement content goes here.</p>
+  <div class="board">
+
+    <div class="post">
+      <h3>School Assembly</h3>
+      <div class="meta">Posted by Admin • Sept 12</div>
+      <p>There will be a full school assembly in the main hall tomorrow at 9 AM.</p>
+    </div>
+
+    <div class="post">
+      <h3>Uniform Reminder</h3>
+      <div class="meta">Posted by Teacher • Sept 10</div>
+      <p>Please ensure full uniform is worn every Monday.</p>
+    </div>
+
+    <div class="post">
+      <h3>Upcoming Exams</h3>
+      <div class="meta">Posted by Academic Office • Sept 8</div>
+      <p>Midterm exams begin next week. Study schedules are posted in classrooms.</p>
+    </div>
+
+  </div>
 </div>
+
 <script>
-function goBack(){ window.location.href='dashboard.html'; }
+function goBack() {
+  window.location.href = 'dashboard.html'
+}
 </script>
+
 </body>
 </html>
