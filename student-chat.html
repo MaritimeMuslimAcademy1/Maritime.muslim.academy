@@ -63,7 +63,7 @@ body {
 /* Messages */
 .message {
   max-width: 70%;
-  padding: 10px;
+  padding: 8px 12px;
   border-radius: 12px;
   position: relative;
   word-wrap: break-word;
@@ -79,10 +79,17 @@ body {
   background: #222;
 }
 
+/* Username style */
+.message strong {
+  display: block;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
 /* Delete button */
 .message .delete-btn {
   position: absolute;
-  top: 2px;
+  top: 4px;
   right: 4px;
   background: #ff000044;
   border: none;
@@ -119,6 +126,30 @@ body {
   color: #fff;
   cursor: pointer;
 }
+
+/* Emoji picker */
+.emoji-picker {
+  position: absolute;
+  bottom: 50px;
+  right: 10px;
+  background: #111;
+  border: 1px solid #007bff44;
+  border-radius: 12px;
+  padding: 10px;
+  display: none;
+  max-width: 300px;
+  max-height: 150px;
+  overflow-y: auto;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 5px;
+}
+
+.emoji-picker span {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 2px;
+}
 </style>
 </head>
 <body>
@@ -132,13 +163,30 @@ body {
   <div class="screen" id="chatScreen"></div>
   <div class="input-area">
     <input type="text" id="chatInput" placeholder="Type a message...">
-    <button onclick="addEmoji('😊')">😊</button>
+    <button onclick="toggleEmoji()">😀</button>
     <button onclick="sendMessage()">Send</button>
   </div>
+  <div class="emoji-picker" id="emojiPicker"></div>
 </div>
 
 <script>
 const username = 'rayan_k'; // auto username
+const emojiList = ['😀','😂','😅','😊','😍','🤔','😎','😭','😡','👍','👎','💯','🎉','❤️'];
+
+const picker = document.getElementById('emojiPicker');
+emojiList.forEach(e => {
+  const span = document.createElement('span');
+  span.textContent = e;
+  span.onclick = () => {
+    document.getElementById('chatInput').value += e;
+    document.getElementById('chatInput').focus();
+  }
+  picker.appendChild(span);
+});
+
+function toggleEmoji() {
+  picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
+}
 
 function goBack() {
   window.location.href = 'dashboard.html';
@@ -159,7 +207,7 @@ function addMessage(user, text, isMe=false) {
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message ' + (isMe ? 'me' : 'other');
   msgDiv.innerHTML = `<strong>${user}</strong>: ${text}`;
-  
+
   if (isMe) {
     const delBtn = document.createElement('button');
     delBtn.className = 'delete-btn';
@@ -175,12 +223,6 @@ function addMessage(user, text, isMe=false) {
 function scrollToBottom() {
   const screen = document.getElementById('chatScreen');
   screen.scrollTop = screen.scrollHeight;
-}
-
-function addEmoji(e) {
-  const input = document.getElementById('chatInput');
-  input.value += e;
-  input.focus();
 }
 </script>
 
