@@ -40,46 +40,57 @@ body {
   cursor: pointer;
 }
 
-/* Page layout */
+/* Content */
 .content {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  margin-top: 120px;
+  margin: 120px auto 80px;
+  width: 700px;
 }
 
-/* Announcement board */
-.board {
-  width: 700px;
+/* Post box */
+.post-box {
   background: #0d1b2a;
   border: 1px solid #007bff44;
   border-radius: 16px;
   padding: 20px;
+  margin-bottom: 30px;
 }
 
-/* Announcement card */
-.post {
-  background: rgba(255,255,255,0.04);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 14px;
-}
-
-.post h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-}
-
-.post .meta {
-  font-size: 12px;
-  opacity: 0.6;
+.post-box input,
+.post-box textarea {
+  width: 100%;
+  background: #000;
+  border: 1px solid #007bff44;
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
   margin-bottom: 10px;
+  font-size: 14px;
 }
 
-.post p {
-  margin: 0;
-  line-height: 1.5;
+.post-box button {
+  background: #007bff22;
+  border: 1px solid #007bff44;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Announcement cards */
+.announcement {
+  background: #0d1b2a;
+  border: 1px solid #007bff44;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 12px;
+}
+
+.announcement h3 {
+  margin: 0 0 5px;
+}
+
+.announcement small {
+  opacity: 0.6;
 }
 </style>
 </head>
@@ -87,39 +98,49 @@ body {
 <body>
 
 <div class="top-bar">
-  <div class="center">Announcements</div>
+  <div class="center">Announcement</div>
   <div class="right">
     <button onclick="goBack()">← Back</button>
   </div>
 </div>
 
 <div class="content">
-  <div class="board">
 
-    <div class="post">
-      <h3>School Assembly</h3>
-      <div class="meta">Posted by Admin • Sept 12</div>
-      <p>There will be a full school assembly in the main hall tomorrow at 9 AM.</p>
-    </div>
-
-    <div class="post">
-      <h3>Uniform Reminder</h3>
-      <div class="meta">Posted by Teacher • Sept 10</div>
-      <p>Please ensure full uniform is worn every Monday.</p>
-    </div>
-
-    <div class="post">
-      <h3>Upcoming Exams</h3>
-      <div class="meta">Posted by Academic Office • Sept 8</div>
-      <p>Midterm exams begin next week. Study schedules are posted in classrooms.</p>
-    </div>
-
+  <div class="post-box">
+    <input type="text" id="title" placeholder="Announcement title">
+    <textarea id="message" rows="4" placeholder="Write announcement..."></textarea>
+    <button onclick="postAnnouncement()">Post</button>
   </div>
+
+  <div id="announcements"></div>
+
 </div>
 
 <script>
 function goBack() {
   window.location.href = 'dashboard.html'
+}
+
+function postAnnouncement() {
+  const title = document.getElementById('title').value
+  const message = document.getElementById('message').value
+
+  if (title === '' || message === '') return
+
+  const container = document.getElementById('announcements')
+
+  const card = document.createElement('div')
+  card.className = 'announcement'
+  card.innerHTML = `
+    <h3>${title}</h3>
+    <p>${message}</p>
+    <small>Posted just now</small>
+  `
+
+  container.prepend(card)
+
+  document.getElementById('title').value = ''
+  document.getElementById('message').value = ''
 }
 </script>
 
