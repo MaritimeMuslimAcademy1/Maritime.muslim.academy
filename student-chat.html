@@ -20,7 +20,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(10,15,30,0.9);
+  background: rgba(10,15,30,0.95);
   padding: 10px 20px;
   font-size: 14px;
 }
@@ -34,71 +34,82 @@ body {
   cursor: pointer;
 }
 
-/* Content */
-.content {
-  width: 700px;
-  margin: 120px auto 80px;
+/* Chat container like phone */
+.chat-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-/* Chat area */
-.chat-box {
-  background: #0d1b2a;
-  border: 1px solid #007bff44;
-  border-radius: 16px;
-  padding: 15px;
-  flex: 1;
+  justify-content: flex-end;
+  padding: 10px;
   overflow-y: auto;
-  margin-bottom: 15px;
+  gap: 8px;
 }
 
+/* Messages */
 .message {
-  background: rgba(0,123,255,0.2);
-  border: 1px solid #007bff44;
-  border-radius: 12px;
-  padding: 8px 12px;
-  margin-bottom: 8px;
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  word-wrap: break-word;
   position: relative;
 }
 
-.message h4 { margin: 0 0 4px; font-size: 14px; }
-.message p { margin: 0; font-size: 14px; }
-.message small { opacity: 0.6; font-size: 12px; }
+.message.self {
+  background: #007bff44;
+  align-self: flex-end;
+  border-top-right-radius: 0;
+}
 
-/* Delete button for teacher */
+.message.other {
+  background: #0d1b2a;
+  border: 1px solid #007bff44;
+  align-self: flex-start;
+  border-top-left-radius: 0;
+}
+
+.message small {
+  display: block;
+  font-size: 10px;
+  opacity: 0.6;
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* Delete button for teacher/admin */
 .message button {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 4px;
+  right: 6px;
+  font-size: 10px;
+  padding: 2px 6px;
   background: #007bff22;
   border: 1px solid #007bff44;
-  color: #fff;
-  padding: 2px 6px;
   border-radius: 6px;
-  font-size: 10px;
   cursor: pointer;
 }
 
-/* Input area */
-.input-box {
+/* Input bar like phone */
+.input-bar {
   display: flex;
+  padding: 10px;
   gap: 10px;
+  border-top: 1px solid #007bff44;
 }
 
-.input-box input {
+.input-bar input {
   flex: 1;
-  padding: 8px 12px;
-  border-radius: 12px;
+  padding: 10px 14px;
+  border-radius: 20px;
   border: 1px solid #007bff44;
   background: #000;
   color: #fff;
   font-size: 14px;
 }
 
-.input-box button {
-  padding: 8px 16px;
-  border-radius: 12px;
+.input-bar button {
+  padding: 10px 16px;
+  border-radius: 20px;
   border: 1px solid #007bff44;
   background: #007bff22;
   color: #fff;
@@ -113,48 +124,56 @@ body {
   <div class="right"><button onclick="goBack()">← Back</button></div>
 </div>
 
-<div class="content">
+<div class="chat-container" id="chatContainer">
+  <!-- Messages will appear here -->
+</div>
 
-  <div class="chat-box" id="chatBox"></div>
-
-  <div class="input-box">
-    <input type="text" id="userName" placeholder="Your name">
-    <input type="text" id="messageInput" placeholder="Type a message...">
-    <button onclick="sendMessage()">Send</button>
-  </div>
-
+<div class="input-bar">
+  <input type="text" id="messageInput" placeholder="Type a message...">
+  <button onclick="sendMessage()">Send</button>
 </div>
 
 <script>
+const username = 'rayan_k'; // Example logged-in username, replace dynamically from login
+const teacherUsername = 'teacher'; // Only teacher can delete messages
+
 function goBack() { window.location.href='dashboard.html'; }
 
 function sendMessage() {
-  const name = document.getElementById('userName').value.trim();
-  const message = document.getElementById('messageInput').value.trim();
-  if (!name || !message) return;
+  const msgInput = document.getElementById('messageInput');
+  const text = msgInput.value.trim();
+  if (!text) return;
 
-  const chatBox = document.getElementById('chatBox');
-  const msgCard = document.createElement('div');
-  msgCard.className = 'message';
-  const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-  msgCard.innerHTML = `
-    <h4>${name}</h4>
-    <p>${message}</p>
+  addMessage(username, text, true);
+  msgInput.value = '';
+}
+
+function addMessage(sender, text, self=false) {
+  const chat = document.getElementById('chatContainer');
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'message ' + (self ? 'self' : 'other');
+  
+  const timestamp = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  msgDiv.innerHTML = `
+    <strong>${sender}</strong><br>
+    ${text}
     <small>${timestamp}</small>
-    <button onclick="deleteMessage(this)">Delete</button>
   `;
 
-  chatBox.appendChild(msgCard);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
-  document.getElementById('messageInput').value = '';
-}
-
-function deleteMessage(btn) {
-  if (confirm('Delete this message?')) {
-    btn.parentElement.remove();
+  // Show delete button only if teacher/admin
+  if (username === teacherUsername) {
+    const delBtn = document.createElement('button');
+    delBtn.innerText = 'Delete';
+    delBtn.onclick = () => msgDiv.remove();
+    msgDiv.appendChild(delBtn);
   }
+
+  chat.appendChild(msgDiv);
+  chat.scrollTop = chat.scrollHeight;
 }
+
+// Example other student message
+setTimeout(() => addMessage('fatima_a', 'Hello everyone!'), 500);
 </script>
 
 </body>
