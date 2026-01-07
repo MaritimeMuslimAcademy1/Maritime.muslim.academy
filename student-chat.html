@@ -6,150 +6,152 @@
 <title>Student Chat</title>
 <style>
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #000;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  padding-top: 20px;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#000;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  height:100vh;
+  padding-top:20px;
 }
 
-/* Top bar */
 .top-bar {
-  width: 360px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(10,15,30,0.9);
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 20px 20px 0 0;
+  width:360px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(10,15,30,0.9);
+  padding:10px 20px;
+  font-size:14px;
+  border-radius:20px 20px 0 0;
 }
-.top-bar .center { font-weight: bold; font-size: 18px; }
+.top-bar .center { font-weight:bold; font-size:18px; }
 .top-bar .right button {
-  background: #007bff22;
-  border: 1px solid #007bff44;
-  color: #fff;
-  padding: 5px 12px;
-  border-radius: 8px;
-  cursor: pointer;
+  background:#007bff22;
+  border:1px solid #007bff44;
+  color:#fff;
+  padding:5px 12px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-/* Phone container */
 .phone {
-  width: 360px;
-  height: 600px;
-  border: 2px solid #007bff44;
-  border-radius: 40px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: #0d1b2a;
+  width:360px;
+  height:600px;
+  border:2px solid #007bff44;
+  border-radius:40px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background:#0d1b2a;
 }
 
-/* Chat screen */
 .screen {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex:1;
+  padding:10px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 
-/* Messages */
 .message {
-  max-width: 70%;
-  padding: 8px 12px;
-  border-radius: 12px;
-  position: relative;
-  word-wrap: break-word;
+  display:flex;
+  gap:8px;
+  max-width:80%;
+  padding:8px 12px;
+  border-radius:12px;
+  position:relative;
+  word-wrap:break-word;
+  align-items:flex-start;
+  cursor:pointer;
 }
 
-.message.me {
-  align-self: flex-end;
-  background: #007bff33;
+.message.me { 
+  align-self:flex-end; 
+  background:#007bff33;
+  flex-direction:row-reverse;
 }
 
-.message.other {
-  align-self: flex-start;
-  background: #222;
+.message.other { 
+  align-self:flex-start; 
+  background:#222;
 }
 
-/* Username style */
-.message strong {
-  display: block;
-  font-size: 12px;
-  opacity: 0.8;
+.avatar {
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#007bff44;
+  flex-shrink:0;
 }
 
-/* Delete button */
-.message .delete-btn {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  background: #ff000044;
-  border: none;
-  color: #fff;
-  font-size: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 1px 3px;
+.message-content { display:flex; flex-direction:column; }
+
+.username { font-size:12px; font-weight:bold; opacity:0.8; margin-bottom:2px; }
+
+.delete-btn {
+  position:absolute;
+  top:4px;
+  right:4px;
+  background:#ff000044;
+  border:none;
+  color:#fff;
+  font-size:10px;
+  border-radius:4px;
+  cursor:pointer;
+  padding:1px 3px;
 }
 
-/* Input area */
+.liked { color:#ff0000; }
+
 .input-area {
-  display: flex;
-  gap: 5px;
-  padding: 8px;
-  border-top: 1px solid #007bff44;
-  background: #0d1b2a;
+  display:flex;
+  gap:5px;
+  padding:8px;
+  border-top:1px solid #007bff44;
+  background:#0d1b2a;
 }
 
 .input-area input {
-  flex: 1;
-  padding: 8px 10px;
-  border-radius: 20px;
-  border: 1px solid #007bff44;
-  background: #000;
-  color: #fff;
+  flex:1;
+  padding:8px 10px;
+  border-radius:20px;
+  border:1px solid #007bff44;
+  background:#000;
+  color:#fff;
 }
 
 .input-area button {
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: 1px solid #007bff44;
-  background: #007bff22;
-  color: #fff;
-  cursor: pointer;
+  padding:8px 12px;
+  border-radius:12px;
+  border:1px solid #007bff44;
+  background:#007bff22;
+  color:#fff;
+  cursor:pointer;
 }
 
-/* Emoji picker */
 .emoji-picker {
-  position: absolute;
-  bottom: 50px;
-  right: 10px;
-  background: #111;
-  border: 1px solid #007bff44;
-  border-radius: 12px;
-  padding: 10px;
-  display: none;
-  max-width: 300px;
-  max-height: 150px;
-  overflow-y: auto;
-  flex-wrap: wrap;
-  display: flex;
-  gap: 5px;
+  position:absolute;
+  bottom:60px;
+  right:10px;
+  background:#111;
+  border:1px solid #007bff44;
+  border-radius:12px;
+  padding:10px;
+  max-width:300px;
+  max-height:150px;
+  overflow-y:auto;
+  flex-wrap:wrap;
+  display:flex;
+  gap:5px;
+  display:none;
 }
 
-.emoji-picker span {
-  cursor: pointer;
-  font-size: 20px;
-  padding: 2px;
-}
+.emoji-picker span { cursor:pointer; font-size:20px; padding:2px; }
+
 </style>
 </head>
 <body>
@@ -163,67 +165,68 @@ body {
   <div class="screen" id="chatScreen"></div>
   <div class="input-area">
     <input type="text" id="chatInput" placeholder="Type a message...">
-    <button onclick="toggleEmoji()">😀</button>
+    <button onclick="toggleEmoji()">😊</button>
     <button onclick="sendMessage()">Send</button>
   </div>
-  <div class="emoji-picker" id="emojiPicker"></div>
+  <div class="emoji-picker" id="emojiPicker">
+    <span>😀</span><span>😂</span><span>😍</span><span>🥳</span><span>😎</span>
+    <span>😭</span><span>😡</span><span>👍</span><span>👎</span><span>❤️</span>
+  </div>
 </div>
 
 <script>
-const username = 'rayan_k'; // auto username
-const emojiList = ['😀','😂','😅','😊','😍','🤔','😎','😭','😡','👍','👎','💯','🎉','❤️'];
+function goBack(){ window.location.href='dashboard.html'; }
 
-const picker = document.getElementById('emojiPicker');
-emojiList.forEach(e => {
-  const span = document.createElement('span');
-  span.textContent = e;
-  span.onclick = () => {
-    document.getElementById('chatInput').value += e;
-    document.getElementById('chatInput').focus();
-  }
-  picker.appendChild(span);
-});
+const chatScreen = document.getElementById('chatScreen');
+const chatInput = document.getElementById('chatInput');
+const emojiPicker = document.getElementById('emojiPicker');
 
-function toggleEmoji() {
-  picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
-}
-
-function goBack() {
-  window.location.href = 'dashboard.html';
-}
+// Example logged-in username
+const username = 'rayan_k';
 
 function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-
-  addMessage(username, msg, true);
-  input.value = '';
-  scrollToBottom();
+  const text = chatInput.value.trim();
+  if(!text) return;
+  
+  const msg = createMessage(username, text, true);
+  chatScreen.appendChild(msg);
+  chatScreen.scrollTop = chatScreen.scrollHeight;
+  chatInput.value = '';
 }
 
-function addMessage(user, text, isMe=false) {
-  const screen = document.getElementById('chatScreen');
-  const msgDiv = document.createElement('div');
-  msgDiv.className = 'message ' + (isMe ? 'me' : 'other');
-  msgDiv.innerHTML = `<strong>${user}</strong>: ${text}`;
+function createMessage(user, text, me=false) {
+  const div = document.createElement('div');
+  div.className = 'message ' + (me ? 'me' : 'other');
+  div.innerHTML = `
+    <div class="avatar"></div>
+    <div class="message-content">
+      <div class="username">${user}</div>
+      <div class="text">${text}</div>
+    </div>
+    <button class="delete-btn">x</button>
+  `;
 
-  if (isMe) {
-    const delBtn = document.createElement('button');
-    delBtn.className = 'delete-btn';
-    delBtn.textContent = 'x';
-    delBtn.onclick = () => msgDiv.remove();
-    msgDiv.appendChild(delBtn);
+  const deleteBtn = div.querySelector('.delete-btn');
+  deleteBtn.onclick = (e)=>{ e.stopPropagation(); div.remove(); };
+
+  // double click to like
+  div.ondblclick = ()=> {
+    div.classList.toggle('liked');
   }
 
-  screen.appendChild(msgDiv);
-  scrollToBottom();
+  return div;
 }
 
-function scrollToBottom() {
-  const screen = document.getElementById('chatScreen');
-  screen.scrollTop = screen.scrollHeight;
+// Emoji picker
+function toggleEmoji() {
+  emojiPicker.style.display = emojiPicker.style.display === 'flex' ? 'none' : 'flex';
 }
+emojiPicker.querySelectorAll('span').forEach(emoji=>{
+  emoji.onclick = () => {
+    chatInput.value += emoji.innerText;
+    chatInput.focus();
+  }
+});
 </script>
 
 </body>
