@@ -120,13 +120,15 @@ if(savedData.avatar) {
   document.getElementById("avatarPreview").src = savedData.avatar;
 }
 
-// Avatar preview
+// Avatar preview and live dashboard update
 document.getElementById("avatarInput").addEventListener("change", function() {
   const file = this.files[0];
   if(file) {
     const reader = new FileReader();
     reader.onload = function(e) {
       document.getElementById("avatarPreview").src = e.target.result;
+      localStorage.setItem("avatar", e.target.result);
+      updateDashboardAvatar(e.target.result);
     }
     reader.readAsDataURL(file);
   }
@@ -152,8 +154,21 @@ function saveSettings() {
   localStorage.setItem("accountData", JSON.stringify(accountData));
   localStorage.setItem("username", username);
   localStorage.setItem("password", password);
+  localStorage.setItem("avatar", avatar);
+
+  updateDashboardUsername(username);
+  updateDashboardAvatar(avatar);
 
   document.getElementById("saveMessage").textContent = "Settings saved successfully!";
+}
+
+// Functions to update dashboard directly
+function updateDashboardAvatar(src) {
+  localStorage.setItem("dashboardAvatar", src);
+}
+
+function updateDashboardUsername(name) {
+  localStorage.setItem("dashboardUsername", name);
 }
 </script>
 
