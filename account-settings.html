@@ -8,7 +8,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #000;
+  background: #000;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -19,16 +19,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(10,15,30,0.9);
   padding: 10px 20px;
-  font-size: 16px;
+  background: rgba(10,15,30,0.9);
+  font-size: 14px;
 }
 
-.top-bar .title {
-  font-weight: bold;
-  font-size: 18px;
-}
-
+.top-bar .title { font-weight: bold; font-size: 18px; }
 .top-bar .back-btn {
   background: #007bff22;
   border: 1px solid #007bff44;
@@ -39,59 +35,51 @@ body {
 }
 
 .content {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 20px;
-  background: #0d1b2a;
-  border-radius: 16px;
+  max-width: 500px;
+  margin: 40px auto;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-
-.content label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.content input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #007bff44;
-  background: #000;
-  color: #fff;
-  font-size: 14px;
+  gap: 20px;
 }
 
 .avatar-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .avatar-container img {
-  width: 64px;
-  height: 64px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #007bff44;
+  border: 2px solid #007bff44;
 }
 
-.file-input {
-  flex: 1;
-}
-
-button.save-btn {
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(to right, #0066cc, #0099ff);
+input[type="file"] {
   color: #fff;
-  font-weight: bold;
-  cursor: pointer;
+}
+
+input, button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #222;
+  color: #fff;
   font-size: 16px;
+  width: 100%;
+}
+
+button {
+  background: #007bff22;
+  border: 1px solid #007bff44;
+  cursor: pointer;
+}
+
+#saveMessage {
+  font-size: 14px;
+  color: #0f0;
 }
 </style>
 </head>
@@ -105,22 +93,16 @@ button.save-btn {
 <div class="content">
   <div class="avatar-container">
     <img id="avatarPreview" src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Avatar">
-    <input type="file" class="file-input" id="avatarInput" accept="image/*">
+    <input type="file" id="avatarInput" accept="image/*">
   </div>
 
-  <label for="firstName">First Name</label>
-  <input type="text" id="firstName" placeholder="Enter first name">
+  <input type="text" id="firstName" placeholder="First Name">
+  <input type="text" id="lastName" placeholder="Last Name">
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
 
-  <label for="lastName">Last Name</label>
-  <input type="text" id="lastName" placeholder="Enter last name">
-
-  <label for="username">Username</label>
-  <input type="text" id="username" placeholder="Enter username">
-
-  <label for="password">Password</label>
-  <input type="password" id="password" placeholder="Enter new password">
-
-  <button class="save-btn" onclick="saveSettings()">Save Changes</button>
+  <button onclick="saveSettings()">Save Settings</button>
+  <p id="saveMessage"></p>
 </div>
 
 <script>
@@ -128,23 +110,50 @@ function goBack() {
   window.location.href = "dashboard.html";
 }
 
-// Avatar preview
-const avatarInput = document.getElementById("avatarInput");
-const avatarPreview = document.getElementById("avatarPreview");
+// Load saved data
+const savedData = JSON.parse(localStorage.getItem("accountData")) || {};
+document.getElementById("firstName").value = savedData.firstName || "";
+document.getElementById("lastName").value = savedData.lastName || "";
+document.getElementById("username").value = savedData.username || localStorage.getItem("username");
+document.getElementById("password").value = savedData.password || "";
+if(savedData.avatar) {
+  document.getElementById("avatarPreview").src = savedData.avatar;
+}
 
-avatarInput.addEventListener("change", function() {
+// Avatar preview
+document.getElementById("avatarInput").addEventListener("change", function() {
   const file = this.files[0];
-  if (file) {
+  if(file) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      avatarPreview.src = e.target.result;
+      document.getElementById("avatarPreview").src = e.target.result;
     }
     reader.readAsDataURL(file);
   }
 });
 
+// Save settings with 14-day cooldown for username and password
 function saveSettings() {
-  alert("Settings saved! (Demo only)");
+  const firstName = document.getElementById("firstName").value.trim();
+  const lastName = document.getElementById("lastName").value.trim();
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const avatar = document.getElementById("avatarPreview").src;
+
+  const now = new Date().getTime();
+  const lastChange = savedData.lastChange || 0;
+
+  if(now - lastChange < 14*24*60*60*1000) {
+    document.getElementById("saveMessage").textContent = "Username and password can be changed once every 14 days.";
+    return;
+  }
+
+  const accountData = { firstName, lastName, username, password, avatar, lastChange: now };
+  localStorage.setItem("accountData", JSON.stringify(accountData));
+  localStorage.setItem("username", username);
+  localStorage.setItem("password", password);
+
+  document.getElementById("saveMessage").textContent = "Settings saved successfully!";
 }
 </script>
 
