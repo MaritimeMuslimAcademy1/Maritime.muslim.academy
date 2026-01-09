@@ -32,7 +32,6 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       align-items: flex-start;
     }
 
@@ -40,22 +39,14 @@
       width: 140px;
       height: 140px;
       border-radius: 50%;
-      background-color: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      background-image: url('https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=xEWCOdZbdpcQ7kNvwFniFMW&_nc_oc=AdliDWLaLX6UoPiqe0Kr-Nk3_QoYhjBjMEJayKO9O7J9lr_b-ViDeeyYD3XJO_LGh88&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=jzICPtKod-iJN8zirJw5Ww&oh=00_AfpmNaMYK9hVYU0QvgNYdk27_AL_K62VkaHGzxd0G2zEuQ&oe=695F7AC1');
+      background-image: url('https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg');
       background-size: cover;
       background-position: center;
     }
 
     h2 {
-      text-align: left;
       margin-bottom: 20px;
       font-size: 28px;
-      color: #ffffff;
-      width: 100%;
     }
 
     input {
@@ -73,7 +64,6 @@
     button {
       width: 100%;
       padding: 12px;
-      margin-top: 10px;
       border-radius: 999px;
       border: none;
       background: linear-gradient(to right, #0066cc, #0099ff);
@@ -81,76 +71,70 @@
       font-weight: bold;
       cursor: pointer;
       font-size: 16px;
-      transition: 0.2s all;
-    }
-
-    button:hover {
-      box-shadow: 0 0 15px #00d2ff;
     }
 
     #loginMessage {
       margin-top: 15px;
       font-size: 16px;
-      text-align: left;
-      width: 100%;
     }
   </style>
 </head>
 <body>
-  <div class="center-card">
-    <div class="form-container">
-      <h2>Login</h2>
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="password" placeholder="Password">
-      <button id="loginButton">Enter</button>
-      <p id="loginMessage"></p>
-    </div>
-    <div class="logo"></div>
+
+<div class="center-card">
+  <div class="form-container">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginButton">Enter</button>
+    <p id="loginMessage"></p>
   </div>
+  <div class="logo"></div>
+</div>
 
-  <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/900/900.wav" preload="auto"></audio>
+<script>
+const users = [
+  { username: "rayan", password: "Rayan0612", role: "admin" },
 
-  <script>
-    const correctUsername = "rrayankhalid";
-    const correctPassword = "Mma2026!";
-    const loginButton = document.getElementById("loginButton");
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
-    const loginMessage = document.getElementById("loginMessage");
-    const clickSound = document.getElementById("clickSound");
-    const typeSoundSrc = "https://assets.mixkit.co/active_storage/sfx/2542/2542.wav";
+  { username: "eman101", password: "Mma@2026!", role: "teacher" },
+  { username: "heather102", password: "Mma@2026!", role: "teacher" },
+  { username: "khader103", password: "Mma@2026!", role: "teacher" },
+  { username: "bilal104", password: "Mma@2026!", role: "teacher" },
+  { username: "lilian105", password: "Mma@2026!", role: "teacher" },
+  { username: "anas106", password: "Mma@2026!", role: "teacher" },
+  { username: "mustafa107", password: "Mma@2026!", role: "teacher" },
+  { username: "sondos108", password: "Mma@2026!", role: "teacher" },
 
-    // Typing sound
-    usernameInput.addEventListener("keydown", () => {
-      const sound = new Audio(typeSoundSrc);
-      sound.volume = 0.5;
-      sound.play();
-    });
-    passwordInput.addEventListener("keydown", () => {
-      const sound = new Audio(typeSoundSrc);
-      sound.volume = 0.5;
-      sound.play();
-    });
+  { username: "yousef201", password: "Mma@2026!", role: "student" },
+  { username: "hala202", password: "Mma@2026!", role: "student" },
+  { username: "nada203", password: "Mma@2026!", role: "student" },
 
-    // Login button logic
-    loginButton.addEventListener("click", () => {
-      clickSound.currentTime = 0;
-      clickSound.play();
+  { username: "guest", password: "Guest2026", role: "guest" }
+];
 
-      const username = usernameInput.value;
-      const password = passwordInput.value;
+document.getElementById("loginButton").addEventListener("click", () => {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  const msg = document.getElementById("loginMessage");
 
-      if(username === correctUsername && password === correctPassword){
-        loginMessage.style.color = "#0f0";
-        loginMessage.textContent = "Login Success!";
-        setTimeout(() => {
-          window.location.href = "dashboard.html"; // direct to dashboard
-        }, 1000);
-      } else {
-        loginMessage.style.color = "#f00";
-        loginMessage.textContent = "Wrong Username or Password!";
-      }
-    });
-  </script>
+  const user = users.find(u => u.username === username && u.password === password);
+
+  if (user) {
+    localStorage.setItem("username", user.username);
+    localStorage.setItem("role", user.role);
+
+    msg.style.color = "#0f0";
+    msg.textContent = "Login Success";
+
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 800);
+  } else {
+    msg.style.color = "#f00";
+    msg.textContent = "Wrong Username or Password";
+  }
+});
+</script>
+
 </body>
 </html>
