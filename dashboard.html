@@ -17,7 +17,6 @@ body {
   overflow: hidden;
 }
 
-/* Top Header */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -31,30 +30,18 @@ body {
 .top-bar .center { font-weight: bold; font-size: 18px; }
 .top-bar .right { display: flex; align-items: center; gap: 10px; }
 
-.top-bar .avatar {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .top-bar .avatar img {
   width: 32px;
   height: 32px;
-  object-fit: cover;
   border-radius: 50%;
 }
 
-/* Dashboard Grid */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   max-width: 1000px;
   margin: 150px auto 80px;
-  position: relative;
-  z-index: 1;
 }
 
 .btn {
@@ -66,31 +53,31 @@ body {
   font-weight: bold;
   font-size: 20px;
   cursor: pointer;
-  transition: 0.3s;
   text-decoration: none;
   color: #fff;
 }
 
-.btn:hover {
-  background: #007bff22;
-  box-shadow: 0 0 15px #007bff66;
+.btn.hidden {
+  display: none;
 }
 
-/* Bottom Bar */
 .bottom-bar {
   position: fixed;
   bottom: 0;
   width: 100%;
   background-color: rgba(10,15,30,0.9);
-  color: #fff;
   display: flex;
-  align-items: center;
   gap: 10px;
   padding: 10px 20px;
   font-size: 14px;
 }
 
-.pill { background-color: grey; border-radius: 20px; padding: 2px 10px; font-weight: bold; }
+.pill {
+  background-color: grey;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-weight: bold;
+}
 </style>
 </head>
 
@@ -100,34 +87,70 @@ body {
   <div class="left">🏠 Home</div>
   <div class="center">Maritime Muslim Academy</div>
   <div class="right">
-    rrayankhalid
+    <span id="userDisplay"></span>
     <div class="avatar">
-      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=ltyvxYBJiKcQ7kNvwFcizOH&_nc_oc=Admy9CyroxXhQGSS7mz8dbEHbFxaeJxsGiAQ9SNjdNCDs_ZIOfkwrp8OZls7_6i64x8&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=Y8aRpr72HMa7VkNH7DnVXQ&oh=00_AfrxWp2mpwzt_sJqHjKYO4YBCtkeReCwGnHmtyjMPGSoRA&oe=69609401" alt="Logo">
+      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Avatar">
     </div>
   </div>
 </div>
 
 <div class="dashboard-grid">
-  <!-- Row 1 -->
   <a href="leaderboard.html" class="btn">Leaderboard</a>
-  <a href="announcement.html" class="btn">Announcement</a>
+
+  <a href="announcement.html" class="btn" id="announcementBtn">Announcement</a>
+
   <a href="event-calendar.html" class="btn">Event & Calendar</a>
-  
-  <!-- Row 2 -->
-  <a href="student-role.html" class="btn">Student Role</a>
-  <a href="student-voice.html" class="btn">Student Voice</a>
+
+  <a href="student-role.html" class="btn" id="studentRoleBtn">Student Role</a>
+
+  <a href="student-voice.html" class="btn" id="studentVoiceBtn">Student Voice</a>
+
   <a href="achievements.html" class="btn">Achievements</a>
-  
-  <!-- Row 3 -->
+
   <a href="media.html" class="btn">Media</a>
+
   <a href="student-chat.html" class="btn">Student Chat</a>
+
   <a href="smart-box.html" class="btn">Smart Box</a>
 </div>
 
 <div class="bottom-bar">
   <div class="pill">MMA</div>
-  <div>Working on it :)</div>
+  <div>Working on it</div>
 </div>
+
+<script>
+const username = localStorage.getItem("username");
+const role = localStorage.getItem("role");
+
+document.getElementById("userDisplay").textContent = username || "Guest";
+
+const announcementBtn = document.getElementById("announcementBtn");
+const studentRoleBtn = document.getElementById("studentRoleBtn");
+const studentVoiceBtn = document.getElementById("studentVoiceBtn");
+
+const studentEditors = ["hala202", "nada203"];
+
+if (role === "admin") {
+  // full access
+} 
+else if (role === "teacher") {
+  studentRoleBtn.classList.add("hidden");
+  studentVoiceBtn.classList.add("hidden");
+}
+else if (role === "student") {
+  if (!studentEditors.includes(username)) {
+    announcementBtn.classList.add("hidden");
+    studentRoleBtn.classList.add("hidden");
+    studentVoiceBtn.classList.add("hidden");
+  }
+}
+else {
+  announcementBtn.classList.add("hidden");
+  studentRoleBtn.classList.add("hidden");
+  studentVoiceBtn.classList.add("hidden");
+}
+</script>
 
 </body>
 </html>
