@@ -28,12 +28,13 @@ body {
 
 .top-bar .left { font-size: 16px; }
 .top-bar .center { font-weight: bold; font-size: 18px; }
-.top-bar .right { display: flex; align-items: center; gap: 10px; }
+.top-bar .right { display: flex; align-items: center; gap: 10px; position: relative; }
 
 .top-bar .avatar img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .dashboard-grid {
@@ -78,6 +79,29 @@ body {
   padding: 2px 10px;
   font-weight: bold;
 }
+
+/* Dropdown */
+#accountDropdown {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: #0d1b2a;
+  border: 1px solid #007bff44;
+  border-radius: 8px;
+  min-width: 150px;
+  z-index: 10;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.dropdown-item:hover {
+  background: #007bff22;
+}
 </style>
 </head>
 
@@ -88,29 +112,25 @@ body {
   <div class="center">Maritime Muslim Academy</div>
   <div class="right">
     <span id="userDisplay"></span>
-    <div class="avatar">
+    <div class="avatar" id="avatar">
       <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Avatar">
+    </div>
+    <div id="accountDropdown">
+      <div class="dropdown-item" onclick="openAccountSettings()">Account Settings</div>
+      <div class="dropdown-item" onclick="logout()">Logout</div>
     </div>
   </div>
 </div>
 
 <div class="dashboard-grid">
   <a href="leaderboard.html" class="btn">Leaderboard</a>
-
   <a href="announcement.html" class="btn" id="announcementBtn">Announcement</a>
-
   <a href="event-calendar.html" class="btn">Event & Calendar</a>
-
   <a href="student-role.html" class="btn" id="studentRoleBtn">Student Role</a>
-
   <a href="student-voice.html" class="btn" id="studentVoiceBtn">Student Voice</a>
-
   <a href="achievements.html" class="btn">Achievements</a>
-
   <a href="media.html" class="btn">Media</a>
-
   <a href="student-chat.html" class="btn">Student Chat</a>
-
   <a href="smart-box.html" class="btn">Smart Box</a>
 </div>
 
@@ -131,6 +151,7 @@ const studentVoiceBtn = document.getElementById("studentVoiceBtn");
 
 const studentEditors = ["hala202", "nada203"];
 
+// Role-based access
 if (role === "admin") {
   // full access
 } 
@@ -149,6 +170,31 @@ else {
   announcementBtn.classList.add("hidden");
   studentRoleBtn.classList.add("hidden");
   studentVoiceBtn.classList.add("hidden");
+}
+
+// Avatar dropdown
+const avatar = document.getElementById('avatar');
+const accountDropdown = document.getElementById('accountDropdown');
+
+avatar.addEventListener('click', () => {
+  accountDropdown.style.display = accountDropdown.style.display === 'none' ? 'block' : 'none';
+});
+
+document.addEventListener('click', (e) => {
+  if (!avatar.contains(e.target) && !accountDropdown.contains(e.target)) {
+    accountDropdown.style.display = 'none';
+  }
+});
+
+// Dropdown actions
+function openAccountSettings() {
+  window.location.href = 'account-settings.html';
+}
+
+function logout() {
+  localStorage.removeItem('username');
+  localStorage.removeItem('role');
+  window.location.href = 'login.html';
 }
 </script>
 
