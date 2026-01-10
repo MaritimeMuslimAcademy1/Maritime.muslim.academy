@@ -1,97 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <style>
-    body {
-      margin: 0;
-      background: linear-gradient(to bottom right, #0a0a0a, #111c2a);
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<style>
+body {
+  margin: 0;
+  background: linear-gradient(to bottom right, #0a0a0a, #111c2a);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
 
-    .center-card {
-      background-color: #1a1a1a;
-      padding: 40px;
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-      display: flex;
-      gap: 40px;
-      width: 90%;
-      max-width: 500px;
-    }
+.center-card {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  display: flex;
+  gap: 40px;
+  width: 90%;
+  max-width: 500px;
+}
 
-    .form-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
-    .logo {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background-image: url('https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg');
-      background-size: cover;
-      background-position: center;
-    }
+.logo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background-image: url('https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg');
+  background-size: cover;
+  background-position: center;
+}
 
-    h2 {
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
+h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0 20px;
-      border-radius: 8px;
-      border: none;
-      background-color: #222;
-      color: #fff;
-      font-size: 16px;
-      text-align: center;
-    }
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #222;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+}
 
-    .password-wrap {
-      position: relative;
-      width: 100%;
-    }
+.password-wrap {
+  position: relative;
+  width: 100%;
+}
 
-    .eye-btn {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      background: #333;
-      padding: 6px;
-      border-radius: 50%;
-    }
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background: #333;
+  padding: 6px;
+  border-radius: 50%;
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(to right, #0066cc, #0099ff);
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 16px;
-    }
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(to right, #0066cc, #0099ff);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+}
 
-    #loginMessage {
-      margin-top: 15px;
-      font-size: 16px;
-    }
-  </style>
+#loginMessage {
+  margin-top: 15px;
+  font-size: 16px;
+}
+</style>
 </head>
 <body>
 
@@ -119,9 +119,8 @@
 </div>
 
 <script>
-const users = [
-  { username: "rayan", password: "Rayan0612", role: "admin" },
-
+const defaultUsers = [
+  { username: "rayan", password: "Rayan0612", role: "admin", displayName: "Rayan Khalid" },
   { username: "eman101", password: "Mma@2026!", role: "teacher" },
   { username: "heather102", password: "Mma@2026!", role: "teacher" },
   { username: "khader103", password: "Mma@2026!", role: "teacher" },
@@ -130,37 +129,46 @@ const users = [
   { username: "anas106", password: "Mma@2026!", role: "teacher" },
   { username: "mustafa107", password: "Mma@2026!", role: "teacher" },
   { username: "sondos108", password: "Mma@2026!", role: "teacher" },
-
   { username: "yousef201", password: "Mma@2026!", role: "student" },
   { username: "hala202", password: "Mma@2026!", role: "student" },
   { username: "nada203", password: "Mma@2026!", role: "student" },
-
   { username: "guest", password: "Guest2026", role: "guest" }
 ];
 
 const passwordInput = document.getElementById("password");
 const togglePassword = document.getElementById("togglePassword");
-
 togglePassword.addEventListener("click", () => {
-  passwordInput.type =
-    passwordInput.type === "password" ? "text" : "password";
+  passwordInput.type = passwordInput.type === "password" ? "text" : "password";
 });
 
 document.getElementById("loginButton").addEventListener("click", () => {
-  const username = document.getElementById("username").value;
-  const password = passwordInput.value;
+  const usernameInput = document.getElementById("username").value;
+  const passwordInputValue = document.getElementById("password").value;
   const msg = document.getElementById("loginMessage");
 
-  const user = users.find(u => u.username === username && u.password === password);
-
-  if (user) {
-    localStorage.setItem("username", user.username);
-    localStorage.setItem("role", user.role);
+  // Check accountData first
+  const savedData = JSON.parse(localStorage.getItem("accountData")) || {};
+  if (savedData.username === usernameInput && savedData.password === passwordInputValue) {
+    localStorage.setItem("username", savedData.username);
+    localStorage.setItem("role", savedData.role || "admin");
+    localStorage.setItem("dashboardUsername", savedData.username);
+    localStorage.setItem("dashboardAvatar", savedData.avatar || "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg");
     msg.style.color = "#0f0";
     msg.textContent = "Login Success";
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 800);
+    setTimeout(() => window.location.href = "dashboard.html", 800);
+    return;
+  }
+
+  // Otherwise check default users
+  const user = defaultUsers.find(u => u.username === usernameInput && u.password === passwordInputValue);
+  if(user) {
+    localStorage.setItem("username", user.username);
+    localStorage.setItem("role", user.role);
+    localStorage.setItem("dashboardUsername", user.displayName || user.username);
+    localStorage.setItem("dashboardAvatar", "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg");
+    msg.style.color = "#0f0";
+    msg.textContent = "Login Success";
+    setTimeout(() => window.location.href = "dashboard.html", 800);
   } else {
     msg.style.color = "#f00";
     msg.textContent = "Wrong Username or Password";
