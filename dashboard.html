@@ -113,7 +113,7 @@ body {
   <div class="right">
     <span id="userDisplay"></span>
     <div class="avatar" id="avatar">
-      <img src="https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" alt="Avatar">
+      <img src="" alt="Avatar">
     </div>
     <div id="accountDropdown">
       <div class="dropdown-item" onclick="openAccountSettings()">Account Settings</div>
@@ -140,11 +140,11 @@ body {
 </div>
 
 <script>
-// Master user list with default avatars
+// Master user list with default avatars and display names
 const users = [
-  { username: "rayan", role: "admin", avatar: "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" },
-  { username: "hala202", role: "student", avatar: "https://via.placeholder.com/32" },
-  { username: "nada203", role: "student", avatar: "https://via.placeholder.com/32" }
+  { username: "rayan", role: "admin", avatar: "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg", displayName: "Rayan Khalid" },
+  { username: "hala202", role: "student", avatar: "https://via.placeholder.com/32", displayName: "Hala" },
+  { username: "nada203", role: "student", avatar: "https://via.placeholder.com/32", displayName: "Nada" }
 ];
 
 // Load dashboard username & avatar
@@ -153,10 +153,11 @@ const dashboardAvatar = localStorage.getItem("dashboardAvatar");
 
 // Find user info
 const user = users.find(u => u.username === dashboardUsername);
+const displayName = (user && user.displayName) || dashboardUsername || "Guest";
 const avatarImg = dashboardAvatar || (user ? user.avatar : "https://via.placeholder.com/32");
 
-// Set display
-document.getElementById("userDisplay").textContent = dashboardUsername || "Guest";
+// Set top-bar display
+document.getElementById("userDisplay").textContent = displayName;
 document.querySelector(".top-bar .avatar img").src = avatarImg;
 
 // Role-based access
@@ -208,7 +209,7 @@ function logout() {
   localStorage.removeItem('username');
   localStorage.removeItem('dashboardUsername');
   localStorage.removeItem('role');
-  // Keep dashboardAvatar so avatar persists
+  // Keep dashboardAvatar to persist avatar
   window.location.href = 'login.html';
 }
 </script>
