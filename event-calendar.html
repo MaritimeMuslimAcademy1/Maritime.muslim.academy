@@ -5,110 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Event & Calendar</title>
 <style>
-body {
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#000;
-  color:#fff;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-.top-bar {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background: rgba(10,15,30,0.9);
-  padding:10px 20px;
-  font-size:14px;
-}
-.top-bar .center { font-weight:bold; font-size:18px; }
-.top-bar .right button {
-  background:#007bff22;
-  border:1px solid #007bff44;
-  color:#fff;
-  padding:6px 14px;
-  border-radius:8px;
-  cursor:pointer;
-}
-.content { margin:120px auto 60px; width:900px; }
-.calendar {
-  background:#0d1b2a;
-  border:1px solid #007bff44;
-  border-radius:16px;
-  padding:20px;
-}
-.calendar-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-.calendar-header button {
-  background:#007bff22;
-  border:1px solid #007bff44;
-  color:#fff;
-  padding:6px 12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-.calendar-header .month { font-size:18px; font-weight:bold; }
-.weekdays {
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  text-align:center;
-  opacity:0.7;
-  margin-bottom:10px;
-}
-.days {
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:10px;
-}
-.day {
-  min-height:90px;
-  background: rgba(255,255,255,0.03);
-  border-radius:10px;
-  padding:5px;
-  cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-}
-.day.today { border:1px solid #007bff; }
-.day .date { font-size:13px; opacity:0.8; margin-bottom:4px; }
-.event {
-  background: rgba(0,123,255,0.2);
-  border-radius:6px;
-  padding:2px 4px;
-  font-size:12px;
-  margin:2px 0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:2px;
-  width:90%;
-  text-align:center;
-}
-.event-buttons {
-  position:absolute;
-  top:4px;
-  right:4px;
-  display:flex;
-  gap:2px;
-}
-.event-buttons img {
-  width:14px;
-  height:14px;
-  cursor:pointer;
-}
-.empty-state {
-  text-align:center;
-  opacity:0.6;
-  margin-top:30px;
-}
+body {margin:0;font-family:Arial,sans-serif;background:#000;color:#fff;display:flex;flex-direction:column;height:100vh;}
+.top-bar {display:flex;justify-content:space-between;align-items:center;background:rgba(10,15,30,0.9);padding:10px 20px;font-size:14px;}
+.top-bar .center {font-weight:bold;font-size:18px;}
+.top-bar .right button {background:#007bff22;border:1px solid #007bff44;color:#fff;padding:6px 14px;border-radius:8px;cursor:pointer;}
+.content {margin:120px auto 60px;width:900px;}
+.calendar {background:#0d1b2a;border:1px solid #007bff44;border-radius:16px;padding:20px;}
+.calendar-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.calendar-header button {background:#007bff22;border:1px solid #007bff44;color:#fff;padding:6px 12px;border-radius:8px;cursor:pointer;}
+.calendar-header .month {font-size:18px;font-weight:bold;}
+.weekdays {display:grid;grid-template-columns:repeat(7,1fr);text-align:center;opacity:0.7;margin-bottom:10px;}
+.days {display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
+.day {height:100px;background:rgba(255,255,255,0.03);border-radius:10px;padding:4px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;}
+.day:hover {background:rgba(0,123,255,0.15);}
+.day.today {border:1px solid #007bff;}
+.day .date {font-size:13px;opacity:0.8;text-align:right;}
+.event {background:#007bff44;padding:2px 4px;margin:2px 0;border-radius:6px;font-size:12px;display:flex;justify-content:space-between;align-items:center;}
+.event span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.event .actions {display:flex;gap:4px;}
+.event .actions button {background:transparent;border:none;color:#fff;cursor:pointer;font-size:12px;padding:0;}
+.empty-state {text-align:center;opacity:0.6;margin-top:30px;}
 </style>
 </head>
 <body>
@@ -134,101 +50,84 @@ body {
 </div>
 
 <script>
-const role = localStorage.getItem("role") || "guest";
-const isAdmin = role === "admin";
-let currentDate = new Date();
-let events = JSON.parse(localStorage.getItem("events") || "{}");
+function goBack(){window.location.href="dashboard.html";}
 
-function goBack(){ window.location.href='dashboard.html'; }
-function saveEvents(){ localStorage.setItem("events", JSON.stringify(events)); }
+const role = localStorage.getItem("role") || "guest";
+const username = localStorage.getItem("username") || "Staff";
+
+let currentDate = new Date();
+let events = JSON.parse(localStorage.getItem("calendarEvents") || "{}");
+
+function saveEvents(){localStorage.setItem("calendarEvents", JSON.stringify(events));}
 
 function renderCalendar(){
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  document.getElementById("monthLabel").textContent = monthNames[month]+" "+year;
+  const monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById("monthLabel").textContent=monthNames[month]+" "+year;
 
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month+1,0).getDate();
-  const calendarDays = document.getElementById("calendarDays");
+  const firstDay = new Date(year,month,1).getDay();
+  const daysInMonth = new Date(year,month+1,0).getDate();
+  const calendarDays=document.getElementById("calendarDays");
   calendarDays.innerHTML="";
-  let hasEvents=false;
 
   for(let i=0;i<firstDay;i++){
-    const empty=document.createElement("div");
-    empty.className="day empty";
-    calendarDays.appendChild(empty);
+    const empty=document.createElement("div"); empty.className="day empty"; calendarDays.appendChild(empty);
   }
 
-  for(let d=1; d<=daysInMonth; d++){
-    const day=document.createElement("div");
-    day.className="day";
+  let hasEvents=false;
+
+  for(let d=1;d<=daysInMonth;d++){
+    const day=document.createElement("div"); day.className="day";
     const today=new Date();
-    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()){
-      day.classList.add("today");
-    }
+    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()){day.classList.add("today");}
+
     const dateKey=`${year}-${month+1}-${d}`;
-    if(!events[dateKey]) events[dateKey]=[];
     day.innerHTML=`<div class="date">${d}</div>`;
 
-    events[dateKey].forEach((ev,i)=>{
-      const evDiv=document.createElement("div");
-      evDiv.className="event";
-      evDiv.textContent = ev;
+    if(events[dateKey]){
+      hasEvents=true;
+      events[dateKey].forEach((ev,i)=>{
+        const evDiv=document.createElement("div");
+        evDiv.className="event";
+        evDiv.innerHTML=`<span>${ev.title}</span>
+        <div class="actions">
+          ${role==="admin"?'<button onclick="editEvent(event, \''+dateKey+'\','+i+')">✎</button><button onclick="deleteEvent(event, \''+dateKey+'\','+i+')">🗑</button>':""}
+        </div>`;
+        day.appendChild(evDiv);
+      });
+    }
 
-      if(isAdmin){
-        const btnContainer=document.createElement("div");
-        btnContainer.className="event-buttons";
+    if(role==="admin"){
+      day.onclick=(e)=>{if(e.target.closest(".actions")) return; addEvent(dateKey);}
+    }
 
-        const editBtn=document.createElement("img");
-        editBtn.src="https://cdn-icons-png.flaticon.com/512/84/84380.png"; // edit icon
-        editBtn.onclick=()=>editEvent(dateKey,i);
-
-        const delBtn=document.createElement("img");
-        delBtn.src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png"; // delete icon
-        delBtn.onclick=()=>deleteEvent(dateKey,i);
-
-        btnContainer.appendChild(editBtn);
-        btnContainer.appendChild(delBtn);
-        day.appendChild(btnContainer);
-      }
-
-      day.appendChild(evDiv);
-    });
-
-    if(events[dateKey].length>0) hasEvents=true;
-    if(isAdmin) day.onclick=()=>addEvent(dateKey);
     calendarDays.appendChild(day);
   }
-  document.getElementById("emptyState").style.display = hasEvents?"none":"block";
+
+  document.getElementById("emptyState").style.display=hasEvents?"none":"block";
 }
 
-function changeMonth(step){ currentDate.setMonth(currentDate.getMonth()+step); renderCalendar(); }
+function changeMonth(step){currentDate.setMonth(currentDate.getMonth()+step);renderCalendar();}
 
 function addEvent(dateKey){
-  const ev=prompt("Enter event:");
-  if(ev){
-    events[dateKey].push(ev);
-    saveEvents();
-    renderCalendar();
-  }
+  const title=prompt("Event title:");
+  if(!title) return;
+  if(!events[dateKey]) events[dateKey]=[];
+  events[dateKey].push({title,creator:username,date:new Date().toLocaleString()});
+  saveEvents();
+  renderCalendar();
 }
 
-function editEvent(dateKey,index){
-  const ev=prompt("Edit event:", events[dateKey][index]);
-  if(ev){
-    events[dateKey][index]=ev;
-    saveEvents();
-    renderCalendar();
-  }
+function editEvent(e,dateKey,index){
+  e.stopPropagation();
+  const newTitle=prompt("Edit event title:",events[dateKey][index].title);
+  if(newTitle){events[dateKey][index].title=newTitle;saveEvents();renderCalendar();}
 }
 
-function deleteEvent(dateKey,index){
-  if(confirm("Delete this event?")){
-    events[dateKey].splice(index,1);
-    saveEvents();
-    renderCalendar();
-  }
+function deleteEvent(e,dateKey,index){
+  e.stopPropagation();
+  if(confirm("Delete this event?")){events[dateKey].splice(index,1);if(events[dateKey].length===0) delete events[dateKey]; saveEvents(); renderCalendar();}
 }
 
 renderCalendar();
