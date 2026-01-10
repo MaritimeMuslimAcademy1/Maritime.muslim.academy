@@ -3,225 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Chat</title>
+<title>iPhone 12 Simulation</title>
 <style>
 body {
   margin:0;
   font-family:Arial,sans-serif;
-  background:#000;
-  color:#fff;
+  background:#111;
   display:flex;
-  flex-direction:column;
+  justify-content:center;
   align-items:center;
   height:100vh;
-  padding-top:20px;
 }
-
-.top-bar {
-  width:360px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:rgba(10,15,30,0.9);
-  padding:10px 20px;
-  font-size:14px;
-  border-radius:20px 20px 0 0;
-}
-.top-bar .center { font-weight:bold; font-size:18px; }
-.top-bar .right button {
-  background:#007bff22;
-  border:1px solid #007bff44;
-  color:#fff;
-  padding:5px 12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.phone {
-  width:360px;
-  height:600px;
-  border:2px solid #007bff44;
-  border-radius:40px;
-  display:flex;
-  flex-direction:column-reverse;
+.phone-frame {
+  width:390px;
+  height:844px;
+  border:16px solid #000;
+  border-radius:50px;
+  background:#000;
   overflow:hidden;
-  background:#0d1b2a;
+  position:relative;
+  box-shadow:0 0 40px rgba(0,0,0,0.7);
+}
+.screen {
+  width:100%;
+  height:100%;
+  position:relative;
+  background:url('https://i.imgur.com/oCkEbrA.jpg') no-repeat center/cover;
 }
 
-.screen {
-  flex:1;
-  padding:10px;
-  overflow-y:auto;
+/* First Launch Screens */
+.screen > .overlay {
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
   display:flex;
   flex-direction:column;
-  gap:8px;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+  text-align:center;
+  font-size:20px;
+  transition:0.3s;
 }
 
-.message {
-  display:flex;
-  gap:8px;
-  max-width:80%;
-  padding:8px 12px;
-  border-radius:12px;
-  position:relative;
-  word-wrap:break-word;
-  align-items:flex-start;
-}
-
-.message.me { 
-  align-self:flex-end; 
-  background:#007bff33;
-  flex-direction:row-reverse;
-}
-
-.message.other { 
-  align-self:flex-start; 
-  background:#222;
-}
-
-.avatar {
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  flex-shrink:0;
-  background-size:cover;
-  background-position:center;
-}
-
-.message-content { display:flex; flex-direction:column; }
-
-.username { font-size:12px; font-weight:bold; opacity:0.8; margin-bottom:2px; }
-
-.delete-btn {
-  position:absolute;
-  top:4px;
-  right:4px;
-  background:#ff000044;
+button {
+  margin-top:20px;
+  padding:10px 20px;
   border:none;
-  color:#fff;
-  font-size:10px;
-  border-radius:4px;
-  cursor:pointer;
-  padding:1px 3px;
-}
-
-.liked { color:#ff0000; }
-
-.input-area {
-  display:flex;
-  gap:5px;
-  padding:8px;
-  border-top:1px solid #007bff44;
-  background:#0d1b2a;
-}
-
-.input-area input {
-  flex:1;
-  padding:8px 10px;
-  border-radius:20px;
-  border:1px solid #007bff44;
-  background:#000;
-  color:#fff;
-}
-
-.input-area button {
-  padding:8px 12px;
   border-radius:12px;
-  border:1px solid #007bff44;
-  background:#007bff22;
+  background:#007bff;
   color:#fff;
+  font-size:16px;
   cursor:pointer;
 }
 
-.emoji-picker {
-  position:absolute;
-  bottom:60px;
-  right:10px;
-  background:#111;
-  border:1px solid #007bff44;
-  border-radius:12px;
-  padding:10px;
-  max-width:300px;
-  max-height:150px;
-  overflow-y:auto;
-  flex-wrap:wrap;
-  display:flex;
-  gap:5px;
+/* Home Screen Apps */
+.home-screen {
   display:none;
+  flex-wrap:wrap;
+  padding:40px 20px;
+  gap:20px;
 }
-
-.emoji-picker span { cursor:pointer; font-size:20px; padding:2px; }
+.app {
+  width:60px;
+  height:60px;
+  background:#222;
+  border-radius:12px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+  font-size:12px;
+  text-align:center;
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
 
-<div class="top-bar">
-  <div class="center">Student Chat</div>
-  <div class="right"><button onclick="goBack()">← Back</button></div>
-</div>
+<div class="phone-frame">
+  <div class="screen">
+    <div class="overlay" id="welcomeScreen">
+      <div>Welcome</div>
+      <div>Select Language</div>
+      <button onclick="nextStep('faceID')">Next</button>
+    </div>
 
-<div class="phone">
-  <div class="screen" id="chatScreen"></div>
-  <div class="input-area">
-    <input type="text" id="chatInput" placeholder="Type a message...">
-    <button onclick="toggleEmoji()">😊</button>
-    <button onclick="sendMessage()">Send</button>
-  </div>
-  <div class="emoji-picker" id="emojiPicker">
-    <span>😀</span><span>😂</span><span>😍</span><span>🥳</span><span>😎</span>
-    <span>😭</span><span>😡</span><span>👍</span><span>👎</span><span>❤️</span>
+    <div class="overlay" id="faceID" style="display:none;">
+      <div>Face ID Setup</div>
+      <button onclick="nextStep('passcode')">Next</button>
+    </div>
+
+    <div class="overlay" id="passcode" style="display:none;">
+      <div>Set Passcode</div>
+      <button onclick="nextStep('home')">Next</button>
+    </div>
+
+    <div class="overlay home-screen" id="homeScreen">
+      <div class="app" onclick="openApp('chat')">Student Chat</div>
+      <div class="app">Messages</div>
+      <div class="app">Camera</div>
+      <div class="app">Settings</div>
+    </div>
   </div>
 </div>
 
 <script>
-function goBack(){ window.location.href='dashboard.html'; }
-
-const chatScreen = document.getElementById('chatScreen');
-const chatInput = document.getElementById('chatInput');
-const emojiPicker = document.getElementById('emojiPicker');
-
-const username = localStorage.getItem("dashboardUsername") || "Rayan Khalid";
-const avatar = localStorage.getItem("dashboardAvatar") || "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg";
-
-let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-
-// Load existing messages
-messages.forEach(msg => chatScreen.appendChild(createMessage(msg.username, msg.text, msg.me, msg.avatar)));
-
-// Send message
-function sendMessage() {
-  const text = chatInput.value.trim();
-  if(!text) return;
-  const msg = { username, text, me:true, avatar };
-  messages.push(msg);
-  localStorage.setItem("chatMessages", JSON.stringify(messages));
-  chatScreen.appendChild(createMessage(msg.username, msg.text, msg.me, msg.avatar));
-  chatScreen.scrollTop = chatScreen.scrollHeight;
-  chatInput.value = '';
+function nextStep(step) {
+  document.querySelectorAll('.overlay').forEach(o=>o.style.display='none');
+  if(step==='home'){
+    document.getElementById('homeScreen').style.display='flex';
+    document.getElementById('homeScreen').style.flexWrap='wrap';
+  } else {
+    document.getElementById(step).style.display='flex';
+  }
 }
 
-// Create message element
-function createMessage(user, text, me=false, avatarSrc=avatar) {
-  const div = document.createElement('div');
-  div.className = 'message ' + (me ? 'me' : 'other');
-  div.innerHTML = `
-    <div class="avatar" style="background-image:url('${avatarSrc}')"></div>
-    <div class="message-content">
-      <div class="username">${user}</div>
-      <div class="text">${text}</div>
-    </div>
-    <button class="delete-btn">x</button>
-  `;
-  const deleteBtn = div.querySelector('.delete-btn');
-  deleteBtn.onclick = (e)=>{ e.stopPropagation(); div.remove(); messages = messages.filter(m=>m.text!==text || m.username!==user); localStorage.setItem("chatMessages", JSON.stringify(messages)); };
-
-  div.ondblclick = ()=> div.classList.toggle('liked');
-  return div;
+function openApp(app){
+  if(app==='chat'){
+    alert('Opening Student Chat...');
+  }
 }
-
-// Emoji picker
-function toggleEmoji() { emojiPicker.style.display = emojiPicker.style.display === 'flex' ? 'none' : 'flex'; }
-emojiPicker.querySelectorAll('span').forEach(emoji=>{ emoji.onclick = ()=>{ chatInput.value += emoji.innerText; chatInput.focus(); }; });
 </script>
 
 </body>
