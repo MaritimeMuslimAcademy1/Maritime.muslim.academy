@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smart Box</title>
-
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #000;
+  background-color: #000;
   color: #fff;
   display: flex;
   flex-direction: column;
   height: 100vh;
+  align-items: center;
 }
 
 /* Top bar */
@@ -21,125 +21,205 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(10,15,30,0.9);
+  background-color: rgba(10,15,30,0.9);
   padding: 10px 20px;
   font-size: 14px;
+  width: 100%;
 }
 
-.top-bar .center {
-  font-weight: bold;
-  font-size: 18px;
-}
+.top-bar .center { font-weight: bold; font-size: 18px; }
 
 .top-bar .right button {
   background: #007bff22;
   border: 1px solid #007bff44;
   color: #fff;
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-/* Phone */
-.phone {
+/* Phone-style container */
+.phone-container {
   width: 360px;
   max-width: 90%;
   height: 600px;
   background: #0d1b2a;
+  border-radius: 36px;
   border: 2px solid #007bff44;
-  border-radius: 30px;
-  margin: 30px auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  margin-top: 30px;
 }
 
-/* Chat screen */
-.chat {
+/* Screen area */
+.screen {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 /* Messages */
-.bot {
+.message {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* AI messages */
+.ai {
   background: #007bff22;
-  padding: 10px 14px;
-  border-radius: 14px;
-  margin-bottom: 10px;
-  max-width: 85%;
+  align-self: flex-start;
 }
 
+/* User messages */
 .user {
-  background: #000;
-  border: 1px solid #007bff44;
-  padding: 10px 14px;
-  border-radius: 14px;
-  margin-bottom: 10px;
-  margin-left: auto;
-  max-width: 85%;
+  background: #444;
+  align-self: flex-end;
 }
 
-/* Chat buttons */
-.choice {
-  background: #000;
+/* Buttons inside AI message */
+.ai button {
+  background: #007bff22;
   border: 1px solid #007bff44;
   color: #fff;
-  padding: 10px 12px;
+  padding: 6px 12px;
   border-radius: 12px;
-  margin-bottom: 8px;
   cursor: pointer;
+  font-size: 13px;
+  margin-top: 4px;
   text-align: left;
+}
+.input-area {
+  display: flex;
+  padding: 10px;
+  background: #0a111f;
+  border-top: 1px solid #007bff44;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #007bff44;
+  background: #000;
+  color: #fff;
+  outline: none;
+  font-size: 14px;
+}
+
+.input-area button {
+  margin-left: 8px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: 1px solid #007bff44;
+  background: #007bff22;
+  color: #fff;
+  cursor: pointer;
 }
 </style>
 </head>
-
 <body>
 
 <div class="top-bar">
   <div class="center">Smart Box</div>
-  <div class="right">
-    <button onclick="goBack()">← Back</button>
-  </div>
+  <div class="right"><button onclick="goBack()">← Back</button></div>
 </div>
 
-<div class="phone">
-  <div class="chat" id="chat">
-    <div class="bot">
-      Hello. What do you want to know about?
-    </div>
-
-    <button class="choice" onclick="selectMain('Leaderboard')">Leaderboard</button>
-    <button class="choice">Announcements</button>
-    <button class="choice">Events and Calendar</button>
-    <button class="choice">Student Role</button>
-    <button class="choice">Student Voice</button>
-    <button class="choice">Media</button>
-    <button class="choice">Teachers</button>
+<div class="phone-container">
+  <div class="screen" id="screen"></div>
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Type a question...">
+    <button onclick="sendMessage()">Send</button>
   </div>
 </div>
 
 <script>
-function goBack() {
-  window.location.href = "dashboard.html";
+function goBack() { window.location.href = 'dashboard.html'; }
+
+const screen = document.getElementById('screen');
+
+const mainButtons = [
+  "Leaderboard",
+  "Announcements",
+  "Events and Calendar",
+  "Student Role",
+  "Student Voice",
+  "Media",
+  "Teachers"
+];
+
+const questions = {
+  "Leaderboard": [
+    "What is the leaderboard",
+    "How points work",
+    "How rankings reset",
+    "Who are the top 3"
+  ],
+  "Teachers": [
+    "Who’s Mrs. Eman",
+    "Who’s Mrs. Heather",
+    "Who’s Mrs. Khader",
+    "Who’s Mrs. Sondos",
+    "Who’s Mr. Mustafa",
+    "Who’s Mrs. Lilian",
+    "Who’s Mr. Bilal",
+    "Who’s Sh. Anas"
+  ]
+};
+
+function addAIMessage(text, buttons=[]) {
+  const aiMsg = document.createElement('div');
+  aiMsg.className = 'message ai';
+  aiMsg.textContent = text;
+
+  buttons.forEach(btnText => {
+    const btn = document.createElement('button');
+    btn.textContent = btnText;
+    btn.onclick = () => {
+      addUserMessage(btnText);
+      handleAIResponse(btnText);
+    };
+    aiMsg.appendChild(btn);
+  });
+
+  screen.appendChild(aiMsg);
+  screen.scrollTop = screen.scrollHeight;
 }
 
-function selectMain(name) {
-  const chat = document.getElementById("chat");
+function addUserMessage(text) {
+  const userMsg = document.createElement('div');
+  userMsg.className = 'message user';
+  userMsg.textContent = text;
+  screen.appendChild(userMsg);
+  screen.scrollTop = screen.scrollHeight;
+}
 
-  chat.innerHTML = `
-    <div class="user">${name}</div>
-    <div class="bot">Choose a question.</div>
-  `;
-
-  if (name === "Leaderboard") {
-    chat.innerHTML += `
-      <button class="choice">What is the leaderboard</button>
-      <button class="choice">How points work</button>
-      <button class="choice">How rankings reset</button>
-      <button class="choice">Who are the top 3</button>
-    `;
+function handleAIResponse(userChoice) {
+  if(questions[userChoice]){
+    addAIMessage("Choose a question:", questions[userChoice]);
+  } else {
+    addAIMessage("Sorry, I don't have info for that yet.");
   }
+}
+
+// Initial AI message with main buttons
+addAIMessage("Hello! Ask me anything about the dashboard. Click an option below:", mainButtons);
+
+function sendMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if(!text) return;
+  addUserMessage(text);
+  addAIMessage("Sorry, I don't have info for that yet.");
+  input.value = '';
 }
 </script>
 
