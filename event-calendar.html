@@ -4,129 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Event & Calendar</title>
-
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #000;
-  color: #fff;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(10,15,30,0.9);
-  padding: 10px 20px;
-  font-size: 14px;
-}
-
-.top-bar .center {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.top-bar .right button {
-  background: #007bff22;
-  border: 1px solid #007bff44;
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.content {
-  margin: 120px auto 60px;
-  width: 900px;
-}
-
-.calendar {
-  background: #0d1b2a;
-  border: 1px solid #007bff44;
-  border-radius: 16px;
-  padding: 20px;
-}
-
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.calendar-header button {
-  background: #007bff22;
-  border: 1px solid #007bff44;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.calendar-header .month {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  opacity: 0.7;
-  margin-bottom: 10px;
-}
-
-.days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-}
-
-.day {
-  height: 90px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 10px;
-  padding: 8px;
-  cursor: pointer;
-}
-
-.day:hover {
-  background: rgba(0,123,255,0.15);
-}
-
-.day.today {
-  border: 1px solid #007bff;
-}
-
-.day .date {
-  font-size: 13px;
-  opacity: 0.8;
-}
-
-.empty {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-.empty-state {
-  text-align: center;
-  opacity: 0.6;
-  margin-top: 30px;
-}
+body { margin:0; font-family:Arial,sans-serif; background:#000; color:#fff; display:flex; flex-direction:column; height:100vh; }
+.top-bar { display:flex; justify-content:space-between; align-items:center; background:rgba(10,15,30,0.9); padding:10px 20px; font-size:14px; }
+.top-bar .center { font-weight:bold; font-size:18px; }
+.top-bar .right button { background:#007bff22; border:1px solid #007bff44; color:#fff; padding:5px 12px; border-radius:8px; cursor:pointer; }
+.content { margin:120px auto 60px; width:900px; }
+.calendar { background:#0d1b2a; border:1px solid #007bff44; border-radius:16px; padding:20px; }
+.calendar-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.calendar-header button { background:#007bff22; border:1px solid #007bff44; color:#fff; padding:6px 12px; border-radius:8px; cursor:pointer; }
+.calendar-header .month { font-size:18px; font-weight:bold; }
+.weekdays, .days { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; }
+.weekdays { opacity:0.7; margin-bottom:10px; }
+.day { height:90px; background:rgba(255,255,255,0.03); border-radius:10px; padding:8px; cursor:pointer; position:relative; }
+.day:hover { background: rgba(0,123,255,0.15); }
+.day.today { border:1px solid #007bff; }
+.day .date { font-size:13px; opacity:0.8; }
+.day .event { position:absolute; bottom:4px; left:4px; right:4px; font-size:11px; background:#007bff44; padding:2px 4px; border-radius:4px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.empty { opacity:0.3; pointer-events:none; }
+.add-event { margin:10px 0; display:flex; gap:8px; }
+.add-event input { flex:1; padding:6px 10px; border-radius:8px; border:1px solid #007bff44; background:#000; color:#fff; }
+.add-event button { padding:6px 12px; border-radius:8px; border:1px solid #007bff44; background:#007bff22; color:#fff; cursor:pointer; }
 </style>
 </head>
-
 <body>
 
 <div class="top-bar">
   <div class="center">Event & Calendar</div>
-  <div class="right">
-    <button onclick="goBack()">← Back</button>
-  </div>
+  <div class="right"><button onclick="goBack()">← Back</button></div>
 </div>
 
 <div class="content">
@@ -139,75 +44,72 @@ body {
     </div>
 
     <div class="weekdays">
-      <div>Sun</div>
-      <div>Mon</div>
-      <div>Tue</div>
-      <div>Wed</div>
-      <div>Thu</div>
-      <div>Fri</div>
-      <div>Sat</div>
+      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
     </div>
 
     <div class="days" id="calendarDays"></div>
 
-    <div class="empty-state">
-      No events scheduled
-    </div>
+    <div class="empty-state" id="emptyState">No events scheduled</div>
+  </div>
+
+  <div class="add-event" id="addEventBox">
+    <input type="text" id="eventTitle" placeholder="Event title">
+    <input type="number" id="eventDay" min="1" placeholder="Day">
+    <button onclick="addEvent()">Add Event</button>
   </div>
 
 </div>
 
 <script>
-function goBack() {
-  window.location.href = "dashboard.html"
-}
+function goBack(){ window.location.href='dashboard.html'; }
+
+const role = localStorage.getItem("role") || "guest"
+if(role!=="admin") document.getElementById("addEventBox").style.display="none"
 
 let currentDate = new Date()
+let events = {}
 
-function renderCalendar() {
+function renderCalendar(){
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
+  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+  document.getElementById("monthLabel").textContent = monthNames[month]+" "+year
 
-  const monthNames = [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December"
-  ]
-
-  document.getElementById("monthLabel").textContent =
-    monthNames[month] + " " + year
-
-  const firstDay = new Date(year, month, 1).getDay()
-  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const firstDay = new Date(year,month,1).getDay()
+  const daysInMonth = new Date(year,month+1,0).getDate()
   const calendarDays = document.getElementById("calendarDays")
-
   calendarDays.innerHTML = ""
 
-  for (let i = 0; i < firstDay; i++) {
-    const empty = document.createElement("div")
-    empty.className = "day empty"
-    calendarDays.appendChild(empty)
-  }
+  for(let i=0;i<firstDay;i++){ const empty=document.createElement("div"); empty.className="day empty"; calendarDays.appendChild(empty) }
 
-  for (let d = 1; d <= daysInMonth; d++) {
-    const day = document.createElement("div")
-    day.className = "day"
-
-    const today = new Date()
-    if (
-      d === today.getDate() &&
-      month === today.getMonth() &&
-      year === today.getFullYear()
-    ) {
-      day.classList.add("today")
+  for(let d=1;d<=daysInMonth;d++){
+    const day=document.createElement("div"); day.className="day"; 
+    const today=new Date()
+    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()) day.classList.add("today")
+    day.innerHTML=`<div class="date">${d}</div>`
+    if(events[`${year}-${month}-${d}`]) {
+      events[`${year}-${month}-${d}`].forEach(e=>{
+        const ev=document.createElement("div"); ev.className="event"; ev.textContent=e; day.appendChild(ev)
+      })
     }
-
-    day.innerHTML = `<div class="date">${d}</div>`
     calendarDays.appendChild(day)
   }
+
+  document.getElementById("emptyState").style.display = Object.keys(events).length===0?"block":"none"
 }
 
-function changeMonth(step) {
-  currentDate.setMonth(currentDate.getMonth() + step)
+function changeMonth(step){ currentDate.setMonth(currentDate.getMonth()+step); renderCalendar() }
+
+function addEvent(){
+  const day = Number(document.getElementById("eventDay").value)
+  const title = document.getElementById("eventTitle").value
+  if(!day || !title) return
+  const year = currentDate.getFullYear(), month=currentDate.getMonth()
+  const key = `${year}-${month}-${day}`
+  if(!events[key]) events[key]=[]
+  events[key].push(title)
+  document.getElementById("eventTitle").value=""
+  document.getElementById("eventDay").value=""
   renderCalendar()
 }
 
