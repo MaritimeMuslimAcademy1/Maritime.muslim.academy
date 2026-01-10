@@ -35,7 +35,7 @@ body {
   position:absolute;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.9);
+  background:rgba(0,0,0,0.95);
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -75,32 +75,24 @@ button {
   cursor:pointer;
   user-select:none;
 }
-.app.dragging {
-  opacity:0.5;
-}
+.app.dragging { opacity:0.5; }
 .phone-screen {
   position:absolute;
   top:0; left:0;
   width:100%; height:100%;
-}
-#chatApp,#cameraApp,#messagesApp,#appStore {
-  display:none;
-  position:absolute;
-  top:0; left:0;
-  width:100%; height:100%;
   background:#0d1b2a;
+  display:none;
   flex-direction:column;
 }
 .header {
   padding:10px;
   background:rgba(10,15,30,0.9);
-  text-align:center;
-  font-weight:bold;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  font-weight:bold;
 }
-.chat-messages,.messages-list {
+.chat-messages {
   flex:1;
   padding:10px;
   overflow-y:auto;
@@ -108,14 +100,14 @@ button {
   flex-direction:column;
   gap:8px;
 }
-.chat-input-area,.messages-input-area {
+.chat-input-area {
   display:flex;
   gap:5px;
   padding:8px;
   border-top:1px solid #007bff44;
   background:#0d1b2a;
 }
-.chat-input-area input,.messages-input-area input {
+.chat-input-area input {
   flex:1;
   padding:8px 10px;
   border-radius:20px;
@@ -123,7 +115,7 @@ button {
   background:#000;
   color:#fff;
 }
-.chat-input-area button,.messages-input-area button {
+.chat-input-area button {
   padding:8px 12px;
   border-radius:12px;
   border:1px solid #007bff44;
@@ -131,85 +123,83 @@ button {
   color:#fff;
   cursor:pointer;
 }
-.message {
-  display:flex;
-  gap:8px;
-  max-width:80%;
-  padding:8px 12px;
-  border-radius:12px;
-  position:relative;
-  word-wrap:break-word;
+.keypad {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:20px;
 }
-.message.me { align-self:flex-end; background:#007bff33; flex-direction:row-reverse; }
-.message.other { align-self:flex-start; background:#222; }
-.avatar { width:28px; height:28px; border-radius:50%; flex-shrink:0; background-size:cover; background-position:center; }
-.message-content { display:flex; flex-direction:column; }
-.username { font-size:12px; font-weight:bold; opacity:0.8; margin-bottom:2px; }
-.delete-btn { position:absolute; top:4px; right:4px; background:#ff000044; border:none; color:#fff; font-size:10px; border-radius:4px; cursor:pointer; padding:1px 3px; }
-.liked { color:#ff0000; }
+.keypad button {
+  font-size:24px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:#222;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
 
 <div class="phone-frame">
   <div class="screen" id="screen">
-    <!-- Welcome Setup -->
+    <!-- Welcome -->
     <div class="overlay" id="welcomeScreen">
       <div>Welcome</div>
       <div>Select Language</div>
       <button onclick="nextStep('faceID')">Next</button>
     </div>
+    <!-- Face ID -->
     <div class="overlay" id="faceID" style="display:none;">
       <div>Face ID Setup</div>
+      <div id="faceScan" style="margin-top:20px;">🔵</div>
       <button onclick="nextStep('passcode')">Next</button>
     </div>
+    <!-- Passcode -->
     <div class="overlay" id="passcode" style="display:none;">
-      <div>Set Passcode</div>
-      <input type="password" id="passInput" placeholder="Enter PIN">
-      <button onclick="nextStep('mode')">Next</button>
+      <div>Enter Passcode</div>
+      <input type="password" id="passInput" placeholder="●●●●" readonly style="text-align:center;font-size:24px;letter-spacing:10px;">
+      <div class="keypad">
+        <button onclick="addDigit(1)">1</button>
+        <button onclick="addDigit(2)">2</button>
+        <button onclick="addDigit(3)">3</button>
+        <button onclick="addDigit(4)">4</button>
+        <button onclick="addDigit(5)">5</button>
+        <button onclick="addDigit(6)">6</button>
+        <button onclick="addDigit(7)">7</button>
+        <button onclick="addDigit(8)">8</button>
+        <button onclick="addDigit(9)">9</button>
+        <button onclick="clearDigit()">C</button>
+        <button onclick="addDigit(0)">0</button>
+        <button onclick="confirmPasscode()">✔</button>
+      </div>
     </div>
+    <!-- Mode -->
     <div class="overlay" id="mode" style="display:none;">
       <div>Choose Mode</div>
       <button onclick="setMode('light')">Light Mode</button>
       <button onclick="setMode('dark')">Dark Mode</button>
     </div>
-    <!-- Home Screen -->
+    <!-- Home -->
     <div class="overlay home-screen" id="homeScreen">
       <div class="app" draggable="true" onclick="openApp('chat')">Student Chat</div>
-      <div class="app" draggable="true" onclick="openApp('messages')">Messages</div>
-      <div class="app" draggable="true" onclick="openApp('camera')">Camera</div>
-      <div class="app" draggable="true" onclick="openApp('appStore')">App Store</div>
+      <div class="app" draggable="true">Messages</div>
+      <div class="app" draggable="true">Camera</div>
       <div class="app" draggable="true">Settings</div>
     </div>
   </div>
 </div>
 
-<!-- Chat App -->
-<div id="chatApp" class="phone-screen" style="display:flex;flex-direction:column;">
+<!-- Student Chat App -->
+<div id="chatApp" class="phone-screen">
   <div class="header">Student Chat <button onclick="closeApp('chatApp')">Back</button></div>
   <div class="chat-messages" id="chatScreen"></div>
   <div class="chat-input-area">
     <input type="text" id="chatInput" placeholder="Type a message...">
     <button onclick="sendMessage()">Send</button>
   </div>
-</div>
-
-<!-- Messages App -->
-<div id="messagesApp" class="phone-screen" style="display:flex;flex-direction:column;">
-  <div class="header">Messages <button onclick="closeApp('messagesApp')">Back</button></div>
-  <div class="messages-list" id="messagesList"></div>
-  <div class="messages-input-area">
-    <input type="text" id="messageInput" placeholder="Send a message...">
-    <button onclick="sendMessageApp()">Send</button>
-  </div>
-</div>
-
-<!-- Camera & AppStore placeholders -->
-<div id="cameraApp" class="phone-screen">
-  <div class="header">Camera <button onclick="closeApp('cameraApp')">Back</button></div>
-</div>
-<div id="appStore" class="phone-screen">
-  <div class="header">App Store <button onclick="closeApp('appStore')">Back</button></div>
 </div>
 
 <script>
@@ -221,33 +211,52 @@ let avatar = localStorage.getItem("dashboardAvatar") || "https://i.imgur.com/oCk
 function nextStep(step){
   document.querySelectorAll('.overlay').forEach(o=>o.style.display='none');
   document.getElementById(step).style.display='flex';
-  if(step==='home') loadHome();
 }
 function setMode(mode){
   document.body.style.background = mode==='light' ? '#eee' : '#111';
   nextStep('home');
 }
 
+// PASSCODE
+let passcode = '';
+function addDigit(d){
+  const input=document.getElementById('passInput');
+  if(passcode.length<4){ passcode+=d; input.value='●'.repeat(passcode.length); }
+}
+function clearDigit(){ passcode=''; document.getElementById('passInput').value=''; }
+function confirmPasscode(){ if(passcode.length===4) nextStep('mode'); }
+
 // HOME SCREEN
-function loadHome(){ document.getElementById('homeScreen').style.display='flex'; }
 function openApp(app){
   document.getElementById('screen').style.display='none';
   document.getElementById(app+'App').style.display='flex';
   if(app==='chat') loadChat();
 }
-function closeApp(app){ document.getElementById(app).style.display='none'; document.getElementById('screen').style.display='block'; }
+function closeApp(app){ document.getElementById(app+'App').style.display='none'; document.getElementById('screen').style.display='block'; }
 
 // STUDENT CHAT
 let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
 const chatScreen = document.getElementById('chatScreen');
-function loadChat(){ chatScreen.innerHTML=''; messages.forEach(m=>chatScreen.appendChild(createMessage(m.username,m.text,m.me,m.avatar))); chatScreen.scrollTop=chatScreen.scrollHeight; }
+function loadChat(){
+  chatScreen.innerHTML='';
+  messages.forEach(m=>chatScreen.appendChild(createMessage(m.username,m.text,m.me,m.avatar)));
+  chatScreen.scrollTop=chatScreen.scrollHeight;
+}
 function sendMessage(){
-  const chatInput = document.getElementById('chatInput'); const text=chatInput.value.trim(); if(!text) return;
-  const msg={username,text,me:true,avatar}; messages.push(msg); localStorage.setItem("chatMessages",JSON.stringify(messages));
-  chatScreen.appendChild(createMessage(msg.username,msg.text,msg.me,msg.avatar)); chatScreen.scrollTop=chatScreen.scrollHeight; chatInput.value='';
+  const chatInput=document.getElementById('chatInput'); 
+  const text=chatInput.value.trim(); 
+  if(!text) return;
+  const msg={username,text,me:true,avatar};
+  messages.push(msg);
+  localStorage.setItem("chatMessages",JSON.stringify(messages));
+  chatScreen.appendChild(createMessage(msg.username,msg.text,msg.me,msg.avatar));
+  chatScreen.scrollTop=chatScreen.scrollHeight;
+  chatInput.value='';
 }
 function createMessage(user,text,me=false,avatarSrc=avatar){
-  const div=document.createElement('div'); div.className='message '+(me?'me':'other'); div.innerHTML=`
+  const div=document.createElement('div'); 
+  div.className='message '+(me?'me':'other'); 
+  div.innerHTML=`
     <div class="avatar" style="background-image:url('${avatarSrc}')"></div>
     <div class="message-content">
       <div class="username">${user}</div>
@@ -255,26 +264,9 @@ function createMessage(user,text,me=false,avatarSrc=avatar){
     </div>
     <button class="delete-btn">x</button>`;
   div.querySelector('.delete-btn').onclick=(e)=>{ e.stopPropagation(); div.remove(); messages=messages.filter(m=>m.text!==text||m.username!==user); localStorage.setItem("chatMessages",JSON.stringify(messages)); };
-  div.ondblclick=()=>div.classList.toggle('liked'); return div;
+  div.ondblclick=()=>div.classList.toggle('liked'); 
+  return div;
 }
-
-// MESSAGES APP (placeholder)
-let messagesAppList = JSON.parse(localStorage.getItem("messagesApp"))||[];
-const messagesList=document.getElementById('messagesList');
-function sendMessageApp(){ const input=document.getElementById('messageInput'); const text=input.value.trim(); if(!text) return;
-  messagesAppList.push({username,text}); localStorage.setItem("messagesApp",JSON.stringify(messagesAppList));
-  renderMessagesApp(); input.value='';}
-function renderMessagesApp(){ messagesList.innerHTML=''; messagesAppList.forEach(m=>{
-  const div=document.createElement('div'); div.className='message other'; div.innerHTML=`
-  <div class="avatar" style="background-image:url('https://i.imgur.com/oCkEbrA.jpg')"></div>
-  <div class="message-content"><div class="username">${m.username}</div><div class="text">${m.text}</div></div>`; messagesList.appendChild(div);
-}); messagesList.scrollTop=messagesList.scrollHeight;}
-
-// MAKE APPS DRAGGABLE
-document.querySelectorAll('.app').forEach(app=>{
-  app.addEventListener('dragstart',(e)=>app.classList.add('dragging'));
-  app.addEventListener('dragend',(e)=>app.classList.remove('dragging'));
-});
 </script>
 </body>
 </html>
