@@ -80,7 +80,7 @@ body {
   font-weight: bold;
 }
 
-/* Dropdown */
+/* Avatar Dropdown */
 #accountDropdown {
   display: none;
   position: absolute;
@@ -140,18 +140,22 @@ body {
 </div>
 
 <script>
-const username = localStorage.getItem("username");
+// Load user info
+const username = localStorage.getItem("dashboardUsername") || localStorage.getItem("username");
 const role = localStorage.getItem("role");
+const avatarSrc = localStorage.getItem("dashboardAvatar");
 
 document.getElementById("userDisplay").textContent = username || "Guest";
+if (avatarSrc) {
+  document.querySelector(".top-bar .avatar img").src = avatarSrc;
+}
 
+// Role-based access
 const announcementBtn = document.getElementById("announcementBtn");
 const studentRoleBtn = document.getElementById("studentRoleBtn");
 const studentVoiceBtn = document.getElementById("studentVoiceBtn");
-
 const studentEditors = ["hala202", "nada203"];
 
-// Role-based access
 if (role === "admin") {
   // full access
 } 
@@ -165,8 +169,7 @@ else if (role === "student") {
     studentRoleBtn.classList.add("hidden");
     studentVoiceBtn.classList.add("hidden");
   }
-}
-else {
+} else {
   announcementBtn.classList.add("hidden");
   studentRoleBtn.classList.add("hidden");
   studentVoiceBtn.classList.add("hidden");
@@ -177,7 +180,7 @@ const avatar = document.getElementById('avatar');
 const accountDropdown = document.getElementById('accountDropdown');
 
 avatar.addEventListener('click', () => {
-  accountDropdown.style.display = accountDropdown.style.display === 'none' ? 'block' : 'none';
+  accountDropdown.style.display = accountDropdown.style.display === 'block' ? 'none' : 'block';
 });
 
 document.addEventListener('click', (e) => {
@@ -193,7 +196,9 @@ function openAccountSettings() {
 
 function logout() {
   localStorage.removeItem('username');
+  localStorage.removeItem('dashboardUsername');
   localStorage.removeItem('role');
+  localStorage.removeItem('dashboardAvatar');
   window.location.href = 'login.html';
 }
 </script>
