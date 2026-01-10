@@ -55,8 +55,6 @@ body {
 .calendar-header .month {
   font-size:18px;
   font-weight:bold;
-  text-align:center; /* center the month text */
-  flex:1;
 }
 
 .weekdays {
@@ -82,8 +80,8 @@ body {
   position:relative;
   display:flex;
   flex-direction:column;
-  justify-content:center; /* vertical center events */
-  align-items:center;     /* horizontal center events */
+  justify-content:center; /* centers events vertically */
+  align-items:center;     /* centers events horizontally */
 }
 
 .day.today { border:1px solid #007bff; }
@@ -106,8 +104,6 @@ body {
   justify-content:space-between;
   align-items:center;
   position:relative;
-  width:90%;          /* limit width inside day */
-  word-wrap: break-word; /* wrap long text */
 }
 
 .event .actions {
@@ -249,7 +245,6 @@ function deleteEvent(e,dateKey,index){
 
 renderCalendar()
 
-// Admin: click on day to add event
 if(role==="admin"){
   document.getElementById("calendarDays").addEventListener("click",function(ev){
     const dayDiv = ev.target.closest(".day")
