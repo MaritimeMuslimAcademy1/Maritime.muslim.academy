@@ -6,13 +6,13 @@
 <title>Event & Calendar</title>
 <style>
 body {
-  margin: 0;
-  font-family: Arial,sans-serif;
-  background: #000;
-  color: #fff;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#000;
+  color:#fff;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 .top-bar {
   display:flex;
@@ -73,8 +73,9 @@ body {
   cursor:pointer;
   display:flex;
   flex-direction:column;
-  justify-content:center; /* center events vertically */
+  justify-content:center;
   align-items:center;
+  position:relative;
 }
 .day.today { border:1px solid #007bff; }
 .day .date { font-size:13px; opacity:0.8; margin-bottom:4px; }
@@ -88,12 +89,19 @@ body {
   justify-content:center;
   align-items:center;
   gap:2px;
+  width:90%;
+  text-align:center;
 }
-.event button {
-  background:transparent;
-  border:none;
-  color:#fff;
-  font-size:10px;
+.event-buttons {
+  position:absolute;
+  top:4px;
+  right:4px;
+  display:flex;
+  gap:2px;
+}
+.event-buttons img {
+  width:14px;
+  height:14px;
   cursor:pointer;
 }
 .empty-state {
@@ -107,9 +115,7 @@ body {
 
 <div class="top-bar">
   <div class="center">Event & Calendar</div>
-  <div class="right">
-    <button onclick="goBack()">← Back</button>
-  </div>
+  <div class="right"><button onclick="goBack()">← Back</button></div>
 </div>
 
 <div class="content">
@@ -131,12 +137,9 @@ body {
 const role = localStorage.getItem("role") || "guest";
 const isAdmin = role === "admin";
 let currentDate = new Date();
-
-// Load events from localStorage
 let events = JSON.parse(localStorage.getItem("events") || "{}");
 
 function goBack(){ window.location.href='dashboard.html'; }
-
 function saveEvents(){ localStorage.setItem("events", JSON.stringify(events)); }
 
 function renderCalendar(){
@@ -149,14 +152,13 @@ function renderCalendar(){
   const daysInMonth = new Date(year, month+1,0).getDate();
   const calendarDays = document.getElementById("calendarDays");
   calendarDays.innerHTML="";
+  let hasEvents=false;
 
   for(let i=0;i<firstDay;i++){
     const empty=document.createElement("div");
     empty.className="day empty";
     calendarDays.appendChild(empty);
   }
-
-  let hasEvents=false;
 
   for(let d=1; d<=daysInMonth; d++){
     const day=document.createElement("div");
@@ -165,35 +167,39 @@ function renderCalendar(){
     if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()){
       day.classList.add("today");
     }
-
     const dateKey=`${year}-${month+1}-${d}`;
     if(!events[dateKey]) events[dateKey]=[];
-
     day.innerHTML=`<div class="date">${d}</div>`;
 
     events[dateKey].forEach((ev,i)=>{
       const evDiv=document.createElement("div");
       evDiv.className="event";
-      evDiv.innerHTML=`<span>${ev}</span>`;
+      evDiv.textContent = ev;
+
       if(isAdmin){
-        const editBtn=document.createElement("button");
-        editBtn.textContent="✎";
+        const btnContainer=document.createElement("div");
+        btnContainer.className="event-buttons";
+
+        const editBtn=document.createElement("img");
+        editBtn.src="https://cdn-icons-png.flaticon.com/512/84/84380.png"; // edit icon
         editBtn.onclick=()=>editEvent(dateKey,i);
-        const delBtn=document.createElement("button");
-        delBtn.textContent="🗑";
+
+        const delBtn=document.createElement("img");
+        delBtn.src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png"; // delete icon
         delBtn.onclick=()=>deleteEvent(dateKey,i);
-        evDiv.appendChild(editBtn);
-        evDiv.appendChild(delBtn);
+
+        btnContainer.appendChild(editBtn);
+        btnContainer.appendChild(delBtn);
+        day.appendChild(btnContainer);
       }
+
       day.appendChild(evDiv);
     });
 
     if(events[dateKey].length>0) hasEvents=true;
     if(isAdmin) day.onclick=()=>addEvent(dateKey);
-
     calendarDays.appendChild(day);
   }
-
   document.getElementById("emptyState").style.display = hasEvents?"none":"block";
 }
 
