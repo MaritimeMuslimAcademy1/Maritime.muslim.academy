@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smart Box</title>
+
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #000;
+  background: #000;
   color: #fff;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  align-items: center;
 }
 
 /* Top bar */
@@ -21,84 +21,75 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(10,15,30,0.9);
+  background: rgba(10,15,30,0.9);
   padding: 10px 20px;
   font-size: 14px;
-  width: 100%;
 }
 
-.top-bar .center { font-weight: bold; font-size: 18px; }
+.top-bar .center {
+  font-weight: bold;
+  font-size: 18px;
+}
 
 .top-bar .right button {
   background: #007bff22;
   border: 1px solid #007bff44;
   color: #fff;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-/* Phone-style container */
-.phone-container {
+/* Phone container */
+.phone {
   width: 360px;
   max-width: 90%;
   height: 600px;
   background: #0d1b2a;
-  border-radius: 36px;
   border: 2px solid #007bff44;
+  border-radius: 30px;
+  margin: 30px auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-top: 30px;
 }
 
-/* Screen area */
+/* Screen */
 .screen {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
 }
 
-/* Messages */
+/* Message bubble */
 .message {
   background: #007bff22;
+  border-radius: 14px;
   padding: 10px 14px;
-  border-radius: 16px;
-  margin-bottom: 12px;
-  max-width: 80%;
-  word-wrap: break-word;
+  margin-bottom: 10px;
+  max-width: 85%;
 }
 
-/* Input area */
-.input-area {
+/* Buttons */
+.button-group {
   display: flex;
-  padding: 10px;
-  background: #0a111f;
-  border-top: 1px solid #007bff44;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.input-area input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 20px;
-  border: 1px solid #007bff44;
+.button-group button {
   background: #000;
-  color: #fff;
-  outline: none;
-  font-size: 14px;
-}
-
-.input-area button {
-  margin-left: 8px;
-  padding: 10px 16px;
-  border-radius: 20px;
   border: 1px solid #007bff44;
-  background: #007bff22;
   color: #fff;
+  padding: 10px;
+  border-radius: 10px;
   cursor: pointer;
+  text-align: left;
 }
 </style>
 </head>
+
 <body>
 
 <div class="top-bar">
@@ -108,46 +99,51 @@ body {
   </div>
 </div>
 
-<div class="phone-container">
+<div class="phone">
   <div class="screen" id="screen">
-    <p class="message">Hello! Ask me anything about the dashboard.</p>
-  </div>
-  <div class="input-area">
-    <input type="text" id="userInput" placeholder="Type your question...">
-    <button onclick="sendMessage()">Send</button>
+    <div class="message">
+      Hello. Choose a section.
+    </div>
+
+    <div class="button-group" id="mainButtons">
+      <button onclick="openSection('leaderboard')">Leaderboard</button>
+      <button>Announcements</button>
+      <button>Events and Calendar</button>
+      <button>Student Role</button>
+      <button>Student Voice</button>
+      <button>Media</button>
+      <button>Teachers</button>
+    </div>
   </div>
 </div>
 
 <script>
 function goBack() {
-  window.location.href = 'dashboard.html';
+  window.location.href = "dashboard.html";
 }
 
-function sendMessage() {
-  const input = document.getElementById('userInput');
-  const text = input.value.trim();
-  if (!text) return;
+function openSection(section) {
+  const screen = document.getElementById("screen");
+  screen.innerHTML = "";
 
-  const screen = document.getElementById('screen');
+  if (section === "leaderboard") {
+    const msg = document.createElement("div");
+    msg.className = "message";
+    msg.textContent = "Leaderboard questions";
+    screen.appendChild(msg);
 
-  // Add user message
-  const userMsg = document.createElement('div');
-  userMsg.className = 'message';
-  userMsg.textContent = text;
-  screen.appendChild(userMsg);
+    const group = document.createElement("div");
+    group.className = "button-group";
 
-  // Scroll to bottom
-  screen.scrollTop = screen.scrollHeight;
+    group.innerHTML = `
+      <button>What is the leaderboard</button>
+      <button>How points work</button>
+      <button>How rankings reset</button>
+      <button>Who are the top 3</button>
+    `;
 
-  // Clear input
-  input.value = '';
-
-  // Simulated AI response
-  const aiMsg = document.createElement('div');
-  aiMsg.className = 'message';
-  aiMsg.textContent = "This is a Smart Box response.";
-  screen.appendChild(aiMsg);
-  screen.scrollTop = screen.scrollHeight;
+    screen.appendChild(group);
+  }
 }
 </script>
 
