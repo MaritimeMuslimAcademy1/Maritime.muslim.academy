@@ -26,9 +26,7 @@ body {
   font-size: 14px;
   width: 100%;
 }
-
 .top-bar .center { font-weight: bold; font-size: 18px; }
-
 .top-bar .right button {
   background: #007bff22;
   border: 1px solid #007bff44;
@@ -97,6 +95,7 @@ body {
   margin-top: 4px;
   text-align: left;
 }
+
 .input-area {
   display: flex;
   padding: 10px;
@@ -136,8 +135,8 @@ body {
 <div class="phone-container">
   <div class="screen" id="screen"></div>
   <div class="input-area">
-    <input type="text" id="userInput" placeholder="Type a question...">
-    <button onclick="sendMessage()">Send</button>
+    <input type="text" id="userInput" placeholder="Type a question..." disabled>
+    <button disabled>Send</button>
   </div>
 </div>
 
@@ -146,6 +145,7 @@ function goBack() { window.location.href = 'dashboard.html'; }
 
 const screen = document.getElementById('screen');
 
+// Main buttons
 const mainButtons = [
   "Leaderboard",
   "Announcements",
@@ -156,12 +156,37 @@ const mainButtons = [
   "Teachers"
 ];
 
+// Questions for each section
 const questions = {
   "Leaderboard": [
     "What is the leaderboard",
     "How points work",
     "How rankings reset",
     "Who are the top 3"
+  ],
+  "Announcements": [
+    "What is an announcement",
+    "How do I read announcements",
+    "Who posts announcements"
+  ],
+  "Events and Calendar": [
+    "What are events",
+    "How do I check the calendar",
+    "Who can add events"
+  ],
+  "Student Role": [
+    "What is the Student Role section",
+    "Who are the students listed",
+    "What does President, VP, or Treasurer mean"
+  ],
+  "Student Voice": [
+    "What is Student Voice",
+    "How do I submit feedback",
+    "Who can see my feedback"
+  ],
+  "Media": [
+    "What media is available",
+    "How do I view media"
   ],
   "Teachers": [
     "Who’s Mrs. Eman",
@@ -175,6 +200,7 @@ const questions = {
   ]
 };
 
+// Add AI message with optional buttons
 function addAIMessage(text, buttons=[]) {
   const aiMsg = document.createElement('div');
   aiMsg.className = 'message ai';
@@ -194,6 +220,7 @@ function addAIMessage(text, buttons=[]) {
   screen.scrollTop = screen.scrollHeight;
 }
 
+// Add user message
 function addUserMessage(text) {
   const userMsg = document.createElement('div');
   userMsg.className = 'message user';
@@ -202,6 +229,7 @@ function addUserMessage(text) {
   screen.scrollTop = screen.scrollHeight;
 }
 
+// Handle AI response when a main button or question is clicked
 function handleAIResponse(userChoice) {
   if(questions[userChoice]){
     addAIMessage("Choose a question:", questions[userChoice]);
@@ -210,17 +238,10 @@ function handleAIResponse(userChoice) {
   }
 }
 
-// Initial AI message with main buttons
+// Initial AI message
 addAIMessage("Hello! Ask me anything about the dashboard. Click an option below:", mainButtons);
 
-function sendMessage() {
-  const input = document.getElementById('userInput');
-  const text = input.value.trim();
-  if(!text) return;
-  addUserMessage(text);
-  addAIMessage("Sorry, I don't have info for that yet.");
-  input.value = '';
-}
+// Disabled input (for future use)
 </script>
 
 </body>
