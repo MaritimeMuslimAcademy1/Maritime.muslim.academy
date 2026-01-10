@@ -80,6 +80,7 @@ button {
 #saveMessage {
   font-size: 14px;
   color: #0f0;
+  text-align: center;
 }
 </style>
 </head>
@@ -116,9 +117,7 @@ document.getElementById("firstName").value = savedData.firstName || "";
 document.getElementById("lastName").value = savedData.lastName || "";
 document.getElementById("username").value = savedData.username || localStorage.getItem("username");
 document.getElementById("password").value = savedData.password || "";
-if(savedData.avatar) {
-  document.getElementById("avatarPreview").src = savedData.avatar;
-}
+document.getElementById("avatarPreview").src = savedData.avatar || localStorage.getItem("avatar") || "https://via.placeholder.com/100";
 
 // Avatar preview and live dashboard update
 document.getElementById("avatarInput").addEventListener("change", function() {
@@ -127,7 +126,6 @@ document.getElementById("avatarInput").addEventListener("change", function() {
     const reader = new FileReader();
     reader.onload = function(e) {
       document.getElementById("avatarPreview").src = e.target.result;
-      localStorage.setItem("avatar", e.target.result);
       updateDashboardAvatar(e.target.result);
     }
     reader.readAsDataURL(file);
@@ -162,7 +160,7 @@ function saveSettings() {
   document.getElementById("saveMessage").textContent = "Settings saved successfully!";
 }
 
-// Functions to update dashboard directly
+// Update dashboard functions
 function updateDashboardAvatar(src) {
   localStorage.setItem("dashboardAvatar", src);
 }
