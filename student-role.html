@@ -72,8 +72,9 @@ body {
 .student-card .avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* fills the circle completely */
   display: block;
+  border-radius: 50%;
 }
 
 .student-card h4 {
@@ -98,6 +99,7 @@ body {
 </div>
 
 <div class="content">
+  <!-- 12 students -->
   <div class="student-card">
     <div class="avatar"><img src="" alt="Anonymous"></div>
     <h4>Student 1</h4>
