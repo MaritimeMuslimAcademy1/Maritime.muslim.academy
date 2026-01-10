@@ -43,7 +43,7 @@ body {
   border:2px solid #007bff44;
   border-radius:40px;
   display:flex;
-  flex-direction:column;
+  flex-direction:column-reverse;
   overflow:hidden;
   background:#0d1b2a;
 }
@@ -66,7 +66,6 @@ body {
   position:relative;
   word-wrap:break-word;
   align-items:flex-start;
-  cursor:pointer;
 }
 
 .message.me { 
@@ -84,8 +83,9 @@ body {
   width:28px;
   height:28px;
   border-radius:50%;
-  background:#007bff44;
   flex-shrink:0;
+  background-size:cover;
+  background-position:center;
 }
 
 .message-content { display:flex; flex-direction:column; }
@@ -151,7 +151,6 @@ body {
 }
 
 .emoji-picker span { cursor:pointer; font-size:20px; padding:2px; }
-
 </style>
 </head>
 <body>
@@ -181,52 +180,48 @@ const chatScreen = document.getElementById('chatScreen');
 const chatInput = document.getElementById('chatInput');
 const emojiPicker = document.getElementById('emojiPicker');
 
-// Example logged-in username
-const username = 'rayan_k';
+const username = localStorage.getItem("dashboardUsername") || "Rayan Khalid";
+const avatar = localStorage.getItem("dashboardAvatar") || "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg";
 
+let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
+
+// Load existing messages
+messages.forEach(msg => chatScreen.appendChild(createMessage(msg.username, msg.text, msg.me, msg.avatar)));
+
+// Send message
 function sendMessage() {
   const text = chatInput.value.trim();
   if(!text) return;
-  
-  const msg = createMessage(username, text, true);
-  chatScreen.appendChild(msg);
+  const msg = { username, text, me:true, avatar };
+  messages.push(msg);
+  localStorage.setItem("chatMessages", JSON.stringify(messages));
+  chatScreen.appendChild(createMessage(msg.username, msg.text, msg.me, msg.avatar));
   chatScreen.scrollTop = chatScreen.scrollHeight;
   chatInput.value = '';
 }
 
-function createMessage(user, text, me=false) {
+// Create message element
+function createMessage(user, text, me=false, avatarSrc=avatar) {
   const div = document.createElement('div');
   div.className = 'message ' + (me ? 'me' : 'other');
   div.innerHTML = `
-    <div class="avatar"></div>
+    <div class="avatar" style="background-image:url('${avatarSrc}')"></div>
     <div class="message-content">
       <div class="username">${user}</div>
       <div class="text">${text}</div>
     </div>
     <button class="delete-btn">x</button>
   `;
-
   const deleteBtn = div.querySelector('.delete-btn');
-  deleteBtn.onclick = (e)=>{ e.stopPropagation(); div.remove(); };
+  deleteBtn.onclick = (e)=>{ e.stopPropagation(); div.remove(); messages = messages.filter(m=>m.text!==text || m.username!==user); localStorage.setItem("chatMessages", JSON.stringify(messages)); };
 
-  // double click to like
-  div.ondblclick = ()=> {
-    div.classList.toggle('liked');
-  }
-
+  div.ondblclick = ()=> div.classList.toggle('liked');
   return div;
 }
 
 // Emoji picker
-function toggleEmoji() {
-  emojiPicker.style.display = emojiPicker.style.display === 'flex' ? 'none' : 'flex';
-}
-emojiPicker.querySelectorAll('span').forEach(emoji=>{
-  emoji.onclick = () => {
-    chatInput.value += emoji.innerText;
-    chatInput.focus();
-  }
-});
+function toggleEmoji() { emojiPicker.style.display = emojiPicker.style.display === 'flex' ? 'none' : 'flex'; }
+emojiPicker.querySelectorAll('span').forEach(emoji=>{ emoji.onclick = ()=>{ chatInput.value += emoji.innerText; chatInput.focus(); }; });
 </script>
 
 </body>
