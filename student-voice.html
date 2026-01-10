@@ -49,7 +49,6 @@ body {
   margin-bottom: 10px;
 }
 
-.submit-box input,
 .submit-box textarea {
   width: 100%;
   background: #000;
@@ -116,7 +115,6 @@ body {
 
 <div class="content">
   <div class="submit-box">
-    <input type="text" id="studentName" placeholder="Your name (will appear as Anonymous)">
     <textarea id="feedback" rows="4" placeholder="Write your suggestion or feedback..."></textarea>
     <button onclick="submitVoice()">Submit</button>
   </div>
@@ -152,7 +150,6 @@ function submitVoice() {
   container.prepend(card);
 
   // Reset input
-  document.getElementById('studentName').value = '';
   document.getElementById('feedback').value = '';
 
   // Show confirmation message briefly
