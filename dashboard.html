@@ -140,17 +140,27 @@ body {
 </div>
 
 <script>
-// Load user info
-const username = localStorage.getItem("dashboardUsername") || localStorage.getItem("username");
-const role = localStorage.getItem("role");
-const avatarSrc = localStorage.getItem("dashboardAvatar");
+// Master user list with default avatars
+const users = [
+  { username: "rayan", role: "admin", avatar: "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg" },
+  { username: "hala202", role: "student", avatar: "https://via.placeholder.com/32" },
+  { username: "nada203", role: "student", avatar: "https://via.placeholder.com/32" }
+];
 
-document.getElementById("userDisplay").textContent = username || "Guest";
-if (avatarSrc) {
-  document.querySelector(".top-bar .avatar img").src = avatarSrc;
-}
+// Load dashboard username & avatar
+const dashboardUsername = localStorage.getItem("dashboardUsername") || localStorage.getItem("username");
+const dashboardAvatar = localStorage.getItem("dashboardAvatar");
+
+// Find user info
+const user = users.find(u => u.username === dashboardUsername);
+const avatarImg = dashboardAvatar || (user ? user.avatar : "https://via.placeholder.com/32");
+
+// Set display
+document.getElementById("userDisplay").textContent = dashboardUsername || "Guest";
+document.querySelector(".top-bar .avatar img").src = avatarImg;
 
 // Role-based access
+const role = localStorage.getItem("role");
 const announcementBtn = document.getElementById("announcementBtn");
 const studentRoleBtn = document.getElementById("studentRoleBtn");
 const studentVoiceBtn = document.getElementById("studentVoiceBtn");
@@ -164,7 +174,7 @@ else if (role === "teacher") {
   studentVoiceBtn.classList.add("hidden");
 }
 else if (role === "student") {
-  if (!studentEditors.includes(username)) {
+  if (!studentEditors.includes(dashboardUsername)) {
     announcementBtn.classList.add("hidden");
     studentRoleBtn.classList.add("hidden");
     studentVoiceBtn.classList.add("hidden");
@@ -198,7 +208,7 @@ function logout() {
   localStorage.removeItem('username');
   localStorage.removeItem('dashboardUsername');
   localStorage.removeItem('role');
-  localStorage.removeItem('dashboardAvatar');
+  // Keep dashboardAvatar so avatar persists
   window.location.href = 'login.html';
 }
 </script>
