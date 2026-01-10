@@ -40,7 +40,7 @@ body {
   cursor: pointer;
 }
 
-/* Phone container */
+/* Phone */
 .phone {
   width: 360px;
   max-width: 90%;
@@ -54,36 +54,40 @@ body {
   overflow: hidden;
 }
 
-/* Screen */
-.screen {
+/* Chat screen */
+.chat {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
 }
 
-/* Message bubble */
-.message {
+/* Messages */
+.bot {
   background: #007bff22;
-  border-radius: 14px;
   padding: 10px 14px;
+  border-radius: 14px;
   margin-bottom: 10px;
   max-width: 85%;
 }
 
-/* Buttons */
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 10px;
+.user {
+  background: #000;
+  border: 1px solid #007bff44;
+  padding: 10px 14px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  max-width: 85%;
 }
 
-.button-group button {
+/* Chat buttons */
+.choice {
   background: #000;
   border: 1px solid #007bff44;
   color: #fff;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
   cursor: pointer;
   text-align: left;
 }
@@ -100,20 +104,18 @@ body {
 </div>
 
 <div class="phone">
-  <div class="screen" id="screen">
-    <div class="message">
-      Hello. Choose a section.
+  <div class="chat" id="chat">
+    <div class="bot">
+      Hello. What do you want to know about?
     </div>
 
-    <div class="button-group" id="mainButtons">
-      <button onclick="openSection('leaderboard')">Leaderboard</button>
-      <button>Announcements</button>
-      <button>Events and Calendar</button>
-      <button>Student Role</button>
-      <button>Student Voice</button>
-      <button>Media</button>
-      <button>Teachers</button>
-    </div>
+    <button class="choice" onclick="selectMain('Leaderboard')">Leaderboard</button>
+    <button class="choice">Announcements</button>
+    <button class="choice">Events and Calendar</button>
+    <button class="choice">Student Role</button>
+    <button class="choice">Student Voice</button>
+    <button class="choice">Media</button>
+    <button class="choice">Teachers</button>
   </div>
 </div>
 
@@ -122,27 +124,21 @@ function goBack() {
   window.location.href = "dashboard.html";
 }
 
-function openSection(section) {
-  const screen = document.getElementById("screen");
-  screen.innerHTML = "";
+function selectMain(name) {
+  const chat = document.getElementById("chat");
 
-  if (section === "leaderboard") {
-    const msg = document.createElement("div");
-    msg.className = "message";
-    msg.textContent = "Leaderboard questions";
-    screen.appendChild(msg);
+  chat.innerHTML = `
+    <div class="user">${name}</div>
+    <div class="bot">Choose a question.</div>
+  `;
 
-    const group = document.createElement("div");
-    group.className = "button-group";
-
-    group.innerHTML = `
-      <button>What is the leaderboard</button>
-      <button>How points work</button>
-      <button>How rankings reset</button>
-      <button>Who are the top 3</button>
+  if (name === "Leaderboard") {
+    chat.innerHTML += `
+      <button class="choice">What is the leaderboard</button>
+      <button class="choice">How points work</button>
+      <button class="choice">How rankings reset</button>
+      <button class="choice">Who are the top 3</button>
     `;
-
-    screen.appendChild(group);
   }
 }
 </script>
