@@ -80,6 +80,8 @@ body {
   position:relative;
   display:flex;
   flex-direction:column;
+  justify-content:center; /* centers events vertically */
+  align-items:center;     /* centers events horizontally */
 }
 
 .day.today { border:1px solid #007bff; }
@@ -99,17 +101,14 @@ body {
   border-radius:6px;
   font-size:12px;
   display:flex;
-  justify-content:center;
+  justify-content:space-between;
   align-items:center;
-  text-align:center;
-  word-break: break-word;
-  min-height:18px;
+  position:relative;
 }
 
 .event .actions {
   display:flex;
   gap:2px;
-  margin-left:4px;
 }
 
 .event .actions button {
