@@ -117,49 +117,20 @@ body {
   padding:5px 10px;
   cursor:pointer;
 }
-.chat-messages, .messages-list {
-  flex:1;
-  padding:10px;
-  overflow-y:auto;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.chat-input-area, .messages-input-area {
-  display:flex;
-  gap:5px;
-  padding:8px;
-  border-top:1px solid #007bff44;
-  background:#0d1b2a;
-}
-.chat-input-area input, .messages-input-area input{
-  flex:1;
-  padding:8px 10px;
-  border-radius:20px;
-  border:1px solid #007bff44;
-  background:#000;
-  color:#fff;
-}
-.chat-input-area button, .messages-input-area button{
-  padding:8px 12px;
-  border-radius:12px;
-  border:1px solid #007bff44;
-  background:#007bff22;
-  color:#fff;
-  cursor:pointer;
-}
-.message {
-  display:flex;
-  gap:8px;
-  max-width:80%;
-  padding:8px 12px;
-  border-radius:12px;
-  position:relative;
-  word-wrap:break-word;
-}
+.chat-container { display:flex; flex:1; height:calc(100% - 40px); }
+.contacts-list { width:30%; background:#111; overflow-y:auto; display:flex; flex-direction:column; gap:2px; }
+.contact { padding:10px; display:flex; align-items:center; gap:8px; cursor:pointer; background:#0d1b2a; color:#fff; }
+.contact:hover { background:#007bff11; }
+.contact .avatar { width:32px; height:32px; border-radius:50%; background-size:cover; background-position:center; flex-shrink:0; }
+.contact .name { font-size:14px; opacity:0.9; }
+.chat-messages { flex:1; background:#0d1b2a; padding:8px; display:flex; flex-direction:column; gap:8px; overflow-y:auto; }
+.chat-input-area { display:flex; gap:5px; padding:8px; border-top:1px solid #007bff44; background:#0d1b2a; }
+.chat-input-area input { flex:1; padding:8px 10px; border-radius:20px; border:1px solid #007bff44; background:#000; color:#fff; }
+.chat-input-area button { padding:8px 12px; border-radius:12px; border:1px solid #007bff44; background:#007bff22; color:#fff; cursor:pointer; }
+.message { display:flex; gap:8px; max-width:80%; padding:8px 12px; border-radius:12px; word-wrap:break-word; }
 .message.me { align-self:flex-end; background:#007bff33; flex-direction:row-reverse; }
 .message.other { align-self:flex-start; background:#222; }
-.avatar { width:28px; height:28px; border-radius:50%; flex-shrink:0; background-size:cover; background-position:center; }
+.message .avatar { width:28px; height:28px; border-radius:50%; flex-shrink:0; background-size:cover; background-position:center; }
 .message-content { display:flex; flex-direction:column; }
 .username { font-size:12px; font-weight:bold; opacity:0.8; margin-bottom:2px; }
 .delete-btn { position:absolute; top:4px; right:4px; background:#ff000044; border:none; color:#fff; font-size:10px; border-radius:4px; cursor:pointer; padding:1px 3px; }
@@ -204,16 +175,21 @@ body {
 <!-- STUDENT CHAT APP -->
 <div id="chat" class="phone-screen" style="display:flex;flex-direction:column;">
   <div class="header">Student Chat <button onclick="closeApp('chat')">Back</button></div>
-  <div class="chat-messages" id="chatScreen"></div>
-  <div class="chat-input-area">
-    <input type="text" id="chatInput" placeholder="Type a message...">
-    <button onclick="sendMessage()">Send</button>
+  <div class="chat-container">
+    <div class="contacts-list" id="contactsList"></div>
+    <div class="chat-area" style="flex:1; display:flex; flex-direction:column;">
+      <div class="chat-messages" id="chatScreen"></div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Type a message..." disabled>
+        <button disabled>Send</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
 // USER INFO
-let username = localStorage.getItem("dashboardUsername") || "Rayan Khalid";
+let username = localStorage.getItem("dashboardUsername") || "Anonymous";
 let avatar = localStorage.getItem("dashboardAvatar") || "https://i.imgur.com/oCkEbrA.jpg";
 
 // SETUP FLOW
@@ -238,25 +214,36 @@ function closeApp(app){ document.getElementById(app).style.display='none'; docum
 
 // STUDENT CHAT
 let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
+let contacts = [
+  {name:"Student 1", avatar:"https://i.imgur.com/1.png", messages:[]},
+  {name:"Student 2", avatar:"https://i.imgur.com/2.png", messages:[]},
+  {name:"Student 3", avatar:"https://i.imgur.com/3.png", messages:[]}
+];
+let activeContact = null;
+
+const contactsList = document.getElementById('contactsList');
 const chatScreen = document.getElementById('chatScreen');
+
 function loadChat(){
+  contactsList.innerHTML='';
+  contacts.forEach((c,i)=>{
+    const div=document.createElement('div');
+    div.className='contact';
+    div.innerHTML=`<div class="avatar" style="background-image:url('${c.avatar}')"></div><div class="name">${c.name}</div>`;
+    div.onclick=()=>openContact(i);
+    contactsList.appendChild(div);
+  });
+}
+
+function openContact(i){
+  activeContact=contacts[i];
   chatScreen.innerHTML='';
-  messages.forEach(m=>{
+  activeContact.messages.forEach(m=>{
     chatScreen.appendChild(createMessage(m.username,m.text,m.me,m.avatar));
   });
   chatScreen.scrollTop=chatScreen.scrollHeight;
 }
-function sendMessage(){
-  const chatInput=document.getElementById('chatInput'); 
-  const text=chatInput.value.trim(); 
-  if(!text) return;
-  const msg={username,text,me:true,avatar};
-  messages.push(msg);
-  localStorage.setItem("chatMessages",JSON.stringify(messages));
-  chatScreen.appendChild(createMessage(msg.username,msg.text,msg.me,msg.avatar));
-  chatScreen.scrollTop=chatScreen.scrollHeight;
-  chatInput.value='';
-}
+
 function createMessage(user,text,me=false,avatarSrc=avatar){
   const div=document.createElement('div'); 
   div.className='message '+(me?'me':'other'); 
@@ -267,16 +254,10 @@ function createMessage(user,text,me=false,avatarSrc=avatar){
       <div class="text">${text}</div>
     </div>
     <button class="delete-btn">x</button>`;
-  div.querySelector('.delete-btn').onclick=(e)=>{ e.stopPropagation(); div.remove(); messages=messages.filter(m=>m.text!==text||m.username!==user); localStorage.setItem("chatMessages",JSON.stringify(messages)); };
+  div.querySelector('.delete-btn').onclick=(e)=>{ e.stopPropagation(); div.remove(); if(activeContact) activeContact.messages=activeContact.messages.filter(m=>m.text!==text||m.username!==user); };
   div.ondblclick=()=>div.classList.toggle('liked');
   return div;
 }
-
-// DRAG APPS (HOME)
-document.querySelectorAll('.app').forEach(app=>{
-  app.addEventListener('dragstart',(e)=>app.classList.add('dragging'));
-  app.addEventListener('dragend',(e)=>app.classList.remove('dragging'));
-});
 </script>
 
 </body>
