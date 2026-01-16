@@ -129,9 +129,9 @@ let selectedInput = null;
 
 // IDs and roles
 const accounts = {
-  admin: { id: "1927" },
-  teacher: { id: "9183" },
-  student: { "3841": true, "5609": true, "7426": true }
+  admin: { id: "1927", name: "Admin" },
+  teacher: { id: "9183", name: "Teacher" },
+  student: { "3841": "Student1", "5609": "Student2", "7426": "Student3" }
 };
 
 function selectRole(role, elem){
@@ -165,9 +165,10 @@ function login(){
     return;
   }
 
-  // Guest role → read-only
+  // Guest → read-only
   if(selectedRole === "guest"){
     localStorage.setItem("role","guest");
+    localStorage.setItem("username","Guest");
     window.location.href = "dashboard.html";
     return;
   }
@@ -175,6 +176,7 @@ function login(){
   // Admin → full access
   if(selectedRole === "admin" && id === accounts.admin.id){
     localStorage.setItem("role","admin");
+    localStorage.setItem("username",accounts.admin.name);
     window.location.href = "dashboard.html";
     return;
   }
@@ -182,18 +184,19 @@ function login(){
   // Teacher → view + upload announcements
   if(selectedRole === "teacher" && id === accounts.teacher.id){
     localStorage.setItem("role","teacher");
+    localStorage.setItem("username",accounts.teacher.name);
     window.location.href = "dashboard.html";
     return;
   }
 
-  // Students → view + edit all
+  // Student → view + edit all
   if(selectedRole === "student" && accounts.student[id]){
     localStorage.setItem("role","student");
+    localStorage.setItem("username",accounts.student[id]);
     window.location.href = "dashboard.html";
     return;
   }
 
-  // Wrong ID
   msg.textContent = "Wrong ID";
 }
 </script>
