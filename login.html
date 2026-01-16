@@ -127,7 +127,7 @@ button {
 let selectedRole = null;
 let selectedInput = null;
 
-// IDs and roles
+// IDs and names
 const accounts = {
   admin: { id: "1927", name: "Admin" },
   teacher: { id: "9183", name: "Teacher" },
@@ -137,14 +137,14 @@ const accounts = {
 function selectRole(role, elem){
   selectedRole = role;
 
-  // Activate clicked avatar
+  // Highlight selected role
   document.querySelectorAll(".role-btn").forEach(b => b.classList.remove("active"));
   elem.classList.add("active");
 
-  // Hide all inputs first
+  // Hide all inputs
   document.querySelectorAll(".role-input").forEach(input => input.style.display = "none");
 
-  // Show input for the clicked role (if not guest)
+  // Show input for role (except guest)
   if(role === "guest"){
     selectedInput = null;
   } else {
@@ -173,7 +173,7 @@ function login(){
     return;
   }
 
-  // Admin → full access
+  // Admin
   if(selectedRole === "admin" && id === accounts.admin.id){
     localStorage.setItem("role","admin");
     localStorage.setItem("username",accounts.admin.name);
@@ -181,7 +181,7 @@ function login(){
     return;
   }
 
-  // Teacher → view + upload announcements
+  // Teacher
   if(selectedRole === "teacher" && id === accounts.teacher.id){
     localStorage.setItem("role","teacher");
     localStorage.setItem("username",accounts.teacher.name);
@@ -189,7 +189,7 @@ function login(){
     return;
   }
 
-  // Student → view + edit all
+  // Student
   if(selectedRole === "student" && accounts.student[id]){
     localStorage.setItem("role","student");
     localStorage.setItem("username",accounts.student[id]);
