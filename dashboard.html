@@ -156,19 +156,10 @@ body {
 </div>
 
 <script>
-const DEFAULT_AVATAR =
-"https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg";
+const DEFAULT_AVATAR = "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg";
 
-let displayName = localStorage.getItem("dashboardDisplayName");
-let avatar = localStorage.getItem("avatar");
-
-if(!displayName){
-  displayName = "Guest";
-}
-
-if(!avatar){
-  avatar = DEFAULT_AVATAR;
-}
+let displayName = localStorage.getItem("dashboardDisplayName") || "Guest";
+let avatar = localStorage.getItem("avatar") || DEFAULT_AVATAR;
 
 document.getElementById("userDisplay").textContent = displayName;
 document.querySelector(".avatar img").src = avatar;
