@@ -156,26 +156,18 @@ body {
 </div>
 
 <script>
-const users = [
-  { username:"rayan", role:"admin", avatar:"https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg", displayName:"Rayan Khalid" },
-  { username:"hala202", role:"student", avatar:"https://via.placeholder.com/32", displayName:"Hala" },
-  { username:"nada203", role:"student", avatar:"https://via.placeholder.com/32", displayName:"Nada" },
-  { username:"teacher01", role:"teacher", avatar:"https://via.placeholder.com/32", displayName:"Teacher" }
-];
+const DEFAULT_AVATAR =
+"https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg";
 
-let username = localStorage.getItem("username");
+let displayName = localStorage.getItem("dashboardDisplayName");
+let avatar = localStorage.getItem("avatar");
 
-let displayName = "Guest";
-let avatar = "https://via.placeholder.com/32";
+if(!displayName){
+  displayName = "Guest";
+}
 
-if (username) {
-  const user = users.find(u => u.username === username);
-  if (user) {
-    displayName = user.displayName;
-    avatar = user.avatar;
-  } else {
-    displayName = username;
-  }
+if(!avatar){
+  avatar = DEFAULT_AVATAR;
 }
 
 document.getElementById("userDisplay").textContent = displayName;
@@ -195,9 +187,12 @@ document.onclick = e => {
   }
 };
 
-function logout() {
+function logout(){
   localStorage.removeItem("username");
+  localStorage.removeItem("dashboardUsername");
+  localStorage.removeItem("dashboardDisplayName");
   localStorage.removeItem("role");
+  localStorage.removeItem("avatar");
   window.location.href = "login.html";
 }
 </script>
