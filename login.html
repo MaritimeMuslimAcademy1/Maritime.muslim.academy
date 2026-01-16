@@ -47,7 +47,7 @@ h2 {
   background:#0d1b2a;
   border:2px solid #007bff44;
   cursor:pointer;
-  transition: all 0.3s ease;
+  transition:all 0.3s ease;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -127,24 +127,24 @@ button {
 let selectedRole = null;
 let selectedInput = null;
 
-// IDs and names
 const accounts = {
-  admin: { id: "1927", name: "Admin" },
-  teacher: { id: "9183", name: "Teacher" },
-  student: { "3841": "Student1", "5609": "Student2", "7426": "Student3" }
+  admin: { id: "1927", name: "Rayan Khalid" },
+  teacher: { id: "9183", name: "Teachers" },
+  student: {
+    "3841": "Hala",
+    "5609": "Nada",
+    "7426": "Lamaa"
+  }
 };
 
 function selectRole(role, elem){
   selectedRole = role;
 
-  // Highlight selected role
   document.querySelectorAll(".role-btn").forEach(b => b.classList.remove("active"));
   elem.classList.add("active");
 
-  // Hide all inputs
   document.querySelectorAll(".role-input").forEach(input => input.style.display = "none");
 
-  // Show input for role (except guest)
   if(role === "guest"){
     selectedInput = null;
   } else {
@@ -165,34 +165,38 @@ function login(){
     return;
   }
 
-  // Guest → read-only
   if(selectedRole === "guest"){
     localStorage.setItem("role","guest");
     localStorage.setItem("username","Guest");
+    localStorage.setItem("dashboardUsername","Guest");
+    localStorage.setItem("dashboardDisplayName","Guest");
     window.location.href = "dashboard.html";
     return;
   }
 
-  // Admin
   if(selectedRole === "admin" && id === accounts.admin.id){
     localStorage.setItem("role","admin");
     localStorage.setItem("username",accounts.admin.name);
+    localStorage.setItem("dashboardUsername",accounts.admin.name);
+    localStorage.setItem("dashboardDisplayName",accounts.admin.name);
     window.location.href = "dashboard.html";
     return;
   }
 
-  // Teacher
   if(selectedRole === "teacher" && id === accounts.teacher.id){
     localStorage.setItem("role","teacher");
     localStorage.setItem("username",accounts.teacher.name);
+    localStorage.setItem("dashboardUsername",accounts.teacher.name);
+    localStorage.setItem("dashboardDisplayName",accounts.teacher.name);
     window.location.href = "dashboard.html";
     return;
   }
 
-  // Student
   if(selectedRole === "student" && accounts.student[id]){
     localStorage.setItem("role","student");
     localStorage.setItem("username",accounts.student[id]);
+    localStorage.setItem("dashboardUsername",accounts.student[id]);
+    localStorage.setItem("dashboardDisplayName",accounts.student[id]);
     window.location.href = "dashboard.html";
     return;
   }
