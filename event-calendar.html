@@ -80,8 +80,8 @@ body {
   position:relative;
   display:flex;
   flex-direction:column;
-  justify-content:center; /* centers events vertically */
-  align-items:center;     /* centers events horizontally */
+  justify-content:center;
+  align-items:center;
 }
 
 .day.today { border:1px solid #007bff; }
@@ -158,104 +158,104 @@ body {
 </div>
 
 <script>
-const role = localStorage.getItem("role") || "guest"
-const username = localStorage.getItem("username") || "Staff"
-let eventsData = JSON.parse(localStorage.getItem("eventsData") || "{}")
+const role = localStorage.getItem("role") || "guest";
+const username = localStorage.getItem("username") || "Staff";
+let eventsData = JSON.parse(localStorage.getItem("eventsData") || "{}");
 
-function goBack(){ window.location.href='dashboard.html' }
+function goBack(){ window.location.href='dashboard.html'; }
 
-let currentDate = new Date()
+let currentDate = new Date();
 
-function saveEvents(){ localStorage.setItem("eventsData", JSON.stringify(eventsData)) }
+function saveEvents(){ localStorage.setItem("eventsData", JSON.stringify(eventsData)); }
 
 function renderCalendar(){
-  const year = currentDate.getFullYear()
-  const month = currentDate.getMonth()
-  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"]
-  document.getElementById("monthLabel").textContent = monthNames[month]+" "+year
-  const firstDay = new Date(year, month, 1).getDay()
-  const daysInMonth = new Date(year, month+1,0).getDate()
-  const calendarDays = document.getElementById("calendarDays")
-  calendarDays.innerHTML=""
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById("monthLabel").textContent = monthNames[month]+" "+year;
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1,0).getDate();
+  const calendarDays = document.getElementById("calendarDays");
+  calendarDays.innerHTML="";
 
   for(let i=0;i<firstDay;i++){
-    const empty = document.createElement("div")
-    empty.className="day empty"
-    calendarDays.appendChild(empty)
+    const empty = document.createElement("div");
+    empty.className="day empty";
+    calendarDays.appendChild(empty);
   }
 
-  let hasEvents=false
+  let hasEvents=false;
   for(let d=1; d<=daysInMonth; d++){
-    const dayDiv=document.createElement("div")
-    dayDiv.className="day"
-    const today=new Date()
-    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()) dayDiv.classList.add("today")
-    const dateKey=`${year}-${month+1}-${d}`
-    dayDiv.innerHTML=`<div class="date">${d}</div>`
+    const dayDiv=document.createElement("div");
+    dayDiv.className="day";
+    const today=new Date();
+    if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()) dayDiv.classList.add("today");
+    const dateKey=`${year}-${month+1}-${d}`;
+    dayDiv.innerHTML=`<div class="date">${d}</div>`;
     if(eventsData[dateKey]){
-      hasEvents=true
+      hasEvents=true;
       eventsData[dateKey].forEach((ev,i)=>{
-        const eventDiv=document.createElement("div")
-        eventDiv.className="event"
+        const eventDiv=document.createElement("div");
+        eventDiv.className="event";
         eventDiv.innerHTML=`<span>${ev.title}</span>
-          ${role==="admin"?`<div class="actions">
+          ${(role==="admin"||role==="teacher")?`<div class="actions">
             <button onclick="editEvent(event,'${dateKey}',${i})">
               <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11-11.03-3.75-3.75L3 17.25zM21.41 6.34a1.25 1.25 0 0 0 0-1.77l-2-2a1.25 1.25 0 0 0-1.77 0l-1.83 1.83 3.75 3.75 1.85-1.81z"/></svg>
             </button>
             <button onclick="deleteEvent(event,'${dateKey}',${i})">
               <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm3.5-9h1v7h-1V10zm5 0h1v7h-1V10zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
             </button>
-          </div>`:""}`
-        dayDiv.appendChild(eventDiv)
-      })
+          </div>`:""}`;
+        dayDiv.appendChild(eventDiv);
+      });
     }
-    calendarDays.appendChild(dayDiv)
+    calendarDays.appendChild(dayDiv);
   }
-  document.getElementById("emptyState").style.display = hasEvents ? "none" : "block"
+  document.getElementById("emptyState").style.display = hasEvents ? "none" : "block";
 }
 
-function changeMonth(step){ currentDate.setMonth(currentDate.getMonth()+step); renderCalendar() }
+function changeMonth(step){ currentDate.setMonth(currentDate.getMonth()+step); renderCalendar(); }
 
 function addEvent(dateKey){
-  const title = prompt("Event title:")
-  if(!title) return
-  if(!eventsData[dateKey]) eventsData[dateKey]=[]
-  eventsData[dateKey].push({title})
-  saveEvents()
-  renderCalendar()
+  const title = prompt("Event title:");
+  if(!title) return;
+  if(!eventsData[dateKey]) eventsData[dateKey]=[];
+  eventsData[dateKey].push({title});
+  saveEvents();
+  renderCalendar();
 }
 
 function editEvent(e,dateKey,index){
-  e.stopPropagation()
-  const title=prompt("Edit event title:", eventsData[dateKey][index].title)
-  if(title) eventsData[dateKey][index].title=title
-  saveEvents()
-  renderCalendar()
+  e.stopPropagation();
+  const title=prompt("Edit event title:", eventsData[dateKey][index].title);
+  if(title) eventsData[dateKey][index].title=title;
+  saveEvents();
+  renderCalendar();
 }
 
 function deleteEvent(e,dateKey,index){
-  e.stopPropagation()
-  if(confirm("Delete this event?")) {
-    eventsData[dateKey].splice(index,1)
-    if(eventsData[dateKey].length===0) delete eventsData[dateKey]
-    saveEvents()
-    renderCalendar()
+  e.stopPropagation();
+  if(confirm("Delete this event?")){
+    eventsData[dateKey].splice(index,1);
+    if(eventsData[dateKey].length===0) delete eventsData[dateKey];
+    saveEvents();
+    renderCalendar();
   }
 }
 
-renderCalendar()
+renderCalendar();
 
-if(role==="admin"){
+if(role==="admin"||role==="teacher"){
   document.getElementById("calendarDays").addEventListener("click",function(ev){
-    const dayDiv = ev.target.closest(".day")
+    const dayDiv = ev.target.closest(".day");
     if(dayDiv && !dayDiv.classList.contains("empty")){
-      const day = dayDiv.querySelector(".date").textContent
-      const month = currentDate.getMonth()+1
-      const year = currentDate.getFullYear()
-      const dateKey=`${year}-${month}-${day}`
-      addEvent(dateKey)
+      const day = dayDiv.querySelector(".date").textContent;
+      const month = currentDate.getMonth()+1;
+      const year = currentDate.getFullYear();
+      const dateKey=`${year}-${month}-${day}`;
+      addEvent(dateKey);
     }
-  })
+  });
 }
 </script>
 </body>
