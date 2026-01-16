@@ -29,9 +29,15 @@ h2 {
 
 .roles {
   display:flex;
-  justify-content:space-evenly; /* Even spacing like Crunchyroll */
+  justify-content:space-evenly;
   align-items:center;
   margin-bottom:30px;
+}
+
+.role-container {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
 .role-btn {
@@ -60,9 +66,9 @@ h2 {
 }
 
 input {
-  width:200px;
+  width:120px;
   padding:10px;
-  margin-top:20px;
+  margin-top:10px;
   border-radius:8px;
   border:none;
   background:#222;
@@ -95,19 +101,31 @@ button {
   <h2>PICK ROLE</h2>
 
   <div class="roles">
-    <div class="role-btn" onclick="selectRole('admin', this)">Admin</div>
-    <div class="role-btn" onclick="selectRole('teacher', this)">Teachers</div>
-    <div class="role-btn" onclick="selectRole('student', this)">Students</div>
-    <div class="role-btn" onclick="selectRole('guest', this)">Guest</div>
+    <div class="role-container">
+      <div class="role-btn" onclick="selectRole('admin', this)">Admin</div>
+      <input type="number" placeholder="Enter ID" class="role-input">
+    </div>
+    <div class="role-container">
+      <div class="role-btn" onclick="selectRole('teacher', this)">Teachers</div>
+      <input type="number" placeholder="Enter ID" class="role-input">
+    </div>
+    <div class="role-container">
+      <div class="role-btn" onclick="selectRole('student', this)">Students</div>
+      <input type="number" placeholder="Enter ID" class="role-input">
+    </div>
+    <div class="role-container">
+      <div class="role-btn" onclick="selectRole('guest', this)">Guest</div>
+      <input type="number" placeholder="Enter ID" class="role-input">
+    </div>
   </div>
 
-  <input id="idInput" type="number" placeholder="Enter ID">
   <button onclick="login()">Enter</button>
   <div id="msg"></div>
 </div>
 
 <script>
 let selectedRole = null;
+let selectedInput = null;
 
 const accounts = {
   admin: { id: "1927" },
@@ -117,15 +135,21 @@ const accounts = {
 
 function selectRole(role, elem){
   selectedRole = role;
+
+  // Remove active class from all buttons
   document.querySelectorAll(".role-btn").forEach(b => b.classList.remove("active"));
   elem.classList.add("active");
 
-  const input = document.getElementById("idInput");
+  // Hide all inputs first
+  document.querySelectorAll(".role-input").forEach(input => input.style.display = "none");
+
+  // Show input only for this role (if not guest)
   if(role === "guest"){
-    input.style.display = "none";
+    selectedInput = null;
   } else {
-    input.style.display = "block";
-    input.value = "";
+    selectedInput = elem.nextElementSibling;
+    selectedInput.style.display = "block";
+    selectedInput.value = "";
   }
 
   document.getElementById("msg").textContent = "";
@@ -133,7 +157,7 @@ function selectRole(role, elem){
 
 function login(){
   const msg = document.getElementById("msg");
-  const id = document.getElementById("idInput").value;
+  let id = selectedInput ? selectedInput.value : "";
 
   if(!selectedRole){
     msg.textContent = "Select a role";
