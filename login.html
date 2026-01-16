@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MMA Login</title>
+<title>Pick Role</title>
 <style>
 body {
   margin:0;
-  background:#0a0a0a;
+  background:#0a0a0a; /* Original background */
   font-family:Arial,sans-serif;
   display:flex;
   justify-content:center;
@@ -20,30 +20,35 @@ body {
   background:#1a1a1a;
   padding:40px;
   border-radius:20px;
-  width:360px;
+  width:400px;
   text-align:center;
   box-shadow:0 0 20px #000;
 }
 
 h2 {
   margin-bottom:25px;
+  font-size:28px;
 }
 
 .roles {
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:15px;
+  gap:20px;
   margin-bottom:25px;
 }
 
 .role-btn {
+  display:flex;
+  justify-content:center;
+  align-items:center;
   padding:15px;
   background:#0d1b2a;
   border:2px solid #007bff44;
-  border-radius:15px;
+  border-radius:50%; /* Circular */
   cursor:pointer;
-  font-weight:bold;
   transition:all 0.2s ease;
+  width:100px;
+  height:100px;
 }
 
 .role-btn:hover {
@@ -51,14 +56,13 @@ h2 {
 }
 
 .role-btn.active {
-  background:#007bff33;
   border-color:#007bff;
 }
 
 input {
   width:100%;
   padding:12px;
-  margin-top:10px;
+  margin-top:15px;
   border-radius:8px;
   border:none;
   background:#222;
@@ -89,7 +93,8 @@ button {
 <body>
 
 <div class="card">
-  <h2>Select Profile</h2>
+  <h2>PICK ROLE</h2>
+
   <div class="roles">
     <div class="role-btn" onclick="selectRole('admin', this)">Admin</div>
     <div class="role-btn" onclick="selectRole('teacher', this)">Teachers</div>
@@ -106,13 +111,9 @@ button {
 let selectedRole = null;
 
 const accounts = {
-  admin: { id: "1927", name: "Rayan Khalid" },
-  teacher: { id: "9183", name: "Teachers" },
-  student: {
-    "3841": "Hala",
-    "5609": "Nada",
-    "7426": "Lamaa"
-  }
+  admin: { id: "1927" },
+  teacher: { id: "9183" },
+  student: { "3841": true, "5609": true, "7426": true }
 };
 
 function selectRole(role, elem){
@@ -121,7 +122,6 @@ function selectRole(role, elem){
   elem.classList.add("active");
 
   const input = document.getElementById("idInput");
-
   if(role === "guest"){
     input.style.display = "none";
   } else {
@@ -137,34 +137,30 @@ function login(){
   const id = document.getElementById("idInput").value;
 
   if(!selectedRole){
-    msg.textContent = "Select a profile";
+    msg.textContent = "Select a role";
     return;
   }
 
   if(selectedRole === "guest"){
     localStorage.setItem("role","guest");
-    localStorage.setItem("dashboardUsername","Guest");
     window.location.href = "dashboard.html";
     return;
   }
 
   if(selectedRole === "admin" && id === accounts.admin.id){
     localStorage.setItem("role","admin");
-    localStorage.setItem("dashboardUsername",accounts.admin.name);
     window.location.href = "dashboard.html";
     return;
   }
 
   if(selectedRole === "teacher" && id === accounts.teacher.id){
     localStorage.setItem("role","teacher");
-    localStorage.setItem("dashboardUsername",accounts.teacher.name);
     window.location.href = "dashboard.html";
     return;
   }
 
   if(selectedRole === "student" && accounts.student[id]){
     localStorage.setItem("role","student");
-    localStorage.setItem("dashboardUsername",accounts.student[id]);
     window.location.href = "dashboard.html";
     return;
   }
