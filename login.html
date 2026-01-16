@@ -128,6 +128,7 @@ const AVATAR_URL = "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807
 let selectedRole = "";
 let selectedInput = null;
 
+// IDs and usernames
 const accounts = {
   admin: { id:"1927", name:"Rayan Khalid" },
   teacher: { id:"9183", name:"Teacher" },
@@ -158,10 +159,11 @@ function selectRole(role, el){
 }
 
 function saveUser(name, role){
-  localStorage.setItem("username", name);          // username for role
-  localStorage.setItem("dashboardUsername", name); // display in dashboard
+  // Always save username, display name, role, avatar in localStorage
+  localStorage.setItem("dashboardDisplayName", name);
+  localStorage.setItem("dashboardUsername", name);
   localStorage.setItem("role", role);
-  localStorage.setItem("avatar", AVATAR_URL);      // save avatar URL
+  localStorage.setItem("avatar", AVATAR_URL);
   window.location.href = "dashboard.html";
 }
 
