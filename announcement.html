@@ -4,11 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Announcement</title>
-
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial,sans-serif;
   background-color: #000;
   color: #fff;
   height: 100vh;
@@ -25,126 +24,101 @@ body {
   font-size: 14px;
 }
 
-.top-bar .center {
-  font-weight: bold;
-  font-size: 18px;
-}
+.top-bar .center { font-weight:bold; font-size:18px; }
+.top-bar .right button { background:#007bff22; border:1px solid #007bff44; color:#fff; padding:6px 14px; border-radius:8px; cursor:pointer; }
 
-.top-bar .right button {
-  background: #007bff22;
-  border: 1px solid #007bff44;
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.content {
-  margin: 120px auto 80px;
-  width: 700px;
-}
+.content { margin:120px auto 80px; width:700px; }
 
 .post-box {
-  background: #0d1b2a;
-  border: 1px solid #007bff44;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 30px;
+  background:#0d1b2a;
+  border:1px solid #007bff44;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:30px;
 }
 
 .post-box input,
 .post-box textarea {
-  width: 100%;
-  background: #000;
-  border: 1px solid #007bff44;
-  border-radius: 8px;
-  padding: 10px;
-  color: #fff;
-  margin-bottom: 10px;
-  font-size: 14px;
+  width:100%;
+  background:#000;
+  border:1px solid #007bff44;
+  border-radius:8px;
+  padding:10px;
+  color:#fff;
+  margin-bottom:10px;
+  font-size:14px;
 }
 
 .post-box button {
-  background: #007bff22;
-  border: 1px solid #007bff44;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
+  background:#007bff22;
+  border:1px solid #007bff44;
+  color:#fff;
+  padding:8px 16px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
 .announcement {
-  background: #0d1b2a;
-  border: 1px solid #007bff44;
-  border-radius: 12px;
-  padding: 15px 15px 45px;
-  margin-bottom: 12px;
-  position: relative;
+  background:#0d1b2a;
+  border:1px solid #007bff44;
+  border-radius:12px;
+  padding:15px 15px 45px;
+  margin-bottom:12px;
+  position:relative;
 }
 
 .announcement-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
 }
 
 .author {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  opacity: 0.9;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  opacity:0.9;
 }
 
 .author .avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #007bff44;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:#007bff44;
 }
 
-.meta {
-  font-size: 12px;
-  opacity: 0.6;
-  text-align: right;
-}
+.meta { font-size:12px; opacity:0.6; text-align:right; }
 
-.announcement h3 {
-  margin: 0 0 6px;
-}
-
-.announcement p {
-  margin: 0 0 6px;
-  opacity: 0.9;
-}
+.announcement h3 { margin:0 0 6px; }
+.announcement p { margin:0 0 6px; opacity:0.9; }
 
 .announcement-buttons {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  display: flex;
-  gap: 5px;
+  position:absolute;
+  bottom:10px;
+  right:10px;
+  display:flex;
+  gap:5px;
 }
 
 .announcement-buttons button {
-  background: #007bff22;
-  border: 1px solid #007bff44;
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 12px;
+  background:#007bff22;
+  border:1px solid #007bff44;
+  color:#fff;
+  padding:4px 8px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
 }
 
 .empty-state {
-  text-align: center;
-  opacity: 0.6;
-  padding: 40px 0;
+  text-align:center;
+  opacity:0.6;
+  padding:40px 0;
 }
 </style>
 </head>
-
 <body>
 
 <div class="top-bar">
@@ -172,71 +146,98 @@ body {
 </div>
 
 <script>
-const role = localStorage.getItem("role") || "guest"
-const username = localStorage.getItem("username") || "Staff"
-const postBox = document.getElementById("postBox")
+const role = localStorage.getItem("role") || "guest";
+const username = localStorage.getItem("username") || "Staff";
+const postBox = document.getElementById("postBox");
 
-if (role === "student" || role === "guest") {
-  postBox.style.display = "none"
+if(role === "guest"){
+  postBox.style.display = "none";
 }
 
-function goBack() {
-  window.location.href = "dashboard.html"
+// Load announcements from localStorage
+let announcementsData = JSON.parse(localStorage.getItem("announcementsData") || "[]");
+
+function goBack(){ window.location.href="dashboard.html"; }
+
+function saveAnnouncements(){
+  localStorage.setItem("announcementsData", JSON.stringify(announcementsData));
 }
 
-function postAnnouncement() {
-  const title = document.getElementById("title").value
-  const message = document.getElementById("message").value
-  if (title === "" || message === "") return
+// Render all announcements
+function renderAnnouncements(){
+  const container = document.getElementById("announcements");
+  container.innerHTML = "";
+  if(announcementsData.length === 0){
+    document.getElementById("emptyState").style.display = "block";
+    container.appendChild(document.getElementById("emptyState"));
+    return;
+  }
+  document.getElementById("emptyState").style.display = "none";
 
-  document.getElementById("emptyState").style.display = "none"
-
-  const date = new Date().toLocaleString()
-  const container = document.getElementById("announcements")
-
-  const card = document.createElement("div")
-  card.className = "announcement"
-
-  card.innerHTML = `
-    <div class="announcement-header">
-      <div class="author">
-        <div class="avatar"></div>
-        <div>
-          <div>${username}</div>
-          <div style="font-size:11px;opacity:0.6">${role.toUpperCase()}</div>
+  announcementsData.slice().reverse().forEach((post,index)=>{
+    const card = document.createElement("div");
+    card.className = "announcement";
+    card.dataset.index = index;
+    card.innerHTML = `
+      <div class="announcement-header">
+        <div class="author">
+          <div class="avatar"></div>
+          <div>
+            <div>${post.username}</div>
+            <div style="font-size:11px;opacity:0.6">${post.role.toUpperCase()}</div>
+          </div>
         </div>
+        <div class="meta">${post.date}</div>
       </div>
-      <div class="meta">${date}</div>
-    </div>
-    <h3>${title}</h3>
-    <p>${message}</p>
-    <div class="announcement-buttons">
-      <button onclick="editPost(this)">Edit</button>
-      <button onclick="deletePost(this)">Delete</button>
-    </div>
-  `
-
-  container.prepend(card)
-
-  document.getElementById("title").value = ""
-  document.getElementById("message").value = ""
+      <h3>${post.title}</h3>
+      <p>${post.message}</p>
+      ${role !== "guest" ? `
+      <div class="announcement-buttons">
+        <button onclick="editPost(${index})">Edit</button>
+        <button onclick="deletePost(${index})">Delete</button>
+      </div>` : ""}
+    `;
+    container.appendChild(card);
+  });
 }
 
-function editPost(btn) {
-  const card = btn.closest(".announcement")
-  const title = card.querySelector("h3").innerText
-  const message = card.querySelector("p").innerText
+// Post new announcement
+function postAnnouncement(){
+  const title = document.getElementById("title").value.trim();
+  const message = document.getElementById("message").value.trim();
+  if(!title || !message) return;
 
-  const newTitle = prompt("Edit title", title)
-  const newMessage = prompt("Edit message", message)
+  const date = new Date().toLocaleString();
+  announcementsData.push({title,message,date,username,role});
+  saveAnnouncements();
+  renderAnnouncements();
 
-  if (newTitle) card.querySelector("h3").innerText = newTitle
-  if (newMessage) card.querySelector("p").innerText = newMessage
+  document.getElementById("title").value = "";
+  document.getElementById("message").value = "";
 }
 
-function deletePost(btn) {
-  btn.closest(".announcement").remove()
+// Edit announcement
+function editPost(index){
+  const post = announcementsData[index];
+  const newTitle = prompt("Edit title", post.title);
+  const newMessage = prompt("Edit message", post.message);
+  if(newTitle) post.title = newTitle;
+  if(newMessage) post.message = newMessage;
+  saveAnnouncements();
+  renderAnnouncements();
 }
+
+// Delete announcement
+function deletePost(index){
+  if(confirm("Delete this announcement?")){
+    announcementsData.splice(index,1);
+    saveAnnouncements();
+    renderAnnouncements();
+  }
+}
+
+// Initial render
+renderAnnouncements();
 </script>
 
 </body>
