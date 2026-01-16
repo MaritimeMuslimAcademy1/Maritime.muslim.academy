@@ -77,10 +77,6 @@ body {
   color:#fff;
 }
 
-.btn.hidden {
-  display:none;
-}
-
 .bottom-bar {
   position:fixed;
   bottom:0;
@@ -161,38 +157,39 @@ body {
 </div>
 
 <script>
+// Predefined users
 const users = [
   { username:"rayan", role:"admin", avatar:"https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg", displayName:"Rayan Khalid" },
   { username:"hala202", role:"student", avatar:"https://via.placeholder.com/32", displayName:"Hala" },
-  { username:"nada203", role:"student", avatar:"https://via.placeholder.com/32", displayName:"Nada" }
+  { username:"nada203", role:"student", avatar:"https://via.placeholder.com/32", displayName:"Nada" },
+  { username:"teacher01", role:"teacher", avatar:"https://via.placeholder.com/32", displayName:"Teacher" }
 ];
 
+// Get logged-in user info from localStorage
 const dashboardUsername = localStorage.getItem("dashboardUsername") || localStorage.getItem("username");
 const dashboardAvatar = localStorage.getItem("dashboardAvatar");
 
+// Find user object
 const user = users.find(u => u.username === dashboardUsername);
 const displayName = user ? user.displayName : "Guest";
 const avatarImg = dashboardAvatar || (user ? user.avatar : "https://via.placeholder.com/32");
 
+// Show name and avatar
 document.getElementById("userDisplay").textContent = displayName;
 document.querySelector(".avatar img").src = avatarImg;
 
+// Get role
 const role = localStorage.getItem("role");
+
+// Buttons are always visible
 const announcementBtn = document.getElementById("announcementBtn");
 const studentRoleBtn = document.getElementById("studentRoleBtn");
 const studentVoiceBtn = document.getElementById("studentVoiceBtn");
-const studentEditors = ["hala202","nada203"];
 
-if (role === "teacher") {
-  studentRoleBtn.classList.add("hidden");
-  studentVoiceBtn.classList.add("hidden");
-}
-if (role === "student" && !studentEditors.includes(dashboardUsername)) {
-  announcementBtn.classList.add("hidden");
-  studentRoleBtn.classList.add("hidden");
-  studentVoiceBtn.classList.add("hidden");
-}
+// Optional: add access restriction inside each page if needed
+// Example: teacher can upload announcement; student can edit; guest read-only
 
+// Avatar dropdown toggle
 const avatar = document.getElementById("avatar");
 const accountDropdown = document.getElementById("accountDropdown");
 
