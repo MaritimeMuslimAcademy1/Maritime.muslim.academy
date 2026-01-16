@@ -127,6 +127,7 @@ button {
 let selectedRole = null;
 let selectedInput = null;
 
+// IDs and roles
 const accounts = {
   admin: { id: "1927" },
   teacher: { id: "9183" },
@@ -136,14 +137,14 @@ const accounts = {
 function selectRole(role, elem){
   selectedRole = role;
 
-  // Remove active class from all buttons
+  // Activate clicked avatar
   document.querySelectorAll(".role-btn").forEach(b => b.classList.remove("active"));
   elem.classList.add("active");
 
   // Hide all inputs first
   document.querySelectorAll(".role-input").forEach(input => input.style.display = "none");
 
-  // Show input only for this role (if not guest)
+  // Show input for the clicked role (if not guest)
   if(role === "guest"){
     selectedInput = null;
   } else {
@@ -164,30 +165,35 @@ function login(){
     return;
   }
 
+  // Guest role → read-only
   if(selectedRole === "guest"){
     localStorage.setItem("role","guest");
     window.location.href = "dashboard.html";
     return;
   }
 
+  // Admin → full access
   if(selectedRole === "admin" && id === accounts.admin.id){
     localStorage.setItem("role","admin");
     window.location.href = "dashboard.html";
     return;
   }
 
+  // Teacher → view + upload announcements
   if(selectedRole === "teacher" && id === accounts.teacher.id){
     localStorage.setItem("role","teacher");
     window.location.href = "dashboard.html";
     return;
   }
 
+  // Students → view + edit all
   if(selectedRole === "student" && accounts.student[id]){
     localStorage.setItem("role","student");
     window.location.href = "dashboard.html";
     return;
   }
 
+  // Wrong ID
   msg.textContent = "Wrong ID";
 }
 </script>
