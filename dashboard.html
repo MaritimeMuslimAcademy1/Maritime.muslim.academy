@@ -166,39 +166,39 @@ const users = [
 ];
 
 // Get logged-in user info from localStorage
-const dashboardUsername = localStorage.getItem("dashboardUsername") || localStorage.getItem("username");
-const dashboardAvatar = localStorage.getItem("dashboardAvatar");
+let dashboardUsername = localStorage.getItem("dashboardUsername") || localStorage.getItem("username");
+let dashboardDisplayName = localStorage.getItem("dashboardDisplayName");
+let dashboardAvatar = localStorage.getItem("dashboardAvatar");
 
-// Find user object
+// If displayName/Avatar not in localStorage yet, set from user object
 const user = users.find(u => u.username === dashboardUsername);
-const displayName = user ? user.displayName : "Guest";
-const avatarImg = dashboardAvatar || (user ? user.avatar : "https://via.placeholder.com/32");
+if(user){
+  if(!dashboardDisplayName) localStorage.setItem("dashboardDisplayName", user.displayName);
+  if(!dashboardAvatar) localStorage.setItem("dashboardAvatar", user.avatar);
+  dashboardDisplayName = user.displayName;
+  dashboardAvatar = user.avatar;
+} else {
+  dashboardDisplayName = "Guest";
+  dashboardAvatar = "https://via.placeholder.com/32";
+}
 
-// Show name and avatar
-document.getElementById("userDisplay").textContent = displayName;
-document.querySelector(".avatar img").src = avatarImg;
+// Show name + avatar
+document.getElementById("userDisplay").textContent = dashboardDisplayName;
+document.querySelector(".avatar img").src = dashboardAvatar;
 
-// Get role
-const role = localStorage.getItem("role");
-
-// Buttons are always visible
+// Buttons always visible
 const announcementBtn = document.getElementById("announcementBtn");
 const studentRoleBtn = document.getElementById("studentRoleBtn");
 const studentVoiceBtn = document.getElementById("studentVoiceBtn");
 
-// Optional: add access restriction inside each page if needed
-// Example: teacher can upload announcement; student can edit; guest read-only
-
 // Avatar dropdown toggle
-const avatar = document.getElementById("avatar");
+const avatarEl = document.getElementById("avatar");
 const accountDropdown = document.getElementById("accountDropdown");
-
-avatar.onclick = () => {
+avatarEl.onclick = () => {
   accountDropdown.style.display = accountDropdown.style.display === "block" ? "none" : "block";
 };
-
 document.onclick = e => {
-  if (!avatar.contains(e.target) && !accountDropdown.contains(e.target)) {
+  if (!avatarEl.contains(e.target) && !accountDropdown.contains(e.target)) {
     accountDropdown.style.display = "none";
   }
 };
@@ -210,6 +210,8 @@ function openAccountSettings() {
 function logout() {
   localStorage.removeItem("username");
   localStorage.removeItem("dashboardUsername");
+  localStorage.removeItem("dashboardDisplayName");
+  localStorage.removeItem("dashboardAvatar");
   localStorage.removeItem("role");
   window.location.href = "login.html";
 }
