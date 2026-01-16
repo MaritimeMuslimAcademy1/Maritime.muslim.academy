@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
-
+<title>MMA Login</title>
 <style>
 body {
   margin:0;
@@ -21,32 +20,39 @@ body {
   background:#1a1a1a;
   padding:40px;
   border-radius:20px;
-  width:340px;
+  width:360px;
   text-align:center;
+  box-shadow:0 0 20px #000;
 }
 
 h2 {
-  margin-bottom:20px;
+  margin-bottom:25px;
 }
 
 .roles {
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-bottom:20px;
+  gap:15px;
+  margin-bottom:25px;
 }
 
 .role-btn {
-  padding:14px;
+  padding:15px;
   background:#0d1b2a;
-  border:1px solid #007bff44;
-  border-radius:12px;
+  border:2px solid #007bff44;
+  border-radius:15px;
   cursor:pointer;
   font-weight:bold;
+  transition:all 0.2s ease;
+}
+
+.role-btn:hover {
+  border-color:#007bff88;
 }
 
 .role-btn.active {
   background:#007bff33;
+  border-color:#007bff;
 }
 
 input {
@@ -63,7 +69,7 @@ input {
 
 button {
   width:100%;
-  margin-top:20px;
+  margin-top:15px;
   padding:12px;
   border-radius:999px;
   border:none;
@@ -75,24 +81,23 @@ button {
 
 #msg {
   margin-top:15px;
+  color:#ff5555;
+  font-weight:bold;
 }
 </style>
 </head>
-
 <body>
 
 <div class="card">
-  <h2>Select Role</h2>
-
+  <h2>Select Profile</h2>
   <div class="roles">
-    <div class="role-btn" onclick="selectRole('admin')">Admin</div>
-    <div class="role-btn" onclick="selectRole('teacher')">Teachers</div>
-    <div class="role-btn" onclick="selectRole('student')">Students</div>
-    <div class="role-btn" onclick="selectRole('guest')">Guest</div>
+    <div class="role-btn" onclick="selectRole('admin', this)">Admin</div>
+    <div class="role-btn" onclick="selectRole('teacher', this)">Teachers</div>
+    <div class="role-btn" onclick="selectRole('student', this)">Students</div>
+    <div class="role-btn" onclick="selectRole('guest', this)">Guest</div>
   </div>
 
   <input id="idInput" type="number" placeholder="Enter ID">
-
   <button onclick="login()">Enter</button>
   <div id="msg"></div>
 </div>
@@ -110,18 +115,21 @@ const accounts = {
   }
 };
 
-function selectRole(role){
+function selectRole(role, elem){
   selectedRole = role;
   document.querySelectorAll(".role-btn").forEach(b => b.classList.remove("active"));
-  event.target.classList.add("active");
+  elem.classList.add("active");
 
   const input = document.getElementById("idInput");
+
   if(role === "guest"){
     input.style.display = "none";
   } else {
     input.style.display = "block";
     input.value = "";
   }
+
+  document.getElementById("msg").textContent = "";
 }
 
 function login(){
@@ -129,7 +137,7 @@ function login(){
   const id = document.getElementById("idInput").value;
 
   if(!selectedRole){
-    msg.textContent = "Select a role";
+    msg.textContent = "Select a profile";
     return;
   }
 
