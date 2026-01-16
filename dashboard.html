@@ -158,12 +158,14 @@ body {
 <script>
 const DEFAULT_AVATAR = "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg";
 
-let displayName = localStorage.getItem("dashboardDisplayName") || "Guest";
-let avatar = localStorage.getItem("avatar") || DEFAULT_AVATAR;
+// Always use saved info, fallback to defaults
+const displayName = localStorage.getItem("dashboardDisplayName") || "Guest";
+const avatarUrl = localStorage.getItem("avatar") || DEFAULT_AVATAR;
 
 document.getElementById("userDisplay").textContent = displayName;
-document.querySelector(".avatar img").src = avatar;
+document.querySelector(".avatar img").src = avatarUrl;
 
+// Avatar dropdown toggle
 const avatarEl = document.getElementById("avatar");
 const accountDropdown = document.getElementById("accountDropdown");
 
@@ -181,9 +183,8 @@ document.onclick = e => {
 function logout(){
   localStorage.removeItem("username");
   localStorage.removeItem("dashboardUsername");
-  localStorage.removeItem("dashboardDisplayName");
   localStorage.removeItem("role");
-  localStorage.removeItem("avatar");
+  // Keep display name and avatar to stay persistent
   window.location.href = "login.html";
 }
 </script>
