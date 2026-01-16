@@ -122,15 +122,15 @@ button {
 </div>
 
 <script>
-const AVATAR =
-"https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg";
+// Avatar URL for all roles
+const AVATAR_URL = "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-6/597164807_1335245238401700_1090041719849665448_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=JlFQHx0aX6kQ7kNvwEEt658&_nc_oc=AdmQf0I3JElzmS-ZgDmMeHTi9VlWHl__oZmp9Vkv9hp9ODkemRNrSXqVthN9k0g6f2M&_nc_zt=23&_nc_ht=scontent-lga3-3.xx&_nc_gid=uJuflrg2gk7mZkydikx2GA&oh=00_AfrR1drWhj-KPAloYsWrVobK3cdtNOXayXjyzXNq31jDJw&oe=69709E41";
 
 let selectedRole = "";
 let selectedInput = null;
 
 const accounts = {
   admin: { id:"1927", name:"Rayan Khalid" },
-  teacher: { id:"9183", name:"Teachers" },
+  teacher: { id:"9183", name:"Teacher" },
   student: {
     "3841":"Hala",
     "5609":"Nada",
@@ -158,11 +158,10 @@ function selectRole(role, el){
 }
 
 function saveUser(name, role){
-  localStorage.setItem("username", name);
-  localStorage.setItem("dashboardUsername", name);
-  localStorage.setItem("dashboardDisplayName", name);
+  localStorage.setItem("username", name);          // username for role
+  localStorage.setItem("dashboardUsername", name); // display in dashboard
   localStorage.setItem("role", role);
-  localStorage.setItem("avatar", AVATAR);
+  localStorage.setItem("avatar", AVATAR_URL);      // save avatar URL
   window.location.href = "dashboard.html";
 }
 
