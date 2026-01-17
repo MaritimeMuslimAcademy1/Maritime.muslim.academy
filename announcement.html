@@ -138,8 +138,7 @@ body {
 
   <div id="announcements">
     <div class="empty-state" id="emptyState">
-      No announcements yet.<br>
-      Check back later.
+      No announcement yet come back later
     </div>
   </div>
 
@@ -150,6 +149,7 @@ const role = localStorage.getItem("role") || "guest";
 const username = localStorage.getItem("username") || "Staff";
 const postBox = document.getElementById("postBox");
 
+// Hide post box for guests
 if(role === "guest"){
   postBox.style.display = "none";
 }
