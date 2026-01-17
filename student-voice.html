@@ -14,8 +14,6 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
-
-/* Top bar */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -33,14 +31,10 @@ body {
   border-radius: 8px;
   cursor: pointer;
 }
-
-/* Content */
 .content {
   width: 700px;
   margin: 120px auto 80px;
 }
-
-/* Submission box */
 .submit-box {
   background: #0d1b2a;
   border: 1px solid #007bff44;
@@ -48,7 +42,6 @@ body {
   padding: 20px;
   margin-bottom: 10px;
 }
-
 .submit-box textarea {
   width: 100%;
   background: #000;
@@ -59,7 +52,6 @@ body {
   margin-bottom: 10px;
   font-size: 14px;
 }
-
 .submit-box button {
   background: #007bff22;
   border: 1px solid #007bff44;
@@ -68,16 +60,12 @@ body {
   border-radius: 8px;
   cursor: pointer;
 }
-
-/* Confirmation message */
 .confirmation {
   text-align: center;
   margin-bottom: 20px;
   opacity: 0.7;
   display: none;
 }
-
-/* Submission cards */
 .submission {
   background: #0d1b2a;
   border: 1px solid #007bff44;
@@ -86,12 +74,9 @@ body {
   margin-bottom: 12px;
   position: relative;
 }
-
 .submission h4 { margin: 0 0 5px; }
 .submission p { margin: 0; }
 .submission small { opacity: 0.6; }
-
-/* Delete button */
 .submission button {
   position: absolute;
   top: 10px;
@@ -120,7 +105,6 @@ body {
   </div>
 
   <div class="confirmation" id="confirmation">Feedback received!</div>
-
   <div id="submissions"></div>
 </div>
 
@@ -129,20 +113,19 @@ const role = localStorage.getItem("role") || "guest";
 const username = localStorage.getItem("username") || "Anonymous";
 const submitBox = document.getElementById("submitBox");
 
-// Hide submit box if needed (guests can submit)
-if(role === "guest") submitBox.style.display = "block"; // guests can still submit
+// Guests can submit, but never see submissions
+if(role === "guest") submitBox.style.display = "block";
 
-// Load previous submissions
 let submissionsData = JSON.parse(localStorage.getItem("submissionsData") || "[]");
 
-function goBack() {
-  window.location.href = 'dashboard.html';
-}
+function goBack() { window.location.href = 'dashboard.html'; }
 
-// Render submissions
+// Render submissions only for non-guests
 function renderSubmissions() {
   const container = document.getElementById('submissions');
   container.innerHTML = '';
+  if(role === "guest") return; // guests cannot see submissions
+
   if(submissionsData.length === 0){
     const empty = document.createElement('div');
     empty.className = 'confirmation';
@@ -160,7 +143,7 @@ function renderSubmissions() {
       <h4>${sub.username}</h4>
       <p>${sub.message}</p>
       <small>${sub.date}</small>
-      ${(role !== "guest") ? `<button onclick="deleteSubmission(${index})">Delete</button>` : ''}
+      <button onclick="deleteSubmission(${index})">Delete</button>
     `;
     container.appendChild(card);
   });
@@ -174,8 +157,8 @@ function submitVoice() {
   const date = new Date().toLocaleString();
   submissionsData.push({message,date,username,role});
   localStorage.setItem("submissionsData", JSON.stringify(submissionsData));
-  renderSubmissions();
 
+  renderSubmissions(); // only shows for non-guests
   document.getElementById('feedback').value = '';
   const conf = document.getElementById('confirmation');
   conf.style.display = 'block';
