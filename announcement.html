@@ -137,9 +137,7 @@ body {
   </div>
 
   <div id="announcements">
-    <div class="empty-state" id="emptyState">
-      No announcement yet come back later
-    </div>
+    <div class="empty-state" id="emptyState">No announcement yet come back later</div>
   </div>
 
 </div>
@@ -149,12 +147,12 @@ const role = localStorage.getItem("role") || "guest";
 const username = localStorage.getItem("username") || "Staff";
 const postBox = document.getElementById("postBox");
 
-// Hide post box for guests
+// Guests can only view
 if(role === "guest"){
   postBox.style.display = "none";
 }
 
-// Load announcements from localStorage
+// Load announcements from localStorage or create empty array
 let announcementsData = JSON.parse(localStorage.getItem("announcementsData") || "[]");
 
 function goBack(){ window.location.href="dashboard.html"; }
@@ -163,15 +161,17 @@ function saveAnnouncements(){
   localStorage.setItem("announcementsData", JSON.stringify(announcementsData));
 }
 
-// Render all announcements
+// Render announcements
 function renderAnnouncements(){
   const container = document.getElementById("announcements");
   container.innerHTML = "";
+
   if(announcementsData.length === 0){
     document.getElementById("emptyState").style.display = "block";
     container.appendChild(document.getElementById("emptyState"));
     return;
   }
+
   document.getElementById("emptyState").style.display = "none";
 
   announcementsData.slice().reverse().forEach((post,index)=>{
@@ -191,7 +191,7 @@ function renderAnnouncements(){
       </div>
       <h3>${post.title}</h3>
       <p>${post.message}</p>
-      ${role !== "guest" ? `
+      ${(role === "admin" || role === "teacher" || role === "student") ? `
       <div class="announcement-buttons">
         <button onclick="editPost(${index})">Edit</button>
         <button onclick="deletePost(${index})">Delete</button>
