@@ -10,9 +10,9 @@ body {
   font-family: Arial,sans-serif;
   background-color: #000;
   color: #fff;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 .top-bar {
@@ -27,7 +27,7 @@ body {
 .top-bar .center { font-weight:bold; font-size:18px; }
 .top-bar .right button { background:#007bff22; border:1px solid #007bff44; color:#fff; padding:6px 14px; border-radius:8px; cursor:pointer; }
 
-.content { margin:120px auto 80px; width:700px; flex:1; }
+.content { margin:120px auto 80px; width:700px; }
 
 .post-box {
   background:#0d1b2a;
@@ -149,7 +149,7 @@ const role = localStorage.getItem("role") || "guest";
 const username = localStorage.getItem("username") || "Guest";
 const postBox = document.getElementById("postBox");
 
-// Hide post box for guests
+// Only hide post box for guests
 if(role === "guest"){
   postBox.style.display = "none";
 }
@@ -163,33 +163,20 @@ function saveAnnouncements(){
   localStorage.setItem("announcementsData", JSON.stringify(announcementsData));
 }
 
-// Render all announcements
 function renderAnnouncements(){
   const container = document.getElementById("announcements");
   container.innerHTML = "";
-
   if(announcementsData.length === 0){
     document.getElementById("emptyState").style.display = "block";
     container.appendChild(document.getElementById("emptyState"));
     return;
   }
-
   document.getElementById("emptyState").style.display = "none";
 
   announcementsData.slice().reverse().forEach((post,index)=>{
     const card = document.createElement("div");
     card.className = "announcement";
     card.dataset.index = index;
-
-    let buttonsHTML = "";
-    if(role !== "guest"){
-      buttonsHTML = `
-        <div class="announcement-buttons">
-          <button onclick="editPost(${index})">Edit</button>
-          <button onclick="deletePost(${index})">Delete</button>
-        </div>`;
-    }
-
     card.innerHTML = `
       <div class="announcement-header">
         <div class="author">
@@ -203,14 +190,16 @@ function renderAnnouncements(){
       </div>
       <h3>${post.title}</h3>
       <p>${post.message}</p>
-      ${buttonsHTML}
+      ${role !== "guest" ? `
+      <div class="announcement-buttons">
+        <button onclick="editPost(${index})">Edit</button>
+        <button onclick="deletePost(${index})">Delete</button>
+      </div>` : ""}
     `;
-
     container.appendChild(card);
   });
 }
 
-// Post new announcement
 function postAnnouncement(){
   const title = document.getElementById("title").value.trim();
   const message = document.getElementById("message").value.trim();
@@ -225,7 +214,6 @@ function postAnnouncement(){
   document.getElementById("message").value = "";
 }
 
-// Edit announcement
 function editPost(index){
   const post = announcementsData[index];
   const newTitle = prompt("Edit title", post.title);
@@ -236,7 +224,6 @@ function editPost(index){
   renderAnnouncements();
 }
 
-// Delete announcement
 function deletePost(index){
   if(confirm("Delete this announcement?")){
     announcementsData.splice(index,1);
