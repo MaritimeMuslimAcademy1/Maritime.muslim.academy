@@ -10,9 +10,9 @@ body {
   font-family: Arial,sans-serif;
   background-color: #000;
   color: #fff;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .top-bar {
@@ -27,7 +27,7 @@ body {
 .top-bar .center { font-weight:bold; font-size:18px; }
 .top-bar .right button { background:#007bff22; border:1px solid #007bff44; color:#fff; padding:6px 14px; border-radius:8px; cursor:pointer; }
 
-.content { margin:120px auto 80px; width:700px; }
+.content { margin:120px auto 80px; width:700px; flex:1; }
 
 .post-box {
   background:#0d1b2a;
@@ -137,22 +137,24 @@ body {
   </div>
 
   <div id="announcements">
-    <div class="empty-state" id="emptyState">No announcement yet come back later</div>
+    <div class="empty-state" id="emptyState">
+      No announcement yet come back later
+    </div>
   </div>
 
 </div>
 
 <script>
 const role = localStorage.getItem("role") || "guest";
-const username = localStorage.getItem("username") || "Staff";
+const username = localStorage.getItem("username") || "Guest";
 const postBox = document.getElementById("postBox");
 
-// Guests can only view
+// Hide post box for guests
 if(role === "guest"){
   postBox.style.display = "none";
 }
 
-// Load announcements from localStorage or create empty array
+// Load announcements from localStorage
 let announcementsData = JSON.parse(localStorage.getItem("announcementsData") || "[]");
 
 function goBack(){ window.location.href="dashboard.html"; }
@@ -161,7 +163,7 @@ function saveAnnouncements(){
   localStorage.setItem("announcementsData", JSON.stringify(announcementsData));
 }
 
-// Render announcements
+// Render all announcements
 function renderAnnouncements(){
   const container = document.getElementById("announcements");
   container.innerHTML = "";
@@ -178,6 +180,16 @@ function renderAnnouncements(){
     const card = document.createElement("div");
     card.className = "announcement";
     card.dataset.index = index;
+
+    let buttonsHTML = "";
+    if(role !== "guest"){
+      buttonsHTML = `
+        <div class="announcement-buttons">
+          <button onclick="editPost(${index})">Edit</button>
+          <button onclick="deletePost(${index})">Delete</button>
+        </div>`;
+    }
+
     card.innerHTML = `
       <div class="announcement-header">
         <div class="author">
@@ -191,12 +203,9 @@ function renderAnnouncements(){
       </div>
       <h3>${post.title}</h3>
       <p>${post.message}</p>
-      ${(role === "admin" || role === "teacher" || role === "student") ? `
-      <div class="announcement-buttons">
-        <button onclick="editPost(${index})">Edit</button>
-        <button onclick="deletePost(${index})">Delete</button>
-      </div>` : ""}
+      ${buttonsHTML}
     `;
+
     container.appendChild(card);
   });
 }
