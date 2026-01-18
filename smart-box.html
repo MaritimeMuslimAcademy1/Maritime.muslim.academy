@@ -155,7 +155,7 @@ const mainButtons = [
   "Teachers"
 ];
 
-// Questions and answers
+// Questions for each section
 const questions = {
   "Leaderboard": [
     "What is the leaderboard",
@@ -191,6 +191,35 @@ const questions = {
   ]
 };
 
+// Answers for each question
+const answers = {
+  "What is the leaderboard": "The leaderboard shows the top students with the most points from school work and activities.",
+  "How do I earn points": "You earn points by completing school work and participating in activities.",
+  "How often does it update": "The leaderboard updates every month.",
+
+  "What is an announcement": "An announcement shares important school information with everyone.",
+  "Who posts announcements": "Teachers, school staff, and the Student Council post announcements.",
+
+  "What is the Events and Calendar section": "Shows all upcoming school events for the month or year.",
+  "How do I check the calendar": "Open the calendar tab on the dashboard to see event dates and details.",
+  "Who can add events": "Teachers and the Student Council can add events for everyone.",
+
+  "What is the Student Role section": "Shows all students with their assigned roles, like President, VP, or Treasurer.",
+  "How long does a student hold a role": "Until the end of the school year.",
+
+  "What is Student Voice": "A section where students can submit suggestions, ideas, or feedback to improve school life.",
+  "Who can see my feedback": "Only teachers and the Student Council can view feedback; other students cannot see it.",
+
+  "Who’s Mrs. Eman": "Mrs. Eman is the principal of Maritime Muslim Academy. She oversees academic programs, supports teachers and students, and leads activities to improve student success and development.",
+  "Who’s Mrs. Heather": "Mrs. Heather is the Academic Coordinator and Biology teacher for high school. She manages the curriculum and ensures lessons meet educational goals.",
+  "Who’s Mr. Khader": "Mr. Khader is the Vice Principal and teaches Math and Physics to high school students.",
+  "Who’s Mrs. Sondos": "Mrs. Sondos is the school secretary. She manages administrative tasks and communication between staff, students, and parents.",
+  "Who’s Mr. Mustafa": "Mr. Mustafa is the administrator and Arabic teacher. He manages school operations and teaches Arabic classes.",
+  "Who’s Mrs. Lilian": "Mrs. Lilian is the English teacher for high school and junior high. She teaches language and literature, helping students improve reading, writing, and critical thinking skills.",
+  "Who’s Mr. Bilal": "Mr. Bilal is the guidance counselor and parent engagement coordinator. He teaches high school and junior high classes in management, history, and gym.",
+  "Who’s Sh. Anas": "Sh. Anas teaches High school Islamic Studies and helps students understand religious principles."
+};
+
 // Add AI message with optional buttons
 function addAIMessage(text, buttons=[]) {
   const aiMsg = document.createElement('div');
@@ -222,7 +251,9 @@ function addUserMessage(text) {
 
 // Handle AI response when a main button or question is clicked
 function handleAIResponse(userChoice) {
-  if(questions[userChoice]){
+  if(answers[userChoice]){
+    addAIMessage(answers[userChoice]);
+  } else if(questions[userChoice]){
     addAIMessage("Choose a question:", questions[userChoice]);
   } else {
     addAIMessage("Sorry, I don't have info for that yet.");
