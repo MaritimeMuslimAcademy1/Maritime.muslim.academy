@@ -217,6 +217,7 @@ function renderCalendar(){
 function changeMonth(step){ currentDate.setMonth(currentDate.getMonth()+step); renderCalendar(); }
 
 function addEvent(dateKey){
+  if(!(role==="admin"||role==="teacher")) return; // guests cannot add
   const title = prompt("Event title:");
   if(!title) return;
   if(!eventsData[dateKey]) eventsData[dateKey]=[];
