@@ -168,6 +168,13 @@ let currentDate = new Date();
 
 function saveEvents(){ localStorage.setItem("eventsData", JSON.stringify(eventsData)); }
 
+// Consistent zero-padded date key
+function getDateKey(year, month, day){
+  const m = String(month).padStart(2,'0');
+  const d = String(day).padStart(2,'0');
+  return `${year}-${m}-${d}`;
+}
+
 function renderCalendar(){
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -190,7 +197,7 @@ function renderCalendar(){
     dayDiv.className="day";
     const today=new Date();
     if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()) dayDiv.classList.add("today");
-    const dateKey=`${year}-${month+1}-${d}`;
+    const dateKey = getDateKey(year, month+1, d);
     dayDiv.innerHTML=`<div class="date">${d}</div>`;
     if(eventsData[dateKey]){
       hasEvents=true;
@@ -217,7 +224,6 @@ function renderCalendar(){
 function changeMonth(step){ currentDate.setMonth(currentDate.getMonth()+step); renderCalendar(); }
 
 function addEvent(dateKey){
-  if(!(role==="admin"||role==="teacher")) return; // guests cannot add
   const title = prompt("Event title:");
   if(!title) return;
   if(!eventsData[dateKey]) eventsData[dateKey]=[];
@@ -250,10 +256,10 @@ if(role==="admin"||role==="teacher"){
   document.getElementById("calendarDays").addEventListener("click",function(ev){
     const dayDiv = ev.target.closest(".day");
     if(dayDiv && !dayDiv.classList.contains("empty")){
-      const day = dayDiv.querySelector(".date").textContent;
+      const day = parseInt(dayDiv.querySelector(".date").textContent);
       const month = currentDate.getMonth()+1;
       const year = currentDate.getFullYear();
-      const dateKey=`${year}-${month}-${day}`;
+      const dateKey = getDateKey(year, month, day);
       addEvent(dateKey);
     }
   });
